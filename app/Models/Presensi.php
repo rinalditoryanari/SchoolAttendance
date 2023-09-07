@@ -9,6 +9,7 @@ class Presensi extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['pertemuan_id', 'waktu_absen', 'siswa_id', 'absensi_id'];
     protected $guarded = ['id'];
 
     public function kelas()
