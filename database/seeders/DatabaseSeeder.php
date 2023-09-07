@@ -6,7 +6,6 @@ use App\Models\Absensi;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Mapel;
-use App\Models\KelasSiswa;
 use database\seeders\UserSeeder;
 use Illuminate\Database\Seeder;
 
@@ -28,30 +27,6 @@ class DatabaseSeeder extends Seeder
             // UserSeeder::class,
         ]);
 
-        KelasSiswa::create([
-            "siswa_id"=>'1',
-            "kelas_id"=>"10"
-        ]);
-        KelasSiswa::create([
-            "siswa_id"=>'12',
-            "kelas_id"=>"10"
-        ]);
-        KelasSiswa::create([
-            "siswa_id"=>'2',
-            "kelas_id"=>"11"
-        ]);
-        KelasSiswa::create([
-            "siswa_id"=>'1',
-            "kelas_id"=>"12"
-        ]);
-        KelasSiswa::create([
-            "siswa_id"=>'1',
-            "kelas_id"=>"13"
-        ]);
-        KelasSiswa::create([
-            "siswa_id"=>'1',
-            "kelas_id"=>"14"
-        ]);
 
         // Siswa::factory(24)->create([
         //     'kelas_id' => '1',
