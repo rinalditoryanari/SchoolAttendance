@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Mapel;
+use App\Models\Pertemuan;
 use Illuminate\Http\Request;
 use App\Models\Presensi;
 use App\Models\Siswa;
@@ -33,26 +34,33 @@ class PresensiMhswController extends Controller
     //menampilkan tanggal pertemuan mapel
     public function showTgl(Mapel $mapel)
     {
-        dd($mapel->presensis);
-        return view('home.contents.presensi.tanggal', [
+        // dd($mapel->pertemuans);
+        return view('home.contents.presensimhsw.tanggal', [
             'title' => 'Pilih Tanggal Presensi',
-            'presensis' => $mapel->presensis,
+            'pertemuans' => $mapel->pertemuans,
         ]);
     }
 
     //manmpilkan absensi pada pertemuan tsb
-    public function showAbsensi(Mapel $mapel)
+    public function showPresensi(Mapel $mapel, Pertemuan $pertemuan)
     {
-        return view('home.contents.presensi.create', [
+        return view('home.contents.presensimhsw.create', [
             'title' => 'Presensi',
             'mapel' => $mapel,
-            'siswas' => Siswa::where('kelas_id', $mapel->kelas_id)->orderBy('firstName', 'asc')->get(),
-            'absensis' => Absensi::where('id', '!=', 2)->get()
+            'pertemuan' => $pertemuan,
+            'siswas' => $mapel->kelas->siswas,
+            'presensi' => 
+            'absensis' => Absensi::all()
         ]);
     }
 
     //input data absensi
-    public function inputAbsensi()
+    public function inputAbsensi(Request $request)
     {
+        dd(request()->all());
+        foreach ($request->presensi as $person) {
+            Presensi::create($person);
+        }
+        return redirect('/riwayatPresensi');
     }
 }
