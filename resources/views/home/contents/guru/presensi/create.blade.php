@@ -28,7 +28,7 @@
                         <td class="text-center">
                             <input type="hidden" name="presensi[guru]" value="{{ $guru->id }}">
                             <select class="form-control" name="presensi[kehadiran]">
-                                @if(count($presensi->toArray()) != 0)
+                                @if($presensi)
                                 <option selected hidden value="{{ $presensi->absensi->id }}">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
                                 @endif
                                 <!-- <option selected disabled>Pilih Kehadiran</option> -->
