@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
@@ -24,12 +25,16 @@
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
 		gtag('js', new Date());
 
 		gtag('config', 'UA-119386393-1');
 	</script>
 </head>
+
 <body>
 	{{-- <div class="pre-loader">
 		<div class="pre-loader-box">
@@ -44,7 +49,7 @@
 		</div>
 	</div> --}}
 
-	@include('home.layouts.header')
+	{{--@include('home.layouts.header')--}}
 
 	@include('home.layouts.right-sidebar')
 
@@ -66,13 +71,13 @@
 	<script src="{{ asset('src/plugins/cropperjs/dist/cropper.js') }}"></script>
 	<script src="src/plugins/cropperjs/dist/cropper.js"></script>
 	<script>
-		window.addEventListener('DOMContentLoaded', function () {
+		window.addEventListener('DOMContentLoaded', function() {
 			var image = document.getElementById('image');
 			var cropBoxData;
 			var canvasData;
 			var cropper;
 
-			$('#modal').on('shown.bs.modal', function () {
+			$('#modal').on('shown.bs.modal', function() {
 				cropper = new Cropper(image, {
 					autoCropArea: 0.5,
 					dragMode: 'move',
@@ -84,11 +89,11 @@
 					cropBoxMovable: false,
 					cropBoxResizable: false,
 					toggleDragModeOnDblclick: false,
-					ready: function () {
+					ready: function() {
 						cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
 					}
 				});
-			}).on('hidden.bs.modal', function () {
+			}).on('hidden.bs.modal', function() {
 				cropBoxData = cropper.getCropBoxData();
 				canvasData = cropper.getCanvasData();
 				cropper.destroy();
@@ -109,4 +114,5 @@
 	<script src="{{ asset('src/plugins/datatables/js/vfs_fonts.js') }}"></script>
 	<script src="{{ asset('vendors/scripts/datatable-setting.js') }}"></script>
 </body>
+
 </html>
