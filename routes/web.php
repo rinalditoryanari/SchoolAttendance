@@ -9,6 +9,7 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
+use App\Http\Controllers\PresensiAdminController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\PresensiSiswaController;
@@ -86,4 +87,12 @@ Route::prefix('guru')->group(function () {
     Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl']);
     Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi']);
     Route::post('/presensi/', [PresensiGuruController::class, 'inputAbsensi']);
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/presensi', [PresensiAdminController::class, 'showMapel']);
+    Route::get('/presensi/{mapel}', [PresensiAdminController::class, 'showTgl']);
+    Route::get('/presensi/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
+    Route::get('/presensi/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
+    Route::post('/presensi/', [PresensiAdminController::class, 'inputAbsensi']);
 });
