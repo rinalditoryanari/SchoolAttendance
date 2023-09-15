@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\Mahasiswa;
+use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -28,6 +28,18 @@ class UserSeeder extends Seeder
             'remember_token' => '1234567898765432',
             'is_admin' => true
         ]);
+
+
+        // Siswa::create([
+        //     'nis' => '11',
+        //     'email' => 'hilmy@gmail.com',
+        //     'phone' => '085955290636',
+        //     'firstName' => 'Ahmad hilmy',
+        //     'lastName' => 'Ahmad hilmy',
+        //     'jns_kelamin' => 'Laki-laki',
+        //     'alamat' => 'RT03/RW06 Dsn. Gogourung Dawuhan Kademangan Blitar Jawa Timur 66161 Indonesia',
+        //     'password' =>bcrypt('12345678'), //password
+        // ]);
 
 
         User::create([

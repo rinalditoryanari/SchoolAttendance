@@ -1,4 +1,5 @@
 @extends('home.index')
+@extends('home.index1')
 @section('content')
 <div class="title pb-20">
     <h2 class="h3 mb-0">{{ $title }}</h2>

@@ -11,9 +11,9 @@
 	<!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="vendors/styles/core.css">
-	<link rel="stylesheet" type="text/css" href="vendors/styles/icon-font.min.css">
-	<link rel="stylesheet" type="text/css" href="vendors/styles/style.css">
+	<link rel="stylesheet" type="text/css" href="../vendors/styles/core.css">
+	<link rel="stylesheet" type="text/css" href="../vendors/styles/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="../vendors/styles/style.css">
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
@@ -28,9 +28,9 @@
 <body class="login-page">
 	<div class="login-header box-shadow">
 		<div class="container-fluid d-flex justify-content-between align-items-center">
-			<div class="brand-logo">
-				<a href="/">
-					<h1>Selamat Datang</h1>
+			<div class="brand-logo1">
+				<a href="/siswa/index">
+					<h1>MIGogourung</h1>
 				</a>
 			</div>
 			<div class="login-menu">
@@ -45,10 +45,10 @@
 		</div>
 	</div>
 	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
-		<div class="container">
+		<div class="container1">
 			<div class="row align-items-center">
 				<div class="col-md-6 col-lg-7">
-					<img src="vendors/images/login-page-img.png" alt="">
+					<img src="../vendors/images/login-page-img.png" alt="">
 				</div>
 				<div class="col-md-6 col-lg-5">
 					<div class="login-box bg-white box-shadow border-radius-10">
@@ -71,7 +71,7 @@
 								</div>
 							@endif
 						</div>
-						<form action="/login" method="POST">
+						<form action="/siswa" method="POST">
 						@csrf
 							{{-- <div class="select-role">
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -131,9 +131,9 @@
 		</div>
 	</div>
 	<!-- js -->
-	<script src="vendors/scripts/core.js"></script>
-	<script src="vendors/scripts/script.min.js"></script>
-	<script src="vendors/scripts/process.js"></script>
-	<script src="vendors/scripts/layout-settings.js"></script>
+	<script src="../vendors/scripts/core.js"></script>
+	<script src="../vendors/scripts/script.min.js"></script>
+	<script src="../vendors/scripts/process.js"></script>
+	<script src="../vendors/scripts/layout-settings.js"></script>
 </body>
 </html>

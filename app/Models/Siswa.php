@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Siswa extends Model
-{
+
+class Siswa extends  Authenticatable
+{ 
     use HasFactory;
 
     protected $guarded = ['id'];
@@ -18,4 +21,23 @@ class Siswa extends Model
     public function presensis(){
         return $this->hasMany(Presensi::class);
     }
+
+    use Notifiable;
+
+    protected $table = 'siswas';
+
+    protected $fillable = ['email',  'password'];
+
+    protected $hidden = ['password',  'remember_token'];
 }
+
+// class Siswa extends Authenticatable
+// {
+//     use Notifiable;
+
+//     protected $table = 'siswas';
+
+//     protected $fillable = ['email',  'password'];
+
+//     protected $hidden = ['password',  'remember_token'];
+// }

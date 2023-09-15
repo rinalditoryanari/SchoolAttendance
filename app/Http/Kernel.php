@@ -64,6 +64,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
          // your custom middleware
-        'mahasiswa' => \App\Http\Middleware\RedirectIfNotMahasiswa::class,
+        'siswa' => \App\Http\Middleware\RedirectIfNotSiswa::class,
     ];
 }

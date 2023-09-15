@@ -5,7 +5,6 @@ use App\Models\Mapel;
 use App\Models\Presensi;
 use App\Models\Siswa;
 use App\Models\User;
-use App\Models\Mahasiswa;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
@@ -16,7 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Auth\MahasiswaLoginController;
+use App\Http\Controllers\Auth\SiswaLoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,19 +38,19 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 Route::post('/register', [RegisterController::class, 'store']);
 
 // Home Routes
-Route::get('/', function () {
-    return view('home.contents.welcome', [
-        'title' => 'Dashboard',
-        'siswa' => Siswa::count(),
-        'guru' => User::count(),
-        'mapel' => Mapel::count(),
-        'kelas' => Kelas::count(),
-        'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
-    ]);
-})->middleware('auth');
-
+// Route::get('/', function () {
+//     return view('home.contents.welcome', [
+//         'title' => 'Dashboard',
+//         'siswa' => Siswa::count(),
+//         'guru' => User::count(),
+//         'mapel' => Mapel::count(),
+//         'kelas' => Kelas::count(),
+//         'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
+//     ]);
+// })->middleware('auth');
+// 
 // Siswa Export and Import Routes
-Route::resource('/siswa', SiswaController::class)->middleware('auth');
+// Route::resource('/siswa', SiswaController::class)->middleware('auth');
 Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
 Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
 
@@ -77,12 +76,13 @@ Route::resource('/profile', ProfileController::class)->only('show', 'update')->m
 
 // ---------------
 
-Route::get('/mhsw/presensi', [PresensiMhswController::class, 'showMapel'])->middleware('auth');
+// Route::get('/mhsw/presensi', [PresensiMhswController::class, 'showMapel'])->middleware('auth');
 
-Route::get('/mahasiswa', [MahasiswaLoginController::class, 'showLoginForm'])->name('mahasiswa.login');
-Route::post('/mahasiswa', [MahasiswaLoginController::class, 'login'])->name('mahasiswa.login.post');
-Route::post('/mahasiswa/logout', [MahasiswaLoginController::class, 'logout'])->name('mahasiswa.logout');
+// Route::get('home.contents.', 'Siswa\HomeController@index');
+Route::get('/siswa/login', [SiswaLoginController::class, 'showLoginForm'])->name('siswa.login')->middleware('guest');;
+Route::post('/siswa', [SiswaLoginController::class, 'login'])->name('siswa.login.post');
+Route::get('/siswa/logout', [SiswaLoginController::class, 'logout'])->name('siswa.logout');
 //Admin Home page after login
-Route::group(['middleware'=>'mahasiswa'], function() {
-    Route::get('/mahasiswa/home', 'Mahasiswa\HomeController@index');
+Route::group(['middleware'=>'siswa'], function() {
+    Route::get('/siswa/index', [SiswaLoginController::class, 'index'])->name('siswa.index');
 });

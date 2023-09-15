@@ -54,9 +54,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'mahasiswa'  => [
+        'siswa'  => [
                     'driver'  => 'session',
-                    'provider' => 'mahasiswas',
+                    'provider' => 'siswas',
                   ],
 
     ],
@@ -85,9 +85,9 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'mahasiswas' => [
+        'siswas' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\Mahasiswa::class,
+            'model'  => App\Models\Siswa::class,
         ],
 
         // 'users' => [
