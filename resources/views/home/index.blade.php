@@ -69,7 +69,6 @@
 	<script src="{{ asset('vendors/scripts/process.js') }}"></script>
 	<script src="{{ asset('vendors/scripts/layout-settings.js') }}"></script>
 	<script src="{{ asset('src/plugins/cropperjs/dist/cropper.js') }}"></script>
-	<script src="src/plugins/cropperjs/dist/cropper.js"></script>
 	<script>
 		window.addEventListener('DOMContentLoaded', function() {
 			var image = document.getElementById('image');
@@ -113,6 +112,9 @@
 	<script src="{{ asset('src/plugins/datatables/js/pdfmake.min.js') }}"></script>
 	<script src="{{ asset('src/plugins/datatables/js/vfs_fonts.js') }}"></script>
 	<script src="{{ asset('vendors/scripts/datatable-setting.js') }}"></script>
+
+	@stack('scripts')
+
 </body>
 
 </html>

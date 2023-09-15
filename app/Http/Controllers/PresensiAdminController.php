@@ -23,6 +23,56 @@ class PresensiAdminController extends Controller
         ]);
     }
 
+    //menampilkan halaman tambah presensi mapel
+    public function showTambah()
+    {
+        $mapel = Mapel::doesntHave('pertemuans')->get();
+
+        return view('home.contents.admin.presensi.create', [
+            'title' => 'Tambah Presensi Mapel',
+            'mapels' => $mapel,
+        ]);
+    }
+
+    //menambahkan presensi mapel
+    public function inputTambah()
+    {
+        // dd(request()->all());
+        $mapel = request('mapel');
+        foreach (request('pertemuan') as $pertemuan) {
+
+            Pertemuan::insert([
+                'mapel_id' => $mapel,
+                'tanggal' => $pertemuan['tanggal'],
+                'waktu' => $pertemuan['masuk'],
+                'keterangan' => 'masuk',
+            ]);
+            Pertemuan::insert([
+                'mapel_id' => $mapel,
+                'tanggal' => $pertemuan['tanggal'],
+                'waktu' => $pertemuan['keluar'],
+                'keterangan' => 'keluar',
+            ]);
+        }
+
+        return redirect('/admin/presensi/');
+    }
+
+    public function deletePresensi(Mapel $mapel)
+    {
+        $pertemuans = $mapel->pertemuans;
+
+        foreach ($pertemuans as $pertemuan) {
+            if ($pertemuan->presensi) {
+                $pertemuan->presensi()->delete();
+            }
+
+            $pertemuan->delete();
+        }
+
+        return redirect('/admin/presensi/');
+    }
+
     //menampilkan tanggal pertemuan mapel
     public function showTgl(Mapel $mapel)
     {
