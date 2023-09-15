@@ -95,7 +95,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/presensi/tambah', [PresensiAdminController::class, 'inputTambah']);
     Route::get('/presensi/{mapel}', [PresensiAdminController::class, 'showTgl']);
     Route::get('/presensi/{mapel}/edit', [PresensiAdminController::class, 'showEdit']);
-    Route::post('/presensi/{mapel}/edit', [PresensiAdminController::class, 'editPresensi']);
+    Route::post('/presensi/{mapel}/edit', [PresensiAdminController::class, 'inputEdit']);
     Route::get('/presensi/{mapel}/hapus', [PresensiAdminController::class, 'deletePresensi']);
     Route::get('/presensi/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
     Route::get('/presensi/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);

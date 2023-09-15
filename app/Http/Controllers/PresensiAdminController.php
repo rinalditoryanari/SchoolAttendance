@@ -58,6 +58,94 @@ class PresensiAdminController extends Controller
         return redirect('/admin/presensi/');
     }
 
+    //menampilkan tanggal pertemuan mapel
+    public function showTgl(Mapel $mapel)
+    {
+        return view('home.contents.admin.presensi.tanggal', [
+            'title' => 'Pilih Tanggal Presensi',
+            'pertemuans' => $mapel->pertemuans,
+        ]);
+    }
+
+    public function showEdit(Mapel $mapel)
+    {
+        // dd($mapel->pertemuans);
+        $pertemuans = [];
+        foreach ($mapel->pertemuans as $pertemuan) {
+            if ($pertemuan->keterangan == "masuk") {
+                $pertemuans[] = [
+                    'tanggal' => $pertemuan->tanggal,
+                    'id_masuk' => $pertemuan->id,
+                    'masuk' => $pertemuan->waktu,
+                    'id_keluar' => null,
+                    'keluar' => null,
+                ];
+            } else {
+                $cont = count($pertemuans);
+                $pertemuans[$cont - 1]['id_keluar'] = $pertemuan->id;
+                $pertemuans[$cont - 1]['keluar'] = $pertemuan->waktu;
+            }
+        }
+
+        return view('home.contents.admin.presensi.edit', [
+            'title' => 'Edit Presensi Mapel',
+            'mapel' => $mapel,
+            'pertemuans' => json_encode($pertemuans),
+        ]);
+    }
+
+    public function inputEdit(Request $request)
+    {
+        $mapel = $request->mapel;
+        $existingPertemuan = Pertemuan::where('mapel_id', $mapel)->get()->keyBy('id');
+
+        foreach ($request->pertemuan as $data) {
+            $id = $data['id_masuk'];
+            if (isset($existingPertemuan[$id])) {
+                //masuk
+                Pertemuan::where('id', $data['id_masuk'])
+                    ->update([
+                        'mapel_id' => $mapel,
+                        'tanggal' => $data['tanggal'],
+                        'waktu' => $data['masuk'],
+                        'keterangan' => 'masuk',
+                    ]);
+                unset($existingPertemuan[$data['id_masuk']]); // Remove the ID from the array
+
+                //keluar
+                Pertemuan::where('id', $data['id_keluar'])
+                    ->update([
+                        'mapel_id' => $mapel,
+                        'tanggal' => $data['tanggal'],
+                        'waktu' => $data['keluar'],
+                        'keterangan' => 'keluar',
+                    ]);
+                unset($existingPertemuan[$data['id_keluar']]); // Remove the ID from the array
+
+            } else {
+                // Data doesn't exist, so insert it as new
+                Pertemuan::insert([
+                    'mapel_id' => $mapel,
+                    'tanggal' => $data['tanggal'],
+                    'waktu' => $data['masuk'],
+                    'keterangan' => 'masuk',
+                ]);
+                Pertemuan::insert([
+                    'mapel_id' => $mapel,
+                    'tanggal' => $data['tanggal'],
+                    'waktu' => $data['keluar'],
+                    'keterangan' => 'keluar',
+                ]);
+            }
+        }
+
+        foreach ($existingPertemuan as $pertemuan) {
+            $pertemuan->delete();
+        }
+
+        return redirect('/admin/presensi/');
+    }
+
     public function deletePresensi(Mapel $mapel)
     {
         $pertemuans = $mapel->pertemuans;
@@ -73,14 +161,6 @@ class PresensiAdminController extends Controller
         return redirect('/admin/presensi/');
     }
 
-    //menampilkan tanggal pertemuan mapel
-    public function showTgl(Mapel $mapel)
-    {
-        return view('home.contents.admin.presensi.tanggal', [
-            'title' => 'Pilih Tanggal Presensi',
-            'pertemuans' => $mapel->pertemuans,
-        ]);
-    }
 
     public function showPresensiGuru(Mapel $mapel, Pertemuan $pertemuan)
     {
