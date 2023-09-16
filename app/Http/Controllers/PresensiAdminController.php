@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Mapel;
 use App\Models\Pertemuan;
 use App\Models\Presensi;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -63,6 +64,7 @@ class PresensiAdminController extends Controller
     {
         return view('home.contents.admin.presensi.tanggal', [
             'title' => 'Pilih Tanggal Presensi',
+            'mapel' => $mapel,
             'pertemuans' => $mapel->pertemuans,
         ]);
     }
@@ -161,6 +163,74 @@ class PresensiAdminController extends Controller
         return redirect('/admin/presensi/');
     }
 
+    public function showRekapGuru(Mapel $mapel)
+    {
+        $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->get()->keyBy('id');
+
+
+        $prensis = [];
+        foreach ($pertemuans as $pertemuan) {
+            $presensi = $pertemuan->presensi->where('level', 'guru')->first();
+
+            if ($presensi) {
+                $absensi = $presensi->absensi->kode . ' - ' . $presensi->absensi->keterangan;
+            } else {
+                $absensi = 'Tidak Absen';
+            };
+
+            $prensis[] = [
+                'detail' => $pertemuan,
+                'presensi' => $presensi,
+                'absensi' => $absensi,
+            ];
+        }
+
+        return view('home.contents.admin.presensi.rekap-absen', [
+            'title' => 'Presensi Rekap Guru',
+            'mapel' => $mapel,
+            'user' => $mapel->user,
+            'pertemuans' => $prensis,
+        ]);
+    }
+
+    public function showPilihRekapSiswa(Mapel $mapel)
+    {
+        return view('home.contents.admin.presensi.pilih-rekap-siswa', [
+            'title' => 'Pilih Rekap Guru',
+            'mapel' => $mapel,
+            'siswas' => $mapel->kelas->siswas,
+        ]);
+    }
+
+    public function showRekapSiswa(Mapel $mapel, Siswa $siswa)
+    {
+        $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->get()->keyBy('id');
+
+
+        $prensis = [];
+        foreach ($pertemuans as $pertemuan) {
+            $presensi = $pertemuan->presensi->where('level', 'siswa')->where('siswa_id', $siswa->id)->first();
+
+            if ($presensi) {
+                $absensi = $presensi->absensi->kode . ' - ' . $presensi->absensi->keterangan;
+            } else {
+                $absensi = 'Tidak Absen';
+            };
+
+            $prensis[] = [
+                'detail' => $pertemuan,
+                'presensi' => $presensi,
+                'absensi' => $absensi,
+            ];
+        }
+
+        return view('home.contents.admin.presensi.rekap-absen', [
+            'title' => 'Presensi Rekap Siswa',
+            'mapel' => $mapel,
+            'user' => $mapel->user,
+            'pertemuans' => $prensis,
+        ]);
+    }
 
     public function showPresensiGuru(Mapel $mapel, Pertemuan $pertemuan)
     {
