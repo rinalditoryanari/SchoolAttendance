@@ -32,6 +32,11 @@ class Presensi extends Model
         return $this->belongsTo(Absensi::class);
     }
 
+    public function pertemuans()
+    {
+        return $this->belongsTo(Pertemuan::class);
+    }
+
     public function siswa()
     {
         return $this->belongsTo(Siswa::class);

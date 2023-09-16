@@ -13,4 +13,9 @@ class Pertemuan extends Model
     {
         return $this->belongsTo(Mapel::class);
     }
+
+    public function presensi()
+    {
+        return $this->hasMany(Presensi::class, "pertemuan_id", "id");
+    }
 }
