@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RekapSiswaMapel;
 use App\Models\Absensi;
 use App\Models\Mapel;
 use App\Models\Pertemuan;
@@ -9,6 +10,7 @@ use App\Models\Presensi;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PresensiAdminController extends Controller
 {
@@ -229,6 +231,69 @@ class PresensiAdminController extends Controller
             'mapel' => $mapel,
             'user' => $mapel->user,
             'pertemuans' => $prensis,
+        ]);
+    }
+
+    public function excelRekapSiswa()
+    {
+
+        // dd($mapel);
+        // return Excel::download(new RekapSiswaMapel($mapel), 'invoices.xlsx');
+    }
+
+    public function showExcelRekapSiswa(Mapel $mapel)
+    {
+        return Excel::download(new RekapSiswaMapel($mapel), 'invoices.xlsx');
+
+        $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->where('keterangan', 'masuk')->get();
+        $siswas = $mapel->kelas->siswas;
+
+        $presnsiSiswa = [];
+        foreach ($siswas as $siswa) {
+            $prensis = [];
+            $rekap = []; // Initialize the rekap array for this siswa
+
+            foreach ($pertemuans as $pertemuan) {
+                $presensi = $pertemuan->presensi->where('level', 'siswa')->where('siswa_id', $siswa->id)->first();
+
+                if ($presensi) {
+                    $absensi = $presensi->absensi->kode;
+                } else {
+                    $absensi = 'A';
+                };
+
+                $prensis[] = [
+                    'detail' => $pertemuan->toArray(),
+                    'absensi' => $absensi,
+                ];
+
+                // Count the occurrences of each absensi kode in the rekap
+                if (isset($rekap[$absensi])) {
+                    $rekap[$absensi]++;
+                } else {
+                    $rekap[$absensi] = 1;
+                }
+            }
+
+            // Append the rekap to the presnsiSiswa array
+            $presnsiSiswa[] = [
+                'detail' => $siswa->toArray(),
+                'pertemuans' => $prensis,
+                'rekap' => $rekap, // Include the rekap in the output
+            ];
+        }
+
+        return view('home.contents.admin.presensi.excel.siswa', [
+            'mapel' => $mapel,
+            'kelas' => $mapel->kelas,
+            'jumlah' => [
+                'siswa' => $siswas->count(),
+                'laki' => $siswas->where('jnsKelamin', 'Laki-laki')->count(),
+                'perempuan' => $siswas->where('jnsKelamin', 'Perempuan')->count(),
+            ],
+            'pertemuans' => $pertemuans,
+            'siswas' => $presnsiSiswa,
+            'absensis' => Absensi::select('kode')->get(),
         ]);
     }
 

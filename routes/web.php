@@ -105,6 +105,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/presensi/{mapel}/rekap/siswa', [PresensiAdminController::class, 'showPilihRekapSiswa']);
     Route::get('/presensi/{mapel}/rekap/siswa/{siswa}', [PresensiAdminController::class, 'showRekapSiswa']);
 
+    Route::get('/presensi/{mapel}/rekap/siswa/excel/', [PresensiAdminController::class, 'excelRekapSiswa']);
+    Route::get('/presensi/{mapel}/rekap/siswa/excel/show', [PresensiAdminController::class, 'showExcelRekapSiswa']);
+
+
     Route::get('/presensi/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
     Route::get('/presensi/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
 });
