@@ -9,7 +9,7 @@
         {{--<a href="" class="btn btn-sm btn-outline-primary">Tambah</a>--}}
     </div>
     <div class="pb-20">
-        <table class="table">
+        <table class="data-table table">
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort text-center">No.</th>
@@ -32,7 +32,8 @@
                     <td>{{ $guru->jns_kelamin }}</td>
                     <td>{{ $guru->phone }}</td>
                     <td class="text-center">
-                        <a href="/admin/guru/{{$guru->id}}/rekap/" class="btn btn-sm btn-outline-primary">Rekap Absen</a>
+                        <a href="/admin/guru/{{$guru->id}}/rekap/excel" class="btn btn-sm btn-outline-primary">Excel</a>
+                        <a href="/admin/guru/{{$guru->id}}/rekap/pdf" class="btn btn-sm btn-outline-primary">PDF</a>
                     </td>
                     {{-- <td class="text-center">
                         <a href="" class="btn btn-sm btn-outline-primary">Edit</a>
