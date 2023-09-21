@@ -120,7 +120,7 @@
 									</div>
 									<div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373">Atau</div>
 									<div class="input-group mb-0">
-										<a class="btn btn-outline-primary btn-lg btn-block" href="/register">Daftar untuk membuat akun baru</a>
+										<a class="btn btn-outline-primary btn-lg btn-block" href="/siswa/login">Login Mahasiswa</a>
 									</div>
 								</div>
 							</div>

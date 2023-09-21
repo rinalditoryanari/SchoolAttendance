@@ -30,7 +30,7 @@
 		<div class="container-fluid d-flex justify-content-between align-items-center">
 			<div class="brand-logo1">
 				<a href="/siswa/index">
-					<h1>MIGogourung</h1>
+					<h1>Absensi Mahasiswa</h1>
 				</a>
 			</div>
 			<div class="login-menu">
@@ -45,10 +45,10 @@
 		</div>
 	</div>
 	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center" style="background-image: url('/src/images/aka.jpg');">
-		<div class="container1">
+		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-6 col-lg-7">
-					<img src="../vendors/images/login-page-img.png" alt="">
+					<!-- <img src="../vendors/images/login-page-img.png" alt=""> -->
 				</div>
 				<div class="col-md-6 col-lg-5">
 					<div class="login-box bg-white box-shadow border-radius-10">
