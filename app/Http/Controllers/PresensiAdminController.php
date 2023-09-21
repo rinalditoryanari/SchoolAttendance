@@ -237,10 +237,10 @@ class PresensiAdminController extends Controller
 
     public function excelRekapSiswa(Mapel $mapel)
     {
-        return Excel::download(new RekapSiswaMapel($mapel), 'Rekap Siswa.xlsx');
+        return Excel::download(new RekapSiswaMapel($mapel), 'Rekap Siswa - ' . $mapel->nama . ' - ' . $mapel->kelas->nama . ' - ' . date('Y-m-d') . '.xlsx');
     }
 
-    public function showExcelRekapSiswa(Mapel $mapel)
+    public function reviewRekapSiswa(Mapel $mapel)
     {
         $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->where('keterangan', 'masuk')->get();
         $siswas = $mapel->kelas->siswas;
@@ -347,7 +347,7 @@ class PresensiAdminController extends Controller
             'absensis' => Absensi::select('kode')->get(),
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->download('Rekap Siswa.pdf');
+        return $pdf->download('Rekap Siswa - ' . $mapel->nama . ' - ' . $mapel->kelas->nama . ' - ' . date('Y-m-d') . '.pdf');
     }
 
     public function showPresensiGuru(Mapel $mapel, Pertemuan $pertemuan)

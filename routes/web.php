@@ -108,9 +108,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/{mapel}/rekap/siswa/id/{siswa}', [PresensiAdminController::class, 'showRekapSiswa']);
 
         Route::get('/{mapel}/rekap/siswa/excel', [PresensiAdminController::class, 'excelRekapSiswa']);
-        Route::get('/{mapel}/rekap/siswa/excel/show', [PresensiAdminController::class, 'showExcelRekapSiswa']);
-
         Route::get('/{mapel}/rekap/siswa/pdf/', [PresensiAdminController::class, 'pdfRekapSiswa']);
+
+        Route::get('/{mapel}/rekap/siswa/review', [PresensiAdminController::class, 'reviewRekapSiswa']);
 
         Route::get('/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
         Route::get('/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
@@ -129,7 +129,8 @@ Route::prefix('admin')->group(function () {
 
         // Route::get('/{guru}/hapus', [GuruAdminController::class, 'deletePresensi']);
 
-        Route::get('/{guru}/rekap', [GuruAdminController::class, 'showRekap']);
+        // Route::get('/{guru}/rekap', [GuruAdminController::class, 'showRekap']);
+        Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
         Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
         Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
     });

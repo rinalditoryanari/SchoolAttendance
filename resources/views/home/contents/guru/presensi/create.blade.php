@@ -36,7 +36,7 @@
                         <td class="text-center">
                             <input type="hidden" name="presensi[guru]" value="{{ $guru->id }}">
                             <select class="form-control" name="presensi[kehadiran]" <?php echo ($telat) ? 'disabled' : ''; ?>>
-                                @if($presensi)
+                                @if(count($presensi) != 0)
                                 <option selected hidden value="{{ $presensi->absensi->id }}">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
                                 @endif
                                 <!-- <option selected disabled>Pilih Kehadiran</option> -->

@@ -20,7 +20,7 @@ class GuruAdminController extends Controller
         ]);
     }
 
-    public function showRekap(User $guru)
+    public function reviewRekap(User $guru)
     {
         $tanggals = $guru->mapels->flatMap(function ($mapel) {
             return $mapel->pertemuans->pluck('tanggal');
@@ -81,7 +81,7 @@ class GuruAdminController extends Controller
 
     public function excelRekap(User $guru)
     {
-        return Excel::download(new GuruExport($guru), 'Rekap Absensi Guru.xlsx');
+        return Excel::download(new GuruExport($guru), 'Rekap Guru' . $guru->firsName . ' ' . $guru->lastName . ' pada tanggal ' . date('Y-m-d') . '.xlsx');
     }
 
     public function pdfRekap(User $guru)
@@ -142,6 +142,6 @@ class GuruAdminController extends Controller
             'absensis' => Absensi::select('kode')->get(),
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->download('Rekap Guru.pdf');
+        return $pdf->download('Rekap Guru' . $guru->firsName . ' ' . $guru->lastName . ' pada tanggal ' . date('Y-m-d') . '.pdf');
     }
 }
