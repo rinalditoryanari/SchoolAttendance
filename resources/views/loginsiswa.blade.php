@@ -44,7 +44,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center" style="background-image: url('/src/images/aka.jpg');">
 		<div class="container1">
 			<div class="row align-items-center">
 				<div class="col-md-6 col-lg-7">

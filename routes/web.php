@@ -38,17 +38,17 @@ Route::get('/register', [RegisterController::class, 'index'])->middleware('guest
 Route::post('/register', [RegisterController::class, 'store']);
 
 // Home Routes
-// Route::get('/', function () {
-//     return view('home.contents.welcome', [
-//         'title' => 'Dashboard',
-//         'siswa' => Siswa::count(),
-//         'guru' => User::count(),
-//         'mapel' => Mapel::count(),
-//         'kelas' => Kelas::count(),
-//         'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
-//     ]);
-// })->middleware('auth');
-// 
+Route::get('/', function () {
+    return view('home.contents.welcome', [
+        'title' => 'Dashboard',
+        'siswa' => Siswa::count(),
+        'guru' => User::count(),
+        'mapel' => Mapel::count(),
+        'kelas' => Kelas::count(),
+        'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
+    ]);
+})->middleware('auth');
+
 // Siswa Export and Import Routes
 // Route::resource('/siswa', SiswaController::class)->middleware('auth');
 Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
