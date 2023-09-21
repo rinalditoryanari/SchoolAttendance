@@ -44,11 +44,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center" style="background-image: url('/src/images/aka.jpg');">
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-md-6 col-lg-7">
-					<img src="vendors/images/login-page-img.png" alt="">
+					<!-- <img src="{{ asset('src/images/aka.jpg') }}" alt=""> -->
 				</div>
 				<div class="col-md-6 col-lg-5">
 					<div class="login-box bg-white box-shadow border-radius-10">
