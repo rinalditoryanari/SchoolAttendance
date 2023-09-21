@@ -49,6 +49,7 @@ class PresensiGuruController extends Controller
 
             $limit = (Pertemuan::select("waktu")
                 ->where('mapel_id', $pertemuan->mapel->id)
+                ->where('tanggal', $pertemuan->tanggal)
                 ->where('keterangan', 'keluar')
                 ->first()
             )["waktu"];
@@ -87,15 +88,13 @@ class PresensiGuruController extends Controller
     {
         $now = new DateTime('now');
 
-        $waktu_kelas = Pertemuan::select('waktu')->where("id", $request->pertemuan)->first()->toArray();
-        // dd($now < $waktu_kelas['waktu']);
-
         $person = $request->presensi;
         Presensi::updateOrInsert([
             'pertemuan_id' => request('pertemuan'),
             'guru_id' => $person['guru'],
             'level' => 'guru',
         ], [
+            'materi' => request('materi'),
             'waktu_absen' => $now->format('Y-m-d H:i:s'),
             'absensi_id' => $person['kehadiran'],
         ]);

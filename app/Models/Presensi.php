@@ -37,6 +37,11 @@ class Presensi extends Model
         return $this->belongsTo(Pertemuan::class);
     }
 
+    public function pertemuan()
+    {
+        return $this->belongsTo(Pertemuan::class);
+    }
+
     public function siswa()
     {
         return $this->belongsTo(Siswa::class);

@@ -42,7 +42,8 @@ class PresensiSiswaController extends Controller
     //manmpilkan absensi pada pertemuan tsb
     public function showPresensi(Mapel $mapel, Pertemuan $pertemuan)
     {
-        if (Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'guru')->first()) {
+        $presensi_guru = Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'guru')->first();
+        if ($presensi_guru) {
 
             //kalo absen masuk
             if ($pertemuan->keterangan == "masuk") {
@@ -50,6 +51,7 @@ class PresensiSiswaController extends Controller
 
                 $limit = (Pertemuan::select("waktu")
                     ->where('mapel_id', $pertemuan->mapel->id)
+                    ->where('tanggal', $pertemuan->tanggal)
                     ->where('keterangan', 'keluar')
                     ->first()
                 )["waktu"];
@@ -75,6 +77,7 @@ class PresensiSiswaController extends Controller
             return view('home.contents.siswa.presensi.create', [
                 'title' => 'Presensi',
                 'mapel' => $mapel,
+                'materi' => $presensi_guru->materi,
                 'pertemuan' => $pertemuan,
                 'siswas' => $mapel->kelas->siswas,
                 'telat' => $telat,

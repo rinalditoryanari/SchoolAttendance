@@ -25,7 +25,7 @@
                 <tr>
                     <td class="table-plus text-center">{{ $loop->iteration }}</td>
                     <td>{{ $pertemuan->mapel->kelas->nama }}</td>
-                    <td>{{ \Carbon\Carbon::parse($pertemuan->waktu)->format('l, j F Y H:i') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($pertemuan->tanggal . ' ' . $pertemuan->waktu)->format('l, j F Y H:i') }}</td>
                     <td>{{ $pertemuan->mapel->kode }} - {{ $pertemuan->mapel->nama }}</td>
                     <td>{{ $pertemuan->mapel->user->firstName }} {{ $pertemuan->mapel->user->lastName }}</td>
                     <td>{{ $pertemuan->keterangan }}</td>

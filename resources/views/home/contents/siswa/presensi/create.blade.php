@@ -4,11 +4,19 @@
     <h2 class="h3 mb-0">{{ $title }}</h2>
 </div>
 <div class="card-box mb-30">
-    <div class="pd-20 d-flex justify-content-between">
+    <div class="card-header d-flex justify-content-between">
         <h4 class="text-blue h4">Tabel Presensi</h4>
         <p>Mapel: {{ $mapel->nama }} | Kelas: {{ $mapel->kelas->nama }}</p>
     </div>
-    <div class="pb-20">
+    <div class="card-body ">
+        @if($pertemuan->keterangan == "masuk")
+        <div class="form-group row mb-4 mx-2">
+            <label class="col-form-label col-12 col-md-2 col-lg-1 ">Mapel</label>
+            <div class="col-sm-12 col-md-10 col-lg-11">
+                <input type="textarea" class="form-control" name="materi" value="{{ $materi }}" disabled>
+            </div>
+        </div>
+        @endif
         <table class="table">
             <thead>
                 <tr>
@@ -27,10 +35,6 @@
                         <td class="table-plus text-center">{{ $loop->iteration }}</td>
                         <td>{{ $siswa->firstName }} {{ $siswa->lastName }}</td>
                         <td class="text-center">
-                            {{--<input type="hidden" name="presensi[{{ $loop->index }}][guru_id]" value="{{ Auth::user()->id }}">--}}
-                            {{--<input type="hidden" name="presensi[{{ $loop->index }}][siswa_id]" value="{{ $siswa->id }}">--}}
-                            {{-- <input type="hidden" name="presensi[{{ $loop->index }}][kelas_id]" value="{{ $siswa->kelas->id }}">--}}
-                            {{-- <input type="hidden" name="presensi[{{ $loop->index }}][mapel_id]" value="{{ $mapel->id }}">--}}
                             <input type="hidden" name="presensi[{{ $siswa->id }}][siswa]" value="{{ $siswa->id }}">
                             <select class="form-control" name="presensi[{{ $siswa->id }}][kehadiran]" <?php echo ($telat) ? 'disabled' : ''; ?>>
                                 @if(count($presensi->toArray()) != 0)
