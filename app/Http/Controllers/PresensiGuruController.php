@@ -13,20 +13,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PresensiGuruController extends Controller
 {
-    public $guru;
-
-    public function __construct()
-    {
-        // Retrieve the User model instance and assign it to $guru
-        $this->guru = User::find(18);
-    }
-
     //menampilkan seluruh mata pelajaran untuk kelas
     public function showMapel()
     {
         return view('home.contents.guru.presensi.index', [
             'title' => 'Pilih Mapel',
-            'mapels' => $this->guru->mapels,
+            'mapels' => Auth::user()->mapels,
         ]);
     }
 
@@ -76,7 +68,7 @@ class PresensiGuruController extends Controller
             'title' => 'Presensi',
             'mapel' => $mapel,
             'pertemuan' => $pertemuan,
-            'guru' => $this->guru,
+            'guru' => Auth::user(),
             'telat' => $telat,
             'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'guru')->first(),
             'absensis' => Absensi::all(),

@@ -22,7 +22,7 @@ class PresensiAdminController extends Controller
         }])->get();
 
         return view('home.contents.admin.presensi.index', [
-            'title' => 'Pilih Mapel',
+            'title' => 'Pilih Jadwal Mapel',
             'mapels' => $mapels,
         ]);
     }

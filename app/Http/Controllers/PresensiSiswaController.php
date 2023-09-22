@@ -13,20 +13,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PresensiSiswaController extends Controller
 {
-    public $siswa;
-
-    public function __construct()
-    {
-        // Retrieve the Siswa model instance and assign it to $siswa
-        $this->siswa = Siswa::find(1);
-    }
-
     //menampilkan seluruh mata pelajaran untuk kelas
     public function showMapel()
     {
         return view('home.contents.siswa.presensi.index', [
             'title' => 'Pilih Mapel',
-            'mapels' => $this->siswa->kelas->mapels,
+            'mapels' => Auth::guard('siswa')->user()->kelas->mapels,
         ]);
     }
 
