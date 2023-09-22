@@ -62,14 +62,6 @@ Route::get('/', function () {
 Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
 Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
 
-
-
-// Controller Resources
-// Route::resource('/kelas', KelasController::class)->except(['show'])->middleware('auth');
-// Route::resource('/mapel', MapelController::class)->except(['show'])->middleware('auth');
-Route::resource('/keteranganPresensi', AbsensiController::class)->except(['show'])->middleware('auth');
-// Route::resource('/guru', UserController::class)->middleware('auth');
-
 // Presensi Routes
 Route::get('/presensi', [PresensiController::class, 'indexinti'])->middleware('auth');
 Route::post('/presensi', [PresensiController::class, 'store'])->middleware('auth');
@@ -81,9 +73,6 @@ Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 's
 
 // // Profile Routes
 Route::resource('/profile', ProfileController::class)->only('show', 'update')->middleware('auth');
-
-// // ---------------
-
 
 //FOR SISWA USER
 Route::prefix('siswa')->group(function () {
@@ -142,17 +131,6 @@ Route::prefix('admin')->group(function () {
             Route::get('/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
         });
 
-        // Route::resource('/kelas', KelasController::class)->except(['show'])->middleware('auth');
-        Route::prefix('/kelas')->group(function () {
-            Route::get('/', [KelasController::class, 'index']);
-            Route::post('/', [KelasController::class, 'store']);
-            Route::get('/create', [KelasController::class, 'create']);
-            Route::get('/{kela}/edit', [KelasController::class, 'edit']);
-            Route::put('/{kela}', [KelasController::class, 'update']);
-            Route::delete('/{kela}', [KelasController::class, 'destroy']);
-        });
-
-
         // Route::resource('/mapel', MapelController::class)->except(['show']);
         Route::prefix('/mapel')->group(function () {
             Route::get('/', [MapelController::class, 'index']);
@@ -164,7 +142,6 @@ Route::prefix('admin')->group(function () {
         });
 
         // Route::resource('/guru', UserController::class)->middleware('auth');
-
         //NGATUR ABSEN GURU
         Route::prefix('guru')->group(function () {
             Route::get('/', [UserController::class, 'index']);
@@ -189,6 +166,40 @@ Route::prefix('admin')->group(function () {
             Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
             Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
             Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
+        });
+
+        // Route::resource('/kelas', KelasController::class)->except(['show'])->middleware('auth');
+        Route::prefix('/kelas')->group(function () {
+            Route::get('/', [KelasController::class, 'index']);
+            Route::post('/', [KelasController::class, 'store']);
+            Route::get('/create', [KelasController::class, 'create']);
+            Route::get('/{kela}/edit', [KelasController::class, 'edit']);
+            Route::put('/{kela}', [KelasController::class, 'update']);
+            Route::delete(
+                '/{kela}',
+                [KelasController::class, 'destroy']
+            );
+        });
+
+        // Route::resource('/siswa', SiswaController::class)->middleware('auth');
+        Route::prefix('/siswa')->group(function () {
+            Route::get('/', [SiswaController::class, 'index']);
+            Route::post('/', [SiswaController::class, 'store']);
+            Route::get('/create', [SiswaController::class, 'create']);
+            Route::get('/{siswa}', [SiswaController::class, 'show']);
+            Route::get('/{siswa}/edit', [SiswaController::class, 'edit']);
+            Route::put('/{siswa}', [SiswaController::class, 'update']);
+            Route::delete('/{siswa}', [SiswaController::class, 'destroy']);
+        });
+
+        // Route::resource('/keteranganPresensi', AbsensiController::class)->except(['show'])->middleware('auth');
+        Route::prefix('/keteranganPresensi')->group(function () {
+            Route::get('/', [AbsensiController::class, 'index']);
+            Route::post('/', [AbsensiController::class, 'store']);
+            Route::get('/create', [AbsensiController::class, 'create']);
+            Route::get('/{keteranganPresensi}/edit', [AbsensiController::class, 'edit']);
+            Route::put('/{keteranganPresensi}', [AbsensiController::class, 'update']);
+            Route::delete('/{keteranganPresensi}', [AbsensiController::class, 'destroy']);
         });
     });
 });
