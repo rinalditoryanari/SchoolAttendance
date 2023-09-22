@@ -19,6 +19,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\SiswaLoginController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,111 +43,144 @@ Route::post('/register', [RegisterController::class, 'store']);
 
 // Home Routes
 Route::get('/', function () {
-    return view('home.contents.welcome', [
-        'title' => 'Dashboard',
-        'siswa' => Siswa::count(),
-        'guru' => User::count(),
-        'mapel' => Mapel::count(),
-        'kelas' => Kelas::count(),
-        'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
-    ]);
-})->middleware('auth');
+    if (Auth::guard('siswa')->user()) {
+        return redirect('/siswa/index');
+    } elseif (Auth::user()) {
+        return view('home.contents.welcome', [
+            'title' => 'Dashboard',
+            'siswa' => Siswa::count(),
+            'guru' => User::count(),
+            'mapel' => Mapel::count(),
+            'kelas' => Kelas::count(),
+            'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
+        ]);
+    }
+});
 
 // Siswa Export and Import Routes
 // Route::resource('/siswa', SiswaController::class)->middleware('auth');
-// Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
-// Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
+Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
+Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
 
 
 
 // Controller Resources
 // Route::resource('/kelas', KelasController::class)->except(['show'])->middleware('auth');
 // Route::resource('/mapel', MapelController::class)->except(['show'])->middleware('auth');
-// Route::resource('/keteranganPresensi', AbsensiController::class)->except(['show'])->middleware('auth');
+Route::resource('/keteranganPresensi', AbsensiController::class)->except(['show'])->middleware('auth');
 // Route::resource('/guru', UserController::class)->middleware('auth');
 
 // Presensi Routes
-// Route::get('/presensi', [PresensiController::class, 'indexinti'])->middleware('auth');
-// Route::post('/presensi', [PresensiController::class, 'store'])->middleware('auth');
-// Route::get('/presensi/{mapel}/create', [PresensiController::class, 'create'])->middleware('auth');
-// // Route::get('/mapel/{id}/presensi/{created_at}', [PresensiController::class, 'show'])->middleware('auth');
+Route::get('/presensi', [PresensiController::class, 'indexinti'])->middleware('auth');
+Route::post('/presensi', [PresensiController::class, 'store'])->middleware('auth');
+Route::get('/presensi/{mapel}/create', [PresensiController::class, 'create'])->middleware('auth');
+// Route::get('/mapel/{id}/presensi/{created_at}', [PresensiController::class, 'show'])->middleware('auth');
 
 // // Riwayat Presensi Routes
-// Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 'show')->middleware('auth');
+Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 'show')->middleware('auth');
 
 // // Profile Routes
-// Route::resource('/profile', ProfileController::class)->only('show', 'update')->middleware('auth');
+Route::resource('/profile', ProfileController::class)->only('show', 'update')->middleware('auth');
 
 // // ---------------
 
-// Route::get('/mhsw/presensi', [PresensiMhswController::class, 'showMapel'])->middleware('auth');
 
-// Route::get('home.contents.', 'Siswa\HomeController@index');
-Route::get('/siswa/login', [SiswaLoginController::class, 'showLoginForm'])->name('siswa.login')->middleware('guest');;
-Route::post('/siswa', [SiswaLoginController::class, 'login'])->name('siswa.login.post');
-Route::get('/siswa/logout', [SiswaLoginController::class, 'logout'])->name('siswa.logout');
-//Admin Home page after login
-Route::group(['middleware' => 'siswa'], function () {
-    Route::get('/siswa/index', [SiswaLoginController::class, 'index'])->name('siswa.index');
-});
-
-
+//FOR SISWA USER
 Route::prefix('siswa')->group(function () {
-    Route::get('/presensi', [PresensiSiswaController::class, 'showMapel']);
-    Route::get('/presensi/{mapel}', [PresensiSiswaController::class, 'showTgl']);
-    Route::get('/presensi/{mapel}/{pertemuan}', [PresensiSiswaController::class, 'showPresensi']);
-    Route::post('/presensi/', [PresensiSiswaController::class, 'inputAbsensi']);
-});
+    Route::get('/login', [SiswaLoginController::class, 'showLoginForm'])->name('siswa.login')->middleware('guest');;
+    Route::post('/', [SiswaLoginController::class, 'login'])->name('siswa.login.post');
 
-Route::prefix('guru')->group(function () {
-    Route::get('/presensi', [PresensiGuruController::class, 'showMapel']);
-    Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl']);
-    Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi']);
-    Route::post('/presensi/', [PresensiGuruController::class, 'inputAbsensi']);
-});
+    Route::middleware(['siswa'])->group(function () {
+        Route::get('/logout', [SiswaLoginController::class, 'logout'])->name('siswa.logout');
 
-Route::prefix('admin')->group(function () {
-    Route::prefix('presensi')->group(function () {
-        Route::get('/', [PresensiAdminController::class, 'showMapel']);
-
-        Route::get('/tambah', [PresensiAdminController::class, 'showTambah']);
-        Route::post('/tambah', [PresensiAdminController::class, 'inputTambah']);
-
-        Route::get('/{mapel}', [PresensiAdminController::class, 'showTgl']);
-        Route::get('/{mapel}/edit', [PresensiAdminController::class, 'showEdit']);
-        Route::post('/{mapel}/edit', [PresensiAdminController::class, 'inputEdit']);
-
-        Route::get('/{mapel}/hapus', [PresensiAdminController::class, 'deletePresensi']);
-
-        Route::get('/{mapel}/rekap/guru', [PresensiAdminController::class, 'showRekapGuru']);
-        Route::get('/{mapel}/rekap/siswa', [PresensiAdminController::class, 'showPilihRekapSiswa']);
-        Route::get('/{mapel}/rekap/siswa/id/{siswa}', [PresensiAdminController::class, 'showRekapSiswa']);
-
-        Route::get('/{mapel}/rekap/siswa/excel', [PresensiAdminController::class, 'excelRekapSiswa']);
-        Route::get('/{mapel}/rekap/siswa/pdf/', [PresensiAdminController::class, 'pdfRekapSiswa']);
-
-        Route::get('/{mapel}/rekap/siswa/review', [PresensiAdminController::class, 'reviewRekapSiswa']);
-
-        Route::get('/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
-        Route::get('/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
+        //Admin Home page after login
+        Route::get('/index', [SiswaLoginController::class, 'index'])->name('siswa.index');
+        Route::get('/presensi', [PresensiSiswaController::class, 'showMapel']);
+        Route::get('/presensi/{mapel}', [PresensiSiswaController::class, 'showTgl']);
+        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiSiswaController::class, 'showPresensi']);
+        Route::post('/presensi/', [PresensiSiswaController::class, 'inputAbsensi']);
     });
+});
 
-    Route::prefix('guru')->group(function () {
-        Route::get('/', [GuruAdminController::class, 'showGuru']);
+// FOR GURU USER
+Route::prefix('guru')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/presensi', [PresensiGuruController::class, 'showMapel']);
+        Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl']);
+        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi']);
+        Route::post('/presensi/', [PresensiGuruController::class, 'inputAbsensi']);
+    });
+});
 
-        // Route::get('/tambah', [GuruAdminController::class, 'showTambah']);
-        // Route::post('/tambah', [GuruAdminController::class, 'inputTambah']);
 
-        // Route::get('/{guru}', [GuruAdminController::class, 'showDetail']);
+//FOR ADMIN USER
+Route::prefix('admin')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        //NGATUR PRESENSI
+        Route::prefix('presensi')->group(function () {
+            Route::get('/', [PresensiAdminController::class, 'showMapel']);
 
-        // Route::get('/{guru}/edit', [GuruAdminController::class, 'showEdit']);
-        // Route::post('/{guru}/edit', [GuruAdminController::class, 'inputEdit']);
+            Route::get('/tambah', [PresensiAdminController::class, 'showTambah']);
+            Route::post('/tambah', [PresensiAdminController::class, 'inputTambah']);
 
-        // Route::get('/{guru}/hapus', [GuruAdminController::class, 'deletePresensi']);
+            Route::get('/{mapel}', [PresensiAdminController::class, 'showTgl']);
+            Route::get('/{mapel}/edit', [PresensiAdminController::class, 'showEdit']);
+            Route::post('/{mapel}/edit', [PresensiAdminController::class, 'inputEdit']);
 
-        // Route::get('/{guru}/rekap', [GuruAdminController::class, 'showRekap']);
-        Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
-        Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
-        Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
+            Route::get('/{mapel}/hapus', [PresensiAdminController::class, 'deletePresensi']);
+
+            Route::get('/{mapel}/rekap/guru', [PresensiAdminController::class, 'showRekapGuru']);
+            Route::get('/{mapel}/rekap/siswa', [PresensiAdminController::class, 'showPilihRekapSiswa']);
+            Route::get('/{mapel}/rekap/siswa/id/{siswa}', [PresensiAdminController::class, 'showRekapSiswa']);
+
+            Route::get('/{mapel}/rekap/siswa/excel', [PresensiAdminController::class, 'excelRekapSiswa']);
+            Route::get('/{mapel}/rekap/siswa/pdf/', [PresensiAdminController::class, 'pdfRekapSiswa']);
+
+            Route::get('/{mapel}/rekap/siswa/review', [PresensiAdminController::class, 'reviewRekapSiswa']);
+
+            Route::get('/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
+            Route::get('/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
+        });
+
+        // Route::resource('/kelas', KelasController::class)->except(['show'])->middleware('auth');
+        Route::prefix('/kelas')->group(function () {
+            Route::get('/', [KelasController::class, 'index']);
+            Route::post('/', [KelasController::class, 'store']);
+            Route::get('/create', [KelasController::class, 'create']);
+            Route::get('/{kela}/edit', [KelasController::class, 'edit']);
+            Route::put('/{kela}', [KelasController::class, 'update']);
+            Route::delete('/{kela}', [KelasController::class, 'destroy']);
+        });
+
+
+        // Route::resource('/mapel', MapelController::class)->except(['show']);
+        Route::prefix('/mapel')->group(function () {
+            Route::get('/', [MapelController::class, 'index']);
+            Route::post('/', [MapelController::class, 'store']);
+            Route::get('/create', [MapelController::class, 'create']);
+            Route::get('/{mapel}/edit', [MapelController::class, 'edit']);
+            Route::put('/{mapel}', [MapelController::class, 'update']);
+            Route::delete('/{mapel}', [MapelController::class, 'destroy']);
+        });
+
+        //NGATUR ABSEN GURU
+        Route::prefix('guru')->group(function () {
+            Route::get('/', [GuruAdminController::class, 'showGuru']);
+
+            // Route::get('/tambah', [GuruAdminController::class, 'showTambah']);
+            // Route::post('/tambah', [GuruAdminController::class, 'inputTambah']);
+
+            // Route::get('/{guru}', [GuruAdminController::class, 'showDetail']);
+
+            // Route::get('/{guru}/edit', [GuruAdminController::class, 'showEdit']);
+            // Route::post('/{guru}/edit', [GuruAdminController::class, 'inputEdit']);
+
+            // Route::get('/{guru}/hapus', [GuruAdminController::class, 'deletePresensi']);
+
+            // Route::get('/{guru}/rekap', [GuruAdminController::class, 'showRekap']);
+            Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
+            Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
+            Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
+        });
     });
 });

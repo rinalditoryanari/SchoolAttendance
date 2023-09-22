@@ -47,7 +47,7 @@ class KelasController extends Controller
 
         Kelas::create($validatedData);
 
-        return redirect('/kelas')->with('success', 'Kelas baru telah ditambahkan!');
+        return redirect('/admin/kelas')->with('success', 'Kelas baru telah ditambahkan!');
     }
 
     /**
@@ -91,7 +91,7 @@ class KelasController extends Controller
 
         Kelas::where('id', $kela->id)->update($validatedData);
 
-        return redirect('/kelas')->with('success', 'Data kelas telah diupdate!');
+        return redirect('/admin/kelas')->with('success', 'Data kelas telah diupdate!');
     }
 
     /**
@@ -103,6 +103,6 @@ class KelasController extends Controller
     public function destroy(Kelas $kela)
     {
         Kelas::destroy($kela->id);
-        return redirect('/kelas')->with('success', 'Data kelas telah dihapus!');
+        return redirect('/admin/kelas')->with('success', 'Data kelas telah dihapus!');
     }
 }

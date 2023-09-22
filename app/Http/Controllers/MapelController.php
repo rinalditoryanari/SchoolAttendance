@@ -57,7 +57,7 @@ class MapelController extends Controller
 
         Mapel::create($validatedData);
 
-        return redirect('/mapel')->with('success', 'Mapel baru telah ditambahkan!');
+        return redirect('/admin/mapel')->with('success', 'Mapel baru telah ditambahkan!');
     }
 
     /**
@@ -105,7 +105,7 @@ class MapelController extends Controller
 
         Mapel::where('id', $mapel->id)->update($validatedData);
 
-        return redirect('/mapel')->with('success', 'Data Mapel telah diupdate!');
+        return redirect('/admin/mapel')->with('success', 'Data Mapel telah diupdate!');
     }
 
     /**
@@ -117,6 +117,6 @@ class MapelController extends Controller
     public function destroy(Mapel $mapel)
     {
         Mapel::destroy($mapel->id);
-        return redirect('/mapel')->with('success', 'Data mapel telah dihapus!');
+        return redirect('/admin/mapel')->with('success', 'Data mapel telah dihapus!');
     }
 }
