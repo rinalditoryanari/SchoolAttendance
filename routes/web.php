@@ -163,21 +163,29 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{mapel}', [MapelController::class, 'destroy']);
         });
 
+        // Route::resource('/guru', UserController::class)->middleware('auth');
+
         //NGATUR ABSEN GURU
         Route::prefix('guru')->group(function () {
-            Route::get('/', [GuruAdminController::class, 'showGuru']);
+            Route::get('/', [UserController::class, 'index']);
 
+            Route::get('/create', [UserController::class, 'create']);
             // Route::get('/tambah', [GuruAdminController::class, 'showTambah']);
+            Route::post('/', [UserController::class, 'store']);
             // Route::post('/tambah', [GuruAdminController::class, 'inputTambah']);
 
+            Route::get('/{user}', [UserController::class, 'show']);
             // Route::get('/{guru}', [GuruAdminController::class, 'showDetail']);
 
+            Route::get('/{user}/edit', [UserController::class, 'edit']);
             // Route::get('/{guru}/edit', [GuruAdminController::class, 'showEdit']);
+            Route::put('/{user}', [UserController::class, 'update']);
             // Route::post('/{guru}/edit', [GuruAdminController::class, 'inputEdit']);
 
+            Route::delete('/{user}', [UserController::class, 'destroy']);
             // Route::get('/{guru}/hapus', [GuruAdminController::class, 'deletePresensi']);
 
-            // Route::get('/{guru}/rekap', [GuruAdminController::class, 'showRekap']);
+            // Route::get('/', [GuruAdminController::class, 'showGuru']);
             Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
             Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
             Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);

@@ -44,14 +44,14 @@ class UserController extends Controller
         //     if (!in_array($item['id'], $seenIds)) {
         //         // Add the item to the uniqueData array
         //         $siswas[] = $item;
-                
+
         //         // Mark the ID as seen
         //         $seenIds[] = $item['id'];
         //     }
         // }
 
 
-        
+
         $users = User::with('mapels.kelas')->get();
 
         $result = [];
@@ -91,7 +91,7 @@ class UserController extends Controller
             'lastName' => 'required|max:255',
             'tmpLahir' => 'max:255',
             'tglLahir' => '',
-            'jnsKelamin' => '',
+            'jns_kelamin' => '',
             'alamat' => '',
         ]);
 
@@ -99,7 +99,7 @@ class UserController extends Controller
             'remember_token' => Str::random(16),
         ]);
 
-        return redirect('/guru')->with('success', 'Guru baru telah ditambahkan!');
+        return redirect('/admin/guru')->with('success', 'Guru baru telah ditambahkan!');
     }
 
     /**
@@ -154,7 +154,7 @@ class UserController extends Controller
 
         User::where('id', $user->id)->update($validatedData);
 
-        return redirect('/guru')->with('success', 'Data Guru telah diupdate!');
+        return redirect('/admin/guru')->with('success', 'Data Guru telah diupdate!');
     }
 
     /**
@@ -166,6 +166,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         User::destroy($user->id);
-        return redirect('/guru')->with('success', 'Data guru telah dihapus!');
+        return redirect('/admin/guru')->with('success', 'Data guru telah dihapus!');
     }
 }
