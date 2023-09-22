@@ -18,13 +18,21 @@ class SiswaLoginController extends Controller
 
   public function index()
   {
+    $mapels = Auth::guard('siswa')->user()->kelas->mapels;
+    $presensis = [];
+    foreach ($mapels as $mapel) {
+      $pertemuans = $mapel->pertemuans->where("keterangan", "masuk");
+      foreach ($pertemuans as $pertemuan) {
+        $presensis[] = $pertemuan->presensi->where('absensi_id', '!=', 2);
+      }
+    }
     return view('dashboard-siswa', [
       'title' => 'dashboard-siswa',
       'siswa' => Siswa::count(),
       'guru' => User::count(),
       'mapel' => Mapel::count(),
       'kelas' => Kelas::count(),
-      'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get(),
+      'presensis' => $presensis[0],
     ]);
   }
 

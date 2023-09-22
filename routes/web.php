@@ -54,25 +54,28 @@ Route::get('/', function () {
             'kelas' => Kelas::count(),
             'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
         ]);
+    } else {
+        return redirect('/login');
     }
 });
 
 // Siswa Export and Import Routes
-// Route::resource('/siswa', SiswaController::class)->middleware('auth');
 Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
 Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
 
-// Presensi Routes
-Route::get('/presensi', [PresensiController::class, 'indexinti'])->middleware('auth');
-Route::post('/presensi', [PresensiController::class, 'store'])->middleware('auth');
-Route::get('/presensi/{mapel}/create', [PresensiController::class, 'create'])->middleware('auth');
+// // Presensi Routes
+// Route::get('/presensi', [PresensiController::class, 'indexinti'])->middleware('auth');
+// Route::post('/presensi', [PresensiController::class, 'store'])->middleware('auth');
+// Route::get('/presensi/{mapel}/create', [PresensiController::class, 'create'])->middleware('auth');
 // Route::get('/mapel/{id}/presensi/{created_at}', [PresensiController::class, 'show'])->middleware('auth');
 
 // // Riwayat Presensi Routes
 Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 'show')->middleware('auth');
 
 // // Profile Routes
-Route::resource('/profile', ProfileController::class)->only('show', 'update')->middleware('auth');
+Route::prefix('/profile')->group(function () {
+    Route::get('/{profile}', [ProfileController::class, 'show']);
+});
 
 //FOR SISWA USER
 Route::prefix('siswa')->group(function () {
@@ -147,22 +150,15 @@ Route::prefix('admin')->group(function () {
             Route::get('/', [UserController::class, 'index']);
 
             Route::get('/create', [UserController::class, 'create']);
-            // Route::get('/tambah', [GuruAdminController::class, 'showTambah']);
             Route::post('/', [UserController::class, 'store']);
-            // Route::post('/tambah', [GuruAdminController::class, 'inputTambah']);
 
             Route::get('/{user}', [UserController::class, 'show']);
-            // Route::get('/{guru}', [GuruAdminController::class, 'showDetail']);
 
             Route::get('/{user}/edit', [UserController::class, 'edit']);
-            // Route::get('/{guru}/edit', [GuruAdminController::class, 'showEdit']);
             Route::put('/{user}', [UserController::class, 'update']);
-            // Route::post('/{guru}/edit', [GuruAdminController::class, 'inputEdit']);
 
             Route::delete('/{user}', [UserController::class, 'destroy']);
-            // Route::get('/{guru}/hapus', [GuruAdminController::class, 'deletePresensi']);
 
-            // Route::get('/', [GuruAdminController::class, 'showGuru']);
             Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
             Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
             Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
@@ -175,10 +171,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/create', [KelasController::class, 'create']);
             Route::get('/{kela}/edit', [KelasController::class, 'edit']);
             Route::put('/{kela}', [KelasController::class, 'update']);
-            Route::delete(
-                '/{kela}',
-                [KelasController::class, 'destroy']
-            );
+            Route::delete('/{kela}', [KelasController::class, 'destroy']);
         });
 
         // Route::resource('/siswa', SiswaController::class)->middleware('auth');
