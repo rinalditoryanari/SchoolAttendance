@@ -94,6 +94,7 @@ class UserController extends Controller
             'jns_kelamin' => '',
             'alamat' => '',
         ]);
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
         User::create($validatedData, [
             'remember_token' => Str::random(16),
@@ -151,6 +152,8 @@ class UserController extends Controller
             'jnsKelamin' => '',
             'alamat' => '',
         ]);
+
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
         User::where('id', $user->id)->update($validatedData);
 

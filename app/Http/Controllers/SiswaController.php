@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SiswasExport;
 use App\Imports\SiswasImport;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class SiswaController extends Controller
@@ -63,9 +64,11 @@ class SiswaController extends Controller
             'kelas_id' => '',
         ]);
 
-        Siswa::create($validatedData);
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
-        return redirect('/siswa')->with('success', 'Siswa baru telah ditambahkan!');
+        Siswa::insert($validatedData);
+
+        return redirect('/admin/siswa')->with('success', 'Siswa baru telah ditambahkan!');
     }
 
     /**
@@ -121,10 +124,11 @@ class SiswaController extends Controller
             'email' => '',
             'kelas_id' => ''
         ]);
+        $validatedData['password'] = bcrypt($validatedData['password']);
 
         Siswa::where('id', $siswa->id)->update($validatedData);
 
-        return redirect('/siswa')->with('success', 'Data siswa telah diupdate!');
+        return redirect('/admin/siswa')->with('success', 'Data siswa telah diupdate!');
     }
 
     /**
@@ -136,7 +140,7 @@ class SiswaController extends Controller
     public function destroy(Siswa $siswa)
     {
         Siswa::destroy($siswa->id);
-        return redirect('/siswa')->with('success', 'Data siswa telah dihapus!');
+        return redirect('/admin/siswa')->with('success', 'Data siswa telah dihapus!');
     }
 
     /**
