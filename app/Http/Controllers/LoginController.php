@@ -9,9 +9,15 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('login', [
-            'title' => 'Login'
-        ]);
+        if (Auth::user()) {
+            return redirect('/');
+        } else if (Auth::guard('siswa')->user()) {
+            return redirect('/login/index');
+        } else {
+            return view('login', [
+                'title' => 'Login'
+            ]);
+        }
     }
 
     public function authenticate(Request $request)

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -13,76 +14,67 @@ use Illuminate\Http\Request;
 
 class SiswaLoginController extends Controller
 {
-    use AuthenticatesUsers;
+  use AuthenticatesUsers;
 
-    public function index()
-    {
-     $presensis = Presensi::where('absensi_id', '!=', 2)->latest()->get();
-
-    // return view('dashboard-siswa', [
-    //     'title' => 'Dashboard',
-    //   'title' => 'Data Siswa',
-    //   'siswa' => Siswa::all(),
-    //   'kelas' => kelas::all(),
-    //   'mapel' => Mapel::all(),
-    //   'guru' => User::all(),
-    //   // 'title' => 'Data kelas',
-    // ]);
-    $presensis = Presensi::where('absensi_id', '!=', 2)->latest()->get();
-
+  public function index()
+  {
     return view('dashboard-siswa', [
-        'title' => 'dashboard-siswa',               
-       'siswa' => Siswa::count(),       
-        'guru' => User::count(),
-        'mapel' => Mapel::count(),
-        'kelas' => Kelas::count(),
-'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get(),
+      'title' => 'dashboard-siswa',
+      'siswa' => Siswa::count(),
+      'guru' => User::count(),
+      'mapel' => Mapel::count(),
+      'kelas' => Kelas::count(),
+      'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get(),
     ]);
-    
-    }
-    
+  }
 
-    protected $redirectTo = 'siswa/index';
 
-    public function __construct()
-    {
-      $this->middleware('guest')->except('logout');
-    }
+  protected $redirectTo = 'siswa/index';
 
-    public function guard()
-    {
-     return Auth::guard('siswa');
-    }
+  public function __construct()
+  {
+    $this->middleware('guest')->except('logout');
+  }
 
-    public function showLoginForm()
-    {
-      $title = "login"; 
+  public function guard()
+  {
+    return Auth::guard('siswa');
+  }
+
+  public function showLoginForm()
+  {
+
+    if (Auth::user()) {
+      return redirect('/');
+    } else if (Auth::guard('siswa')->user()) {
+      return redirect('/login/index');
+    } else {
+      $title = "login";
       return view('loginsiswa', compact('title'));
     }
+  }
 
-    public function login(Request $request){
-        $credentials = $request->validate([
-          'email' => 'required',
-          'password' => 'required'
-      ]);
-      // dd('kntl');
-      if (Auth::guard('siswa')->attempt($credentials)) {
-          // $user = auth()->user();
-          $request->session()->regenerate();
-          // dd('kntl');
-          return redirect()->intended('/siswa/index');
-      }
-      // dd('mmk');
-      return back()->with('loginError', 'Login Failed!!');
+  public function login(Request $request)
+  {
+    $credentials = $request->validate([
+      'email' => 'required',
+      'password' => 'required'
+    ]);
+
+    if (Auth::guard('siswa')->attempt($credentials)) {
+      $request->session()->regenerate();
+      return redirect()->intended('/siswa/index');
     }
+    return back()->with('loginError', 'Login Failed!!');
+  }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
+  public function logout(Request $request)
+  {
+    Auth::logout();
 
-        request()->session()->invalidate();
+    request()->session()->invalidate();
 
-        request()->session()->regenerateToken();
-        return back()->with('logout', 'Logout Success !!');
-    }
+    request()->session()->regenerateToken();
+    return back()->with('logout', 'Logout Success !!');
+  }
 }
