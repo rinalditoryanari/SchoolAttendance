@@ -1,5 +1,4 @@
 @extends('home.index')
-@extends('home.index1')
 @section('content')
 <div class="title pb-20">
     <h2 class="h3 mb-0">{{ $title }}</h2>
@@ -20,14 +19,14 @@
             </thead>
             <tbody>
                 @foreach ($mapels as $mapel)
-                    <tr>
-                        <td class="table-plus text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $mapel->nama }}</td>
-                        <td>{{ $mapel->kelas->nama }}</td>
-                        <td class="text-center">
-                            <a href="/presensi/{{ $mapel->id }}/create" class="btn btn-sm btn-outline-primary">Pilih</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="table-plus text-center">{{ $loop->iteration }}</td>
+                    <td>{{ $mapel->nama }}</td>
+                    <td>{{ $mapel->kelas->nama }}</td>
+                    <td class="text-center">
+                        <a href="/presensi/{{ $mapel->id }}/create" class="btn btn-sm btn-outline-primary">Pilih</a>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

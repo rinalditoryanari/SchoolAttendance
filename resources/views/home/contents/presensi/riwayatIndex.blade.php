@@ -1,5 +1,4 @@
 @extends('home.index')
-@extends('home.index1')
 @section('content')
 <div class="title pb-20">
     <h2 class="h3 mb-0">{{ $title }}</h2>
@@ -21,15 +20,15 @@
             </thead>
             <tbody>
                 @foreach ($presensis as $presensi)
-                    <tr>
-                        <td class="table-plus text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $presensi->kelas->nama }}</td>
-                        <td>{{ $presensi->created_at->toDayDateTimeString() }}</td>
-                        <td>{{ $presensi->mapel->kode }} - {{ $presensi->mapel->nama }}</td>
-                        <td class="text-center">
-                            <a href="/presensi/{{ $presensi->created_at }}" class="btn btn-sm btn-outline-primary">Pilih</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="table-plus text-center">{{ $loop->iteration }}</td>
+                    <td>{{ $presensi->kelas->nama }}</td>
+                    <td>{{ $presensi->created_at->toDayDateTimeString() }}</td>
+                    <td>{{ $presensi->mapel->kode }} - {{ $presensi->mapel->nama }}</td>
+                    <td class="text-center">
+                        <a href="/presensi/{{ $presensi->created_at }}" class="btn btn-sm btn-outline-primary">Pilih</a>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

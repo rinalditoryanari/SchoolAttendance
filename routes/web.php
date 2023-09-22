@@ -70,7 +70,7 @@ Route::post('import', [SiswaController::class, 'import'])->name('import')->middl
 // Route::get('/mapel/{id}/presensi/{created_at}', [PresensiController::class, 'show'])->middleware('auth');
 
 // // Riwayat Presensi Routes
-Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 'show')->middleware('auth');
+// Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 'show')->middleware('auth');
 
 // // Profile Routes
 Route::prefix('/profile')->group(function () {
