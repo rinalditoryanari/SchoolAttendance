@@ -47,7 +47,7 @@ class AbsensiController extends Controller
 
         Absensi::create($validatedData);
 
-        return redirect('/keteranganPresensi')->with('success', 'Keterangan presensi baru telah ditambahkan!');
+        return redirect('/admin/keteranganPresensi')->with('success', 'Keterangan presensi baru telah ditambahkan!');
     }
 
     /**
@@ -91,7 +91,7 @@ class AbsensiController extends Controller
 
         Absensi::where('id', $keteranganPresensi->id)->update($validatedData);
 
-        return redirect('/keteranganPresensi')->with('success', 'Data keterangan presensi telah diupdate!');
+        return redirect('/admin/keteranganPresensi')->with('success', 'Data keterangan presensi telah diupdate!');
     }
 
     /**
@@ -103,6 +103,6 @@ class AbsensiController extends Controller
     public function destroy(Absensi $keteranganPresensi)
     {
         Absensi::destroy($keteranganPresensi->id);
-        return redirect('/absensi')->with('success', 'Data keterangan presensi telah dihapus!');
+        return redirect('/admin/keteranganPresensi')->with('success', 'Data keterangan presensi telah dihapus!');
     }
 }
