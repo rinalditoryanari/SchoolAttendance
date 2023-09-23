@@ -8,17 +8,30 @@ document.getElementById("btn-tambah").addEventListener("click", function () {
     mapell = mapel.options[mapel.selectedIndex].getAttribute("text");
 
     if (validationInput() == true) {
-        var newColumn = {
-            tanggal: document.getElementById("tanggal").value,
-            masuk: document.getElementById("masuk").value,
-            keluar: document.getElementById("keluar").value,
-        };
+        if (!isDateDuplicate(document.getElementById("tanggal").value)) {
+            var newColumn = {
+                tanggal: document.getElementById("tanggal").value,
+                masuk: document.getElementById("masuk").value,
+                keluar: document.getElementById("keluar").value,
+            };
 
-        collumn.push(newColumn);
+            collumn.push(newColumn);
+        } else {
+            alert("Tanggal Telah Dijadwalkan! Masukkan Tanggal Lainnya");
+        }
     }
 
     refresh();
 });
+
+function isDateDuplicate(newDate) {
+    for (var i = 0; i < collumn.length; i++) {
+        if (collumn[i].tanggal === newDate) {
+            return true;
+        }
+    }
+    return false;
+}
 
 //CHECK INPUT
 function validationInput() {
