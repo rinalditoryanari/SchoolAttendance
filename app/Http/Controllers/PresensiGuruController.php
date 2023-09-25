@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Mapel;
+use App\Models\Materi;
 use App\Models\Pertemuan;
 use Illuminate\Http\Request;
 use App\Models\Presensi;
@@ -72,6 +73,7 @@ class PresensiGuruController extends Controller
             'telat' => $telat,
             'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'guru')->first(),
             'absensis' => Absensi::all(),
+            'materis' => Materi::select()->where('mapel_id', $mapel->id)->get(),
         ]);
     }
 
@@ -86,7 +88,7 @@ class PresensiGuruController extends Controller
             'guru_id' => $person['guru'],
             'level' => 'guru',
         ], [
-            'materi' => request('materi'),
+            'materi_id' => request('materi'),
             'waktu_absen' => $now->format('Y-m-d H:i:s'),
             'absensi_id' => $person['kehadiran'],
         ]);

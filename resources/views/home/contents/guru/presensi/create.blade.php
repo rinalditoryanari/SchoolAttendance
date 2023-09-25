@@ -15,7 +15,16 @@
             <div class="form-group row mb-4 mx-2">
                 <label class="col-form-label col-12 col-md-2 col-lg-1 ">Materi</label>
                 <div class="col-sm-12 col-md-10 col-lg-11">
-                    <input type="textarea" class="form-control" name="materi" value="{{ ($presensi) ? $presensi->materi : ''; }}" <?php echo ($telat) ? 'disabled' : ''; ?> required>
+                    <select class="form-control" id="materi" name="materi" required <?php echo ($telat) ? 'disabled' : ''; ?>>
+                        @if(isset($presensi) != 0)
+                        <option selected hidden value="{{ $presensi->materi->id }}">{{ $presensi->materi->materi }}</option>
+                        @else
+                        <option selected disabled value=""> Pilih MAteri Pembelajaran</option>
+                        @endif
+                        @foreach ($materis as $materi)
+                        <option value="{{ $materi->id }}">{{ $materi->materi }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             @endif
