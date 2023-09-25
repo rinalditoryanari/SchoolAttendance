@@ -28,10 +28,10 @@ class SiswaLoginController extends Controller
         }
       }
     }
-    if (isset($presensis)) {
+    if ($presensis) {
       $presensiss = $presensis[0];
     } else {
-      $presensiss = '';
+      $presensiss = [];
     }
     return view('dashboard-siswa', [
       'title' => 'dashboard-siswa',
