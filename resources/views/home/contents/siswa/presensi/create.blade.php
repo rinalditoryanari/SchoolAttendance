@@ -13,7 +13,7 @@
         <div class="form-group row mb-4 mx-2">
             <label class="col-form-label col-12 col-md-2 col-lg-1 ">Mapel</label>
             <div class="col-sm-12 col-md-10 col-lg-11">
-                <input type="textarea" class="form-control" name="materi" value="{{ $materi }}" disabled>
+                <input type="textarea" class="form-control" name="materi" value="{{ $materi->materi }}" disabled>
             </div>
         </div>
         @endif

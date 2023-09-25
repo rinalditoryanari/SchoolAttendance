@@ -23,7 +23,9 @@ class SiswaLoginController extends Controller
     foreach ($mapels as $mapel) {
       $pertemuans = $mapel->pertemuans->where("keterangan", "masuk");
       foreach ($pertemuans as $pertemuan) {
-        $presensis[] = $pertemuan->presensi->where('absensi_id', '!=', 2);
+        if ($pertemuan->presensi->where('absensi_id', '!=', 2)->toArray() != null) {
+          $presensis[] = $pertemuan->presensi->where('guru_id', 0)->where('absensi_id', '!=', 2);
+        }
       }
     }
     return view('dashboard-siswa', [
