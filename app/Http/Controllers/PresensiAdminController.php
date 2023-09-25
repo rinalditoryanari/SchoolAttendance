@@ -45,12 +45,12 @@ class PresensiAdminController extends Controller
         request()->validate([
             'mapel' => 'required|numeric',
             'pertemuan' => 'required',
-            'pertemuan.*' => 'required|array:tanggal,masuk,keluar',
+            'pertemuan.*' => 'required',
             'pertemuan.*.tanggal' => 'required|date',
             'pertemuan.*.masuk' => 'required|date_format:H:i',
             'pertemuan.*.keluar' => 'required|date_format:H:i|after:time_start',
             'materi' => 'required',
-            'materi.*' => 'required|string'
+            'materi.*.materi' => 'required|string'
         ], [
             'required' => 'Pastikan :attribute telah terisi.'
         ]);
@@ -74,7 +74,7 @@ class PresensiAdminController extends Controller
         foreach (request('materi') as $materi) {
             Materi::insert([
                 'mapel_id' => $mapel,
-                'materi' => $materi,
+                'materi' => $materi['materi'],
             ]);
         }
 
@@ -112,18 +112,21 @@ class PresensiAdminController extends Controller
             }
         }
 
+        $materis = $mapel->materis;
+
         return view('home.contents.admin.presensi.edit', [
             'title' => 'Edit Presensi Mapel',
             'mapel' => $mapel,
             'pertemuans' => json_encode($pertemuans),
+            'materis' => json_encode($materis),
         ]);
     }
 
     public function inputEdit(Request $request)
     {
         $mapel = $request->mapel;
-        $existingPertemuan = Pertemuan::where('mapel_id', $mapel)->get()->keyBy('id');
 
+        $existingPertemuan = Pertemuan::where('mapel_id', $mapel)->get()->keyBy('id');
         foreach ($request->pertemuan as $data) {
             $id = $data['id_masuk'];
             if (isset($existingPertemuan[$id])) {
@@ -168,8 +171,27 @@ class PresensiAdminController extends Controller
             $pertemuan->delete();
         }
 
-        return redirect('/admin/presensi/');
+        $existingMateri = Materi::where('mapel_id', $mapel)->get()->keyBy('id');
+        foreach ($request->materi as $data) {
+            $id = $data['id'];
+            if (isset($existingMateri[$id])) {
+                //masuk
+                Materi::where('id', $data['id'])
+                    ->update([
+                        'materi' => $data['materi'],
+                    ]);
+                unset($existingMateri[$data['id']]);
+            } else {
+                Materi::insert([
+                    'mapel_id' => $mapel,
+                    'materi' => $data['materi'],
+                ]);
+            }
+
+            return redirect('/admin/presensi/');
+        }
     }
+
 
     public function deletePresensi(Mapel $mapel)
     {

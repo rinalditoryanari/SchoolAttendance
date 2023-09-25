@@ -8,7 +8,6 @@ document
     .addEventListener("click", function () {
         mapel = document.getElementById("mapel");
         mapell = mapel.options[mapel.selectedIndex].getAttribute("text");
-        console.log(mapell);
         if (validationPertemuanInput() == true) {
             if (!isDateDuplicate(document.getElementById("tanggal").value)) {
                 var newColumn = {
@@ -125,6 +124,9 @@ function refreshPertemuan() {
 }
 
 function refreshCollumnPertemuan() {
+    mapel = document.getElementById("mapel");
+    mapell = mapel.options[mapel.selectedIndex].getAttribute("text");
+
     document.getElementById("table-pertemuan-body").innerHTML = "";
     for (let index = 0; index < collumn.length; index++) {
         let tag = "<tr>";
@@ -146,12 +148,24 @@ function refreshCollumnPertemuan() {
         tag +=
             '<input type="hidden" name="pertemuan[' +
             index +
+            '][id_masuk]" value="' +
+            collumn[index]["id_masuk"] +
+            '">';
+        tag +=
+            '<input type="hidden" name="pertemuan[' +
+            index +
             '][masuk]" value="' +
             collumn[index]["masuk"] +
             '">';
         tag += "</td>";
         tag += '<td class="text-center">';
         tag += collumn[index]["keluar"];
+        tag +=
+            '<input type="hidden" name="pertemuan[' +
+            index +
+            '][id_keluar]" value="' +
+            collumn[index]["id_keluar"] +
+            '">';
         tag +=
             '<input type="hidden" name="pertemuan[' +
             index +

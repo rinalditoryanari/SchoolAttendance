@@ -10,7 +10,10 @@ document
 
         if (validationMateriInput() == true) {
             if (!isMateriDuplicate(materi)) {
-                materis.push(materi);
+                var newMateri = {
+                    materi: materi,
+                };
+                materis.push(newMateri);
             } else {
                 alert("Ditemukan Materi Yang Sama! Masukkan Materi Lainnya");
             }
@@ -42,7 +45,7 @@ function validationMateriInput() {
 function editCollumnMateri(index) {
     var materi = materis[index];
     document.getElementById("id-materi").value = index;
-    document.getElementById("materi").value = materi;
+    document.getElementById("materi").value = materi.materi;
 
     document.getElementById("btn-materi-edit").removeAttribute("hidden");
     document.getElementById("btn-materi-tambah").setAttribute("hidden", true);
@@ -51,8 +54,8 @@ function editCollumnMateri(index) {
 document
     .getElementById("btn-materi-edit")
     .addEventListener("click", function () {
-        index = document.getElementById("id").value;
-        materis[index] = document.getElementById("materi").value;
+        index = document.getElementById("id-materi").value;
+        materis[index]["materi"] = document.getElementById("materi").value;
         refreshCollumnMateri();
         kosongkan();
     });
@@ -100,12 +103,18 @@ function refreshCollumnMateri() {
         tag += '<td class="table-plus text-center">' + (index + 1) + "</td>";
 
         tag += '<td class="text-center">';
-        tag += materis[index];
+        tag += materis[index]["materi"];
         tag +=
             '<input type="hidden" name="materi[' +
             index +
-            ']" value="' +
-            materis[index] +
+            '][id]" value="' +
+            materis[index]["id"] +
+            '">';
+        tag +=
+            '<input type="hidden" name="materi[' +
+            index +
+            '][materi]" value="' +
+            materis[index]["materi"] +
             '">';
         tag += "</td>";
 

@@ -9,73 +9,133 @@
     </div>
 
     <div class="card-body ">
-        <div id="data" data="{{$pertemuans}}" hidden></div>
+        <div id="data" data="{{$pertemuans}}" data-secondary="{{$materis}}" hidden></div>
         <form class="mx-4" action="/admin/presensi/{{ $mapel->id }}/edit" method="post">
             @csrf
-            <div class="form-group row mb-4">
-                <label class="col-form-label col-12 col-md-2 col-lg-1 ">Mapel</label>
-                <div class="col-sm-12 col-md-10 col-lg-11">
-                    <select class="form-control" id="mapel" name="mapel">
-                        <option selected value="{{ $mapel->id }}" text="{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->user->firstName }} {{ $mapel->user->lastName }}">{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->user->firstName }} {{ $mapel->user->lastName }}</option>
-                    </select>
+            <div class="pb-4">
+                @error('mapel')
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ $message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-
-            <div class="mb-4">
-                <div class="card-title">
-                    <h4 class="h5">Tambah Pertemuan</h4>
-                </div>
+                @enderror
                 <div class="form-group row mb-4">
-                    <label class="col-form-label col-12 col-md-2 col-lg-1">Tanggal</label>
-                    <div class="col-sm-12 col-md-4 col-lg-5">
-                        <input type="date" class="choose form-control" id="tanggal" name="tanggal">
+                    <label class="col-form-label col-12 col-md-2 col-lg-1 ">Mapel</label>
+                    <div class="col-sm-12 col-md-10 col-lg-11">
+                        <select class="form-control" id="mapel" name="mapel">
+                            <option selected value="{{ $mapel->id }}" text="{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->user->firstName }} {{ $mapel->user->lastName }}">{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->user->firstName }} {{ $mapel->user->lastName }}</option>
+                        </select>
                     </div>
-                    <label class="col-form-label col-12 col-md-2 col-lg-1" hidden>Id</label>
-                    <div class="col-sm-12 col-md-4 col-lg-5" hidden>
-                        <input type="text" class="choose form-control" id="id" name="id">
-                    </div>
-                </div>
-
-                <div class="d-flex p-0">
-                    <div class="col-12 col-md-6 col-lg-6 pl-0">
-                        <div class="card-title">
-                            <h4 class="h6">Masuk Pada: </h4>
-                        </div>
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label col-12 col-md-4 col-lg-2">Waktu</label>
-                            <div class="col-sm-12 col-md-8 col-lg-10">
-                                <input type="time" class="choose form-control" id="masuk" name="tanggal">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-6 pr-0">
-                        <div class="card-title">
-                            <h4 class="h6">Keluar Pada: </h4>
-                        </div>
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label col-12 col-md-4 col-lg-2 ">Waktu</label>
-                            <div class="col-sm-12 col-md-8 col-lg-10">
-                                <input type="time" class="choose form-control" id="keluar" name="tanggal">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-end col-12 p-0">
-                    <button class="btn btn-outline-warning mx-2" type="button" id="btn-kosong">Kosongkan</button>
-                    <button class="btn btn-outline-info mx-2" type="button" id="btn-tambah">Tambah</button>
-                    <button class="btn btn-outline-info mx-2" type="button" id="btn-edit" hidden>Edit</button>
                 </div>
             </div>
 
-            <div class="mb-4">
-                <div class="card-title">
-                    <h4 class="h5">Jadwal Pertemuan</h4>
+            <!-- PERTEMUAN -->
+            <div class="pb-4">
+                <div class="mb-4">
+                    <div class="card-title">
+                        <h4 class="h5">Tambah Pertemuan</h4>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label col-12 col-md-2 col-lg-1">Tanggal</label>
+                        <div class="col-sm-12 col-md-4 col-lg-5">
+                            <input type="date" class="choose form-control" id="tanggal" name="tanggal">
+                        </div>
+                        <label class="col-form-label col-12 col-md-2 col-lg-1" hidden>Id</label>
+                        <div class="col-sm-12 col-md-4 col-lg-5" hidden>
+                            <input type="text" class="choose form-control" id="id" name="id">
+                        </div>
+                    </div>
+
+                    <div class="d-flex p-0">
+                        <div class="col-12 col-md-6 col-lg-6 pl-0">
+                            <div class="card-title">
+                                <h4 class="h6">Masuk Pada: </h4>
+                            </div>
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label col-12 col-md-4 col-lg-2">Waktu</label>
+                                <div class="col-sm-12 col-md-8 col-lg-10">
+                                    <input type="time" class="choose form-control" id="masuk" name="tanggal">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6 pr-0">
+                            <div class="card-title">
+                                <h4 class="h6">Keluar Pada: </h4>
+                            </div>
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label col-12 col-md-4 col-lg-2 ">Waktu</label>
+                                <div class="col-sm-12 col-md-8 col-lg-10">
+                                    <input type="time" class="choose form-control" id="keluar" name="tanggal">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end col-12 p-0">
+                        <button class="btn btn-outline-warning mx-2" type="button" id="btn-pertemuan-kosong">Kosongkan</button>
+                        <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-tambah">Tambah</button>
+                        <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-edit" hidden>Edit</button>
+                    </div>
                 </div>
-                <div id="table">
+
+                <div class="mb-4">
+                    <div class="card-title">
+                        <h4 class="h5">Jadwal Pertemuan</h4>
+                    </div>
+                    @error('pertemuan')
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ $message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @enderror
+                    <div class="" id="pertemuan-table"></div>
                 </div>
             </div>
+
+            <!-- MATERI -->
+            <div class="pb-4">
+                <div class="mb-4">
+                    <div class="card-title">
+                        <h4 class="h5">Tambah Materi Pembelajaran</h4>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label col-12 col-md-2 col-lg-1" hidden>Id</label>
+                        <div class="col-sm-12 col-md-4 col-lg-5" hidden>
+                            <input type="text" class="choose form-control" id="id-materi" name="id-materi">
+                        </div>
+                        <label class="col-form-label col-12 col-md-2 col-lg-1">Materi</label>
+                        <div class="d-flex justify-content-between col-12 col-md-10 col-lg-11">
+                            <input type="textarea" class="choose form-control" id="materi" name="materi">
+                            <button class="btn btn-outline-warning" type="button" id="btn-materi-kosong">Kosongkan</button>
+                            <button class="btn btn-outline-info" type="button" id="btn-materi-tambah">Tambah</button>
+                            <button class="btn btn-outline-info" type="button" id="btn-materi-edit" hidden>Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="card-title">
+                        <h4 class="h5">Materi Pembelajaran</h4>
+                    </div>
+                    @error('materi')
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ $message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @enderror
+                    <div class="" id="materi-table"></div>
+                </div>
+                <div id="table"></div>
+            </div>
+
+            <!-- SUBMIT -->
             <div class="d-flex justify-content-end m-3">
-                <button class="btn btn-outline-primary" type="submit" value="Submit">Simpan</button>
+                <button class="btn btn-primary" type="submit" value="Submit">Simpan</button>
             </div>
         </form>
     </div>
@@ -84,5 +144,9 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('src/scripts/admin-editabsen.js') }}"></script>
+<script src="{{ asset('src/scripts/admin-addAbsen.js') }}"></script>
+<script src="{{ asset('src/scripts/admin-addMateri.js') }}"></script>
+
+<script src="{{ asset('src/scripts/admin-editAbsen.js') }}"></script>
+<!-- <script src="{{ asset('src/scripts/admin-editMateri.js') }}"></script> -->
 @endpush
