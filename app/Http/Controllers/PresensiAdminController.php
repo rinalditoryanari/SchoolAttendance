@@ -187,9 +187,12 @@ class PresensiAdminController extends Controller
                     'materi' => $data['materi'],
                 ]);
             }
-
-            return redirect('/admin/presensi/');
         }
+
+        foreach ($existingMateri as $materi) {
+            $materi->delete();
+        }
+        return redirect('/admin/presensi/');
     }
 
 
