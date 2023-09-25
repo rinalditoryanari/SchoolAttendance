@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\RekapSiswaMapel;
 use App\Models\Absensi;
 use App\Models\Mapel;
+use App\Models\Materi;
 use App\Models\Pertemuan;
 use App\Models\Presensi;
 use App\Models\Siswa;
@@ -41,10 +42,21 @@ class PresensiAdminController extends Controller
     //menambahkan presensi mapel
     public function inputTambah()
     {
-        // dd(request()->all());
+        request()->validate([
+            'mapel' => 'required|numeric',
+            'pertemuan' => 'required',
+            'pertemuan.*' => 'required|array:tanggal,masuk,keluar',
+            'pertemuan.*.tanggal' => 'required|date',
+            'pertemuan.*.masuk' => 'required|date_format:H:i',
+            'pertemuan.*.keluar' => 'required|date_format:H:i|after:time_start',
+            'materi' => 'required',
+            'materi.*' => 'required|string'
+        ], [
+            'required' => 'Pastikan :attribute telah terisi.'
+        ]);
+
         $mapel = request('mapel');
         foreach (request('pertemuan') as $pertemuan) {
-
             Pertemuan::insert([
                 'mapel_id' => $mapel,
                 'tanggal' => $pertemuan['tanggal'],
@@ -58,6 +70,14 @@ class PresensiAdminController extends Controller
                 'keterangan' => 'keluar',
             ]);
         }
+
+        foreach (request('materi') as $materi) {
+            Materi::insert([
+                'mapel_id' => $mapel,
+                'materi' => $materi,
+            ]);
+        }
+
 
         return redirect('/admin/presensi/');
     }

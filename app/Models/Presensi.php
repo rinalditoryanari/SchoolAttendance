@@ -27,6 +27,11 @@ class Presensi extends Model
         return $this->belongsTo(Mapel::class);
     }
 
+    public function materi()
+    {
+        return $this->belongsTo(Materi::class);
+    }
+
     public function absensi()
     {
         return $this->belongsTo(Absensi::class);

@@ -21,6 +21,11 @@ class Mapel extends Model
         return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
 
+    public function materis()
+    {
+        return $this->hasMany(Materi::class);
+    }
+
     public function pertemuans()
     {
         return $this->hasMany(Pertemuan::class);
