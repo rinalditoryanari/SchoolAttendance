@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
@@ -19,12 +20,16 @@
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
 		gtag('js', new Date());
 
 		gtag('config', 'UA-119386393-1');
 	</script>
 </head>
+
 <body class="login-page">
 	<div class="login-header box-shadow">
 		<div class="container-fluid d-flex justify-content-between align-items-center">
@@ -32,15 +37,6 @@
 				<a href="/">
 					<h1>Selamat Datang</h1>
 				</a>
-			</div>
-			<div class="login-menu">
-				<ul>
-					<li><a href="/register">Daftar</a></li>
-					@if(Auth::guard('siswa')->check())
-    Hello {{Auth::guard('siswa')->user()->name}}
-@endif
-				</ul>
-
 			</div>
 		</div>
 	</div>
@@ -55,24 +51,24 @@
 						<div class="login-title">
 							<h2 class="text-center text-primary">{{ $title }}</h2>
 							@if (session()->has('success'))
-								<div class="alert alert-success alert-dismissible fade show" role="alert">
-									{{ session('success') }}
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								{{ session('success') }}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
 							@endif
 							@if (session()->has('loginError'))
-								<div class="alert alert-danger alert-dismissible fade show" role="alert">
-									{{ session('loginError') }}
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								{{ session('loginError') }}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
 							@endif
 						</div>
 						<form action="/login" method="POST">
-						@csrf
+							@csrf
 							{{-- <div class="select-role">
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
 									<label class="btn active">
@@ -136,4 +132,5 @@
 	<script src="vendors/scripts/process.js"></script>
 	<script src="vendors/scripts/layout-settings.js"></script>
 </body>
+
 </html>
