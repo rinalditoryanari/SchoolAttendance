@@ -52,7 +52,7 @@ Route::get('/', function () {
             'guru' => User::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),
-            'presensis' => Presensi::where('absensi_id', '!=', 2)->latest()->get()
+            'presensis' => Presensi::where('guru_id', 0)->where('absensi_id', '!=', 2)->latest()->get()
         ]);
     } else {
         return redirect('/login');
