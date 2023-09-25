@@ -174,6 +174,7 @@ class PresensiAdminController extends Controller
     public function deletePresensi(Mapel $mapel)
     {
         $pertemuans = $mapel->pertemuans;
+        $mapel->materis()->delete();
 
         foreach ($pertemuans as $pertemuan) {
             if ($pertemuan->presensi) {
