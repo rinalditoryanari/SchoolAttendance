@@ -28,13 +28,18 @@ class SiswaLoginController extends Controller
         }
       }
     }
+    if (isset($presensis)) {
+      $presensiss = $presensis[0];
+    } else {
+      $presensiss = '';
+    }
     return view('dashboard-siswa', [
       'title' => 'dashboard-siswa',
       'siswa' => Siswa::count(),
       'guru' => User::count(),
       'mapel' => Mapel::count(),
       'kelas' => Kelas::count(),
-      'presensis' => $presensis[0],
+      'presensis' => $presensiss,
     ]);
   }
 
