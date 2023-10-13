@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\PDF;
+use Exception;
 
 class PresensiAdminController extends Controller
 {
@@ -21,6 +22,20 @@ class PresensiAdminController extends Controller
         $mapels = Mapel::has('pertemuans', '>', 0)->withCount(['pertemuans' => function ($query) {
             $query->where('keterangan', 'masuk');
         }])->get();
+
+        for ($i = 0; $i < count($mapels); $i++) {
+            $pertemuans = $mapels[$i]->pertemuans;
+            $presensi_count = 0;
+            foreach ($pertemuans as $pertemuan) {
+                if ($pertemuan->keterangan == "masuk") {
+                    $presensi = $pertemuan->presensi->where('level', 'guru')->first();
+                    if ($presensi && $presensi->absensi_id == 2) {
+                        $presensi_count++;
+                    };
+                }
+            }
+            $mapels[$i]->presensi_count =  $presensi_count;
+        }
 
         return view('home.contents.admin.presensi.index', [
             'title' => 'Pilih Jadwal Mapel',
@@ -44,6 +59,7 @@ class PresensiAdminController extends Controller
     {
         request()->validate([
             'mapel' => 'required|numeric',
+            'min_pertemuan' => 'required|numeric|min:1',
             'pertemuan' => 'required',
             'pertemuan.*' => 'required',
             'pertemuan.*.tanggal' => 'required|date',
@@ -55,16 +71,25 @@ class PresensiAdminController extends Controller
             'required' => 'Pastikan :attribute telah terisi.'
         ]);
 
-        $mapel = request('mapel');
+        if (count(request('pertemuan')) < request('min_pertemuan')) {
+            return back()->withErrors(["min_pertemuan" => "Pastikan daftar pertemuan memenuhi batas minimal pertemuan!"]);
+        } else if (count(request('materi')) > count(request('pertemuan'))) {
+            return back()->withErrors(["min_pertemuan" => "Pastikan daftar materi sesuai dengan banyak pertemuan!"]);
+        }
+
+        $mapel = Mapel::find(request('mapel'));
+        $mapel->min_pertemuan = request('min_pertemuan');
+        $mapel->save();
+
         foreach (request('pertemuan') as $pertemuan) {
             Pertemuan::insert([
-                'mapel_id' => $mapel,
+                'mapel_id' => $mapel->id,
                 'tanggal' => $pertemuan['tanggal'],
                 'waktu' => $pertemuan['masuk'],
                 'keterangan' => 'masuk',
             ]);
             Pertemuan::insert([
-                'mapel_id' => $mapel,
+                'mapel_id' => $mapel->id,
                 'tanggal' => $pertemuan['tanggal'],
                 'waktu' => $pertemuan['keluar'],
                 'keterangan' => 'keluar',
@@ -73,7 +98,7 @@ class PresensiAdminController extends Controller
 
         foreach (request('materi') as $materi) {
             Materi::insert([
-                'mapel_id' => $mapel,
+                'mapel_id' => $mapel->id,
                 'materi' => $materi['materi'],
             ]);
         }
@@ -124,6 +149,30 @@ class PresensiAdminController extends Controller
 
     public function inputEdit(Request $request)
     {
+        request()->validate([
+            'mapel' => 'required|numeric',
+            'min_pertemuan' => 'required|numeric|min:1',
+            'pertemuan' => 'required',
+            'pertemuan.*' => 'required',
+            'pertemuan.*.tanggal' => 'required|date',
+            'pertemuan.*.masuk' => 'required|date_format:H:i:s',
+            'pertemuan.*.keluar' => 'required|date_format:H:i:s|after:time_start',
+            'materi' => 'required',
+            'materi.*.materi' => 'required|string'
+        ], [
+            'required' => 'Pastikan :attribute telah terisi.'
+        ]);
+
+        if (count(request('pertemuan')) < request('min_pertemuan')) {
+            return back()->withErrors(["min_pertemuan" => "Pastikan daftar pertemuan memenuhi batas minimal pertemuan!"]);
+        } else if (count(request('materi')) > count(request('pertemuan'))) {
+            return back()->withErrors(["min_pertemuan" => "Pastikan daftar materi sesuai dengan banyak pertemuan!"]);
+        }
+
+        $mapel = Mapel::find(request('mapel'));
+        $mapel->min_pertemuan = request('min_pertemuan');
+        $mapel->save();
+
         $mapel = $request->mapel;
 
         $existingPertemuan = Pertemuan::where('mapel_id', $mapel)->get()->keyBy('id');

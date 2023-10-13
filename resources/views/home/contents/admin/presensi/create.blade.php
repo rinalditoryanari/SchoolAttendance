@@ -40,6 +40,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group row mb-4">
+                    <label class="col-form-label col-12 col-md-2 col-lg-1 ">Minimal Pertemuan</label>
+                    <div class="col-sm-6 col-md-5 col-lg-5">
+                        <input type="number" class="form-control" name="min_pertemuan" id="min_pertemuan" required>
+                    </div>
+                </div>
             </div>
 
             <!-- PERTEMUAN -->

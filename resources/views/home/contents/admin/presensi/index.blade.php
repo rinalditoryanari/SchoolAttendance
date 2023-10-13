@@ -19,6 +19,7 @@
                     <th class="text-center">Guru</th>
                     <th class="text-center">Kelas</th>
                     <th class="text-center">Pertemuan</th>
+                    <th class="text-center">Minimal Pertemuan</th>
                     <th class="text-center datatable-nosort">Presensi</th>
                     <th class="text-center datatable-nosort">Action</th>
                 </tr>
@@ -30,7 +31,8 @@
                     <td>{{ $mapel->nama }}</td>
                     <td>{{ $mapel->user->firstName }} {{ $mapel->user->lastName }}</td>
                     <td>{{ $mapel->kelas->nama }}</td>
-                    <td>{{ $mapel->pertemuans_count }} x</td>
+                    <td>{{ $mapel->pertemuans_count }}</td>
+                    <td>{{ $mapel->presensi_count."/".$mapel->min_pertemuan}}</td>
                     <td class="text-center">
                         <a href="/admin/presensi/{{ $mapel->id }}" class="btn btn-sm btn-outline-primary">Pilih</a>
                     </td>

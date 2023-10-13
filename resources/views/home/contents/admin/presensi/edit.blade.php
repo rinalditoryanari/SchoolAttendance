@@ -10,6 +10,15 @@
 
     <div class="card-body ">
         <div id="data" data="{{$pertemuans}}" data-secondary="{{$materis}}" hidden></div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <form class="mx-4" action="/admin/presensi/{{ $mapel->id }}/edit" method="post">
             @csrf
             <div class="pb-4">
@@ -27,6 +36,12 @@
                         <select class="form-control" id="mapel" name="mapel">
                             <option selected value="{{ $mapel->id }}" text="{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->user->firstName }} {{ $mapel->user->lastName }}">{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->user->firstName }} {{ $mapel->user->lastName }}</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label class="col-form-label col-12 col-md-2 col-lg-1 ">Minimal Pertemuan</label>
+                    <div class="col-sm-6 col-md-5 col-lg-5">
+                        <input type="number" class="form-control" name="min_pertemuan" id="min_pertemuan" value="{{$mapel->min_pertemuan}}" required>
                     </div>
                 </div>
             </div>
