@@ -80,15 +80,35 @@ class PresensiGuruController extends Controller
     //input data absensi
     public function inputAbsensi(Request $request)
     {
+        $pertemuan = Pertemuan::find(request("pertemuan"));
+        if ($pertemuan->keterangan == "keluar") {
+            //ambil materi dari masuk
+            $pertemuan = Pertemuan::select('id')
+                ->where('mapel_id', $pertemuan->mapel->id)
+                ->where('tanggal', $pertemuan->tanggal)
+                ->where('keterangan', "masuk")
+                ->first();
+
+            $materi = Presensi::select("materi_id")
+                ->where('pertemuan_id', $pertemuan->id)
+                ->where('level', 'guru')
+                ->first();
+
+            $materi_id = $materi->materi->id;
+        } else {
+            $materi_id = request('materi');
+        }
+
         $now = new DateTime('now');
 
         $person = $request->presensi;
+
         Presensi::updateOrInsert([
             'pertemuan_id' => request('pertemuan'),
             'guru_id' => $person['guru'],
             'level' => 'guru',
         ], [
-            'materi_id' => request('materi'),
+            'materi_id' => $materi_id,
             'waktu_absen' => $now->format('Y-m-d H:i:s'),
             'absensi_id' => $person['kehadiran'],
         ]);
