@@ -15,6 +15,7 @@
                     <th class="text-center">Mapel</th>
                     <th class="text-center">Guru</th>
                     <th class="text-center">Kelas</th>
+                    <th class="text-center">Minimal Kehadiran</th>
                     <th class="text-center datatable-nosort">Lanjutkan</th>
                 </tr>
             </thead>
@@ -25,6 +26,7 @@
                     <td>{{ $mapel->nama }}</td>
                     <td>{{ $mapel->user->firstName }} {{ $mapel->user->lastName }}</td>
                     <td>{{ $mapel->kelas->nama }}</td>
+                    <td>{{ $mapel->presensi_count . "/"}}{{($mapel->min_pertemuan == null) ? 0 : $mapel->min_pertemuan}}</td>
                     <td class="text-center">
                         <a href="/guru/presensi/{{ $mapel->id }}" class="btn btn-sm btn-outline-primary">Pilih</a>
                     </td>

@@ -17,9 +17,23 @@ class PresensiGuruController extends Controller
     //menampilkan seluruh mata pelajaran untuk kelas
     public function showMapel()
     {
+        $mapels = Auth::user()->mapels;
+        for ($i = 0; $i < count($mapels); $i++) {
+            $pertemuans = $mapels[$i]->pertemuans;
+            $presensi_count = 0;
+            foreach ($pertemuans as $pertemuan) {
+                if ($pertemuan->keterangan == "masuk") {
+                    $presensi = $pertemuan->presensi->where('level', 'guru')->first();
+                    if ($presensi && $presensi->absensi_id == 2) {
+                        $presensi_count++;
+                    };
+                }
+            }
+            $mapels[$i]->presensi_count =  $presensi_count;
+        }
         return view('home.contents.guru.presensi.index', [
             'title' => 'Pilih Mapel',
-            'mapels' => Auth::user()->mapels,
+            'mapels' => $mapels,
         ]);
     }
 

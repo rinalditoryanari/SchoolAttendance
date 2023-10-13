@@ -149,6 +149,8 @@ class PresensiAdminController extends Controller
 
     public function inputEdit(Request $request)
     {
+        // dd(count(request('pertemuan'))  request('min_pertemuan'));
+
         request()->validate([
             'mapel' => 'required|numeric',
             'min_pertemuan' => 'required|numeric|min:1',
