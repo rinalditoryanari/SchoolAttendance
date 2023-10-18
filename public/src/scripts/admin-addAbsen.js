@@ -19,7 +19,7 @@ document
             }
         }
         refreshPertemuan();
-        kosongkan();
+        kosongin();
     });
 
 function isDateDuplicate(newDate) {
@@ -65,16 +65,16 @@ document
         index = document.getElementById("id").value;
         collumn[index]["tanggal"] = document.getElementById("tanggal").value;
         refreshCollumnPertemuan();
-        kosongkan();
+        kosongin();
     });
 
 document
     .getElementById("btn-pertemuan-kosong")
     .addEventListener("click", function () {
-        kosongkan();
+        kosongin();
     });
 
-function kosongkan() {
+function kosongin() {
     document.getElementById("tanggal").value = null;
     document.getElementById("btn-pertemuan-tambah").removeAttribute("hidden");
     document.getElementById("btn-pertemuan-edit").setAttribute("hidden", true);

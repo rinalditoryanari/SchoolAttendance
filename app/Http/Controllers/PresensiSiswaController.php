@@ -48,6 +48,7 @@ class PresensiSiswaController extends Controller
                     ->first()
                 )["waktu"];
 
+                $limit = ($limit === null) ? '23:59:59' : $limit;
                 //kalo keluar
             } else if ($pertemuan->keterangan == "keluar") {
                 //limitnya 30 menit setelah keluar
