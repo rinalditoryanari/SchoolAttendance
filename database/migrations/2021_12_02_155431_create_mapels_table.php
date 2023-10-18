@@ -19,6 +19,7 @@ class CreateMapelsTable extends Migration
             $table->string('nama');
             $table->foreignId('kelas_id');
             $table->foreignId('guru_id');
+            $table->integer('min_pertemuan')->nullable();
             $table->timestamps();
         });
     }

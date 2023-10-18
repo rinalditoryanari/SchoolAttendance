@@ -15,10 +15,12 @@ class CreatePresensisTable extends Migration
     {
         Schema::create('presensis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pertemuan_id');
+            $table->dateTime('waktu_absen');
+            $table->string('level');
             $table->foreignId('siswa_id');
-            $table->foreignId('kelas_id');
-            $table->foreignId('mapel_id');
             $table->foreignId('guru_id');
+            $table->foreignId('materi_id');
             $table->foreignId('absensi_id');
             $table->timestamps();
         });
