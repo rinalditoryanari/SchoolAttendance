@@ -49,30 +49,9 @@ class PresensiGuruController extends Controller
     //manmpilkan absensi pada pertemuan tsb
     public function showPresensi(Mapel $mapel, Pertemuan $pertemuan)
     {
-
-        //kalo absen masuk
-        if ($pertemuan->keterangan == "masuk") {
-            //batesnya sampe mapel selesai
-
-            $limit = (Pertemuan::select("waktu")
-                ->where('mapel_id', $pertemuan->mapel->id)
-                ->where('tanggal', $pertemuan->tanggal)
-                ->where('keterangan', 'keluar')
-                ->first()
-            )["waktu"];
-
-            //kalo keluar
-        } else if ($pertemuan->keterangan == "keluar") {
-            //limitnya 30 menit setelah keluar
-            $limit = date('H:i:s', strtotime("$pertemuan->waktu + 30 minutes"));
-            // dd($limit);
-        }
-
         if (
             //kalo bukan hari ini atau 
-            $pertemuan->tanggal != date('Y-m-d') ||
-            // lewat dari jam segini
-            date('H:i:s') >= $limit
+            $pertemuan->tanggal != date('Y-m-d')
         ) {
             $telat = true;
         } else {
@@ -96,6 +75,10 @@ class PresensiGuruController extends Controller
     {
         $pertemuan = Pertemuan::find(request("pertemuan"));
         if ($pertemuan->keterangan == "keluar") {
+            $pertemuan->waktu = now()->format('H:i');
+            $pertemuan->save();
+
+
             //ambil materi dari masuk
             $pertemuan = Pertemuan::select('id')
                 ->where('mapel_id', $pertemuan->mapel->id)
@@ -111,6 +94,9 @@ class PresensiGuruController extends Controller
             $materi_id = $materi->materi->id;
         } else {
             $materi_id = request('materi');
+
+            $pertemuan->waktu = request('waktu');
+            $pertemuan->save();
         }
 
         $now = new DateTime('now');

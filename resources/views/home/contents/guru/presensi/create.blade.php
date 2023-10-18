@@ -28,6 +28,14 @@
                 </div>
             </div>
             @endif
+            @if($pertemuan->keterangan == "masuk")
+            <div class="form-group row mb-4 mx-2">
+                <label class="col-form-label col-12 col-md-2 col-lg-1 ">Waktu Masuk</label>
+                <div class="col-sm-4 col-md-3 col-lg-2">
+                    <input class="form-control" type="time" name="waktu" id="waktu" value="{{$pertemuan->waktu}}" required <?php echo ($telat) ? 'disabled' : ''; ?>>
+                </div>
+            </div>
+            @endif
             <table class="table">
                 <thead>
                     <tr>
