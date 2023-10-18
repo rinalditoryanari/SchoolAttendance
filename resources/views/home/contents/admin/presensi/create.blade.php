@@ -63,35 +63,11 @@
                         <div class="col-sm-12 col-md-4 col-lg-5" hidden>
                             <input type="text" class="choose form-control" id="id" name="id">
                         </div>
-                    </div>
-                    <div class="d-flex p-0">
-                        <div class="col-12 col-md-6 col-lg-6 pl-0">
-                            <div class="card-title">
-                                <h4 class="h6">Masuk Pada: </h4>
-                            </div>
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label col-12 col-md-4 col-lg-2">Waktu</label>
-                                <div class="col-sm-12 col-md-8 col-lg-10">
-                                    <input type="time" class="choose form-control" id="masuk" name="tanggal">
-                                </div>
-                            </div>
+                        <div class="d-flex justify-content-end col-sm-12 col-md-5 col-lg-6 p-0">
+                            <button class="btn btn-outline-warning mx-2" type="button" id="btn-pertemuan-kosong">Kosongkan</button>
+                            <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-tambah">Tambah</button>
+                            <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-edit" hidden>Edit</button>
                         </div>
-                        <div class="col-12 col-md-6 col-lg-6 pr-0">
-                            <div class="card-title">
-                                <h4 class="h6">Keluar Pada: </h4>
-                            </div>
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label col-12 col-md-4 col-lg-2 ">Waktu</label>
-                                <div class="col-sm-12 col-md-8 col-lg-10">
-                                    <input type="time" class="choose form-control" id="keluar" name="tanggal">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end col-12 p-0">
-                        <button class="btn btn-outline-warning mx-2" type="button" id="btn-pertemuan-kosong">Kosongkan</button>
-                        <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-tambah">Tambah</button>
-                        <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-edit" hidden>Edit</button>
                     </div>
                 </div>
 

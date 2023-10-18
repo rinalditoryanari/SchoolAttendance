@@ -63,8 +63,6 @@ class PresensiAdminController extends Controller
             'pertemuan' => 'required',
             'pertemuan.*' => 'required',
             'pertemuan.*.tanggal' => 'required|date',
-            'pertemuan.*.masuk' => 'required|date_format:H:i',
-            'pertemuan.*.keluar' => 'required|date_format:H:i|after:time_start',
             'materi' => 'required',
             'materi.*.materi' => 'required|string'
         ], [
@@ -85,13 +83,13 @@ class PresensiAdminController extends Controller
             Pertemuan::insert([
                 'mapel_id' => $mapel->id,
                 'tanggal' => $pertemuan['tanggal'],
-                'waktu' => $pertemuan['masuk'],
+                'waktu' => null,
                 'keterangan' => 'masuk',
             ]);
             Pertemuan::insert([
                 'mapel_id' => $mapel->id,
                 'tanggal' => $pertemuan['tanggal'],
-                'waktu' => $pertemuan['keluar'],
+                'waktu' => null,
                 'keterangan' => 'keluar',
             ]);
         }
@@ -126,14 +124,11 @@ class PresensiAdminController extends Controller
                 $pertemuans[] = [
                     'tanggal' => $pertemuan->tanggal,
                     'id_masuk' => $pertemuan->id,
-                    'masuk' => $pertemuan->waktu,
                     'id_keluar' => null,
-                    'keluar' => null,
                 ];
             } else {
                 $cont = count($pertemuans);
                 $pertemuans[$cont - 1]['id_keluar'] = $pertemuan->id;
-                $pertemuans[$cont - 1]['keluar'] = $pertemuan->waktu;
             }
         }
 
@@ -157,13 +152,12 @@ class PresensiAdminController extends Controller
             'pertemuan' => 'required',
             'pertemuan.*' => 'required',
             'pertemuan.*.tanggal' => 'required|date',
-            'pertemuan.*.masuk' => 'required|date_format:H:i:s',
-            'pertemuan.*.keluar' => 'required|date_format:H:i:s|after:time_start',
             'materi' => 'required',
             'materi.*.materi' => 'required|string'
         ], [
             'required' => 'Pastikan :attribute telah terisi.'
         ]);
+        // dd(request()->all());
 
         if (count(request('pertemuan')) < request('min_pertemuan')) {
             return back()->withErrors(["min_pertemuan" => "Pastikan daftar pertemuan memenuhi batas minimal pertemuan!"]);
@@ -186,7 +180,6 @@ class PresensiAdminController extends Controller
                     ->update([
                         'mapel_id' => $mapel,
                         'tanggal' => $data['tanggal'],
-                        'waktu' => $data['masuk'],
                         'keterangan' => 'masuk',
                     ]);
                 unset($existingPertemuan[$data['id_masuk']]); // Remove the ID from the array
@@ -196,7 +189,6 @@ class PresensiAdminController extends Controller
                     ->update([
                         'mapel_id' => $mapel,
                         'tanggal' => $data['tanggal'],
-                        'waktu' => $data['keluar'],
                         'keterangan' => 'keluar',
                     ]);
                 unset($existingPertemuan[$data['id_keluar']]); // Remove the ID from the array
@@ -206,13 +198,11 @@ class PresensiAdminController extends Controller
                 Pertemuan::insert([
                     'mapel_id' => $mapel,
                     'tanggal' => $data['tanggal'],
-                    'waktu' => $data['masuk'],
                     'keterangan' => 'masuk',
                 ]);
                 Pertemuan::insert([
                     'mapel_id' => $mapel,
                     'tanggal' => $data['tanggal'],
-                    'waktu' => $data['keluar'],
                     'keterangan' => 'keluar',
                 ]);
             }

@@ -17,7 +17,7 @@ class CreatePertemuansTable extends Migration
             $table->id();
             $table->foreignId('mapel_id');
             $table->date("tanggal");
-            $table->time('waktu');
+            $table->time('waktu')->nullable();
             $table->string('keterangan');
             $table->timestamps();;
         });
