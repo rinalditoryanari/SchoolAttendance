@@ -130,7 +130,6 @@ Route::prefix('admin')->group(function () {
             Route::get('/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
         });
 
-        // Route::resource('/mapel', MapelController::class)->except(['show']);
         Route::prefix('/mapel')->group(function () {
             Route::get('/', [MapelController::class, 'index']);
             Route::post('/', [MapelController::class, 'store']);
@@ -140,7 +139,6 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{mapel}', [MapelController::class, 'destroy']);
         });
 
-        // Route::resource('/guru', UserController::class)->middleware('auth');
         //NGATUR ABSEN GURU
         Route::prefix('guru')->group(function () {
             Route::get('/', [UserController::class, 'index']);
@@ -160,7 +158,6 @@ Route::prefix('admin')->group(function () {
             Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
         });
 
-        // Route::resource('/kelas', KelasController::class)->except(['show'])->middleware('auth');
         Route::prefix('/kelas')->group(function () {
             Route::get('/', [KelasController::class, 'index']);
             Route::post('/', [KelasController::class, 'store']);
@@ -170,7 +167,6 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{kela}', [KelasController::class, 'destroy']);
         });
 
-        // Route::resource('/siswa', SiswaController::class)->middleware('auth');
         Route::prefix('/siswa')->group(function () {
             Route::get('/', [SiswaController::class, 'index']);
             Route::post('/', [SiswaController::class, 'store']);
@@ -181,7 +177,6 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{siswa}', [SiswaController::class, 'destroy']);
         });
 
-        // Route::resource('/keteranganPresensi', AbsensiController::class)->except(['show'])->middleware('auth');
         Route::prefix('/keteranganPresensi')->group(function () {
             Route::get('/', [AbsensiController::class, 'index']);
             Route::post('/', [AbsensiController::class, 'store']);

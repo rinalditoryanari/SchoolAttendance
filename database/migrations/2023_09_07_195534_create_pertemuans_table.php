@@ -16,8 +16,9 @@ class CreatePertemuansTable extends Migration
         Schema::create('pertemuans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mapel_id');
-            $table->date("tanggal");
+            $table->date("tanggal")->nullable();
             $table->time('waktu')->nullable();
+            $table->integer("sks")->nullable();
             $table->string('keterangan');
             $table->timestamps();;
         });
