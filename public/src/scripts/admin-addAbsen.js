@@ -12,6 +12,7 @@ document
             if (!isDateDuplicate(document.getElementById("tanggal").value)) {
                 var newColumn = {
                     tanggal: document.getElementById("tanggal").value,
+                    sks: document.getElementById("sks").value,
                 };
                 collumn.push(newColumn);
             } else {
@@ -32,12 +33,21 @@ function isDateDuplicate(newDate) {
 }
 
 //CHECK INPUT
+document.getElementById("sks").addEventListener("change", function (event) {
+    if (this.value <= 0) {
+        this.value = 1;
+        alert("Pastikan SKS melebihi 0");
+    }
+});
+
 function validationPertemuanInput() {
     let error;
     if (document.getElementById("mapel").value == "") {
         error = "Pastikan Mapel Telah Terisi!";
     } else if (!document.getElementById("tanggal").value) {
         error = "Pastikan Tanggal Telah Terisi!";
+    } else if (!document.getElementById("sks").value) {
+        error = "Pastikan SKS Telah Terisi!";
     }
 
     if (error) {
@@ -52,6 +62,7 @@ function editCollumnPertemuan(index) {
     var pertemuan = collumn[index];
     document.getElementById("id").value = index;
     document.getElementById("tanggal").value = pertemuan.tanggal;
+    document.getElementById("sks").value = pertemuan.sks;
 
     document.getElementById("btn-pertemuan-edit").removeAttribute("hidden");
     document
@@ -64,6 +75,7 @@ document
     .addEventListener("click", function () {
         index = document.getElementById("id").value;
         collumn[index]["tanggal"] = document.getElementById("tanggal").value;
+        collumn[index]["sks"] = document.getElementById("sks").value;
         refreshCollumnPertemuan();
         kosongin();
     });
@@ -76,6 +88,7 @@ document
 
 function kosongin() {
     document.getElementById("tanggal").value = null;
+    document.getElementById("sks").value = null;
     document.getElementById("btn-pertemuan-tambah").removeAttribute("hidden");
     document.getElementById("btn-pertemuan-edit").setAttribute("hidden", true);
 }
@@ -94,6 +107,7 @@ function refreshPertemuan() {
     tag += '<th class="table-plus datatable-nosort text-center">No</th>';
     tag += '<th class="text-center">Mapel</th>';
     tag += '<th class="text-center">Tanggal</th>';
+    tag += '<th class="text-center">SKS</th>';
     tag += '<th class="text-center datatable-nosort">Action</th>';
     tag += "</tr>";
     tag += "</thead>";
@@ -111,10 +125,14 @@ function refreshCollumnPertemuan() {
     document.getElementById("table-pertemuan-body").innerHTML = "";
     for (let index = 0; index < collumn.length; index++) {
         let tag = "<tr>";
+
         tag += '<td class="table-plus text-center">' + (index + 1) + "</td>";
+
         tag += '<td class="text-center">';
         tag += mapell;
         tag += "</td>";
+
+        //TANGGAL
         tag += '<td class="text-center">';
         tag += collumn[index]["tanggal"];
         tag +=
@@ -129,15 +147,25 @@ function refreshCollumnPertemuan() {
             '][id_masuk]" value="' +
             collumn[index]["id_masuk"] +
             '">';
-
         tag +=
             '<input type="hidden" name="pertemuan[' +
             index +
             '][id_keluar]" value="' +
             collumn[index]["id_keluar"] +
             '">';
-
         tag += "</td>";
+
+        //SKS
+        tag += '<td class="text-center">';
+        tag += collumn[index]["sks"];
+        tag +=
+            '<input type="hidden" name="pertemuan[' +
+            index +
+            '][sks]" value="' +
+            collumn[index]["sks"] +
+            '">';
+        tag += "</td>";
+
         tag += '<td class="text-center">';
         tag +=
             '<a class="btn btn-sm btn-outline-primary"  onclick="editCollumnPertemuan(' +

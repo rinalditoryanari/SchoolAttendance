@@ -54,14 +54,22 @@
                     </div>
                     <div class="form-group row mb-4">
                         <label class="col-form-label col-12 col-md-2 col-lg-1">Tanggal</label>
-                        <div class="col-sm-12 col-md-4 col-lg-5">
+                        <div class="col-sm-12 col-md-4 col-lg-5 mb-2">
                             <input type="date" class="choose form-control" id="tanggal" name="tanggal">
                         </div>
+
+                        <label class="col-form-label col-12 col-md-2 col-lg-1">SKS</label>
+                        <div class="col-sm-12 col-md-4 col-lg-5 mb-2">
+                            <input type="number" class="choose form-control" id="sks" name="sks">
+                        </div>
+
+
                         <label class="col-form-label col-12 col-md-2 col-lg-1" hidden>Id</label>
                         <div class="col-sm-12 col-md-4 col-lg-5" hidden>
                             <input type="text" class="choose form-control" id="id" name="id">
                         </div>
-                        <div class="d-flex justify-content-end col-sm-12 col-md-5 col-lg-6 p-0">
+
+                        <div class="d-flex justify-content-end col-12 p-2">
                             <button class="btn btn-outline-warning mx-2" type="button" id="btn-pertemuan-kosong">Kosongkan</button>
                             <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-tambah">Tambah</button>
                             <button class="btn btn-outline-info mx-2" type="button" id="btn-pertemuan-edit" hidden>Edit</button>
@@ -138,5 +146,4 @@
 <script src="{{ asset('src/scripts/admin-addMateri.js') }}"></script>
 
 <script src="{{ asset('src/scripts/admin-editAbsen.js') }}"></script>
-<!-- <script src="{{ asset('src/scripts/admin-editMateri.js') }}"></script> -->
 @endpush

@@ -20,6 +20,7 @@
                     <th class="text-center">Kelas</th>
                     <th class="text-center">Pertemuan</th>
                     <th class="text-center">Minimal Pertemuan</th>
+                    <th class="text-center">SKS</th>
                     <th class="text-center datatable-nosort">Presensi</th>
                     <th class="text-center datatable-nosort">Action</th>
                 </tr>
@@ -33,6 +34,7 @@
                     <td>{{ $mapel->kelas->nama }}</td>
                     <td>{{ $mapel->pertemuans_count }}</td>
                     <td>{{ $mapel->presensi_count."/".$mapel->min_pertemuan}}</td>
+                    <td>{{ $mapel->sks_count }}</td>
                     <td class="text-center">
                         <a href="/admin/presensi/{{ $mapel->id }}" class="btn btn-sm btn-outline-primary">Pilih</a>
                     </td>

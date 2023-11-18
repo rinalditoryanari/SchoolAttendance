@@ -6,8 +6,6 @@ document
     .getElementById("btn-materi-tambah")
     .addEventListener("click", function () {
         let materi = document.getElementById("materi").value;
-        console.log(materi);
-
         if (validationMateriInput() == true) {
             if (!isMateriDuplicate(materi)) {
                 var newMateri = {
