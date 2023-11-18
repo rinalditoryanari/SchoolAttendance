@@ -25,6 +25,7 @@
                     <th class="text-center">Mapel</th>
                     <th class="text-center">Guru</th>
                     <th class="text-center">Ket.</th>
+                    <th class="text-center">SKS</th>
                     <th class="text-center datatable-nosort">Lanjutkan</th>
                 </tr>
             </thead>
@@ -37,6 +38,7 @@
                     <td>{{ $pertemuan->mapel->kode }} - {{ $pertemuan->mapel->nama }}</td>
                     <td>{{ $pertemuan->mapel->user->firstName }} {{ $pertemuan->mapel->user->lastName }}</td>
                     <td>{{ $pertemuan->keterangan }}</td>
+                    <td class="text-center">{{ $pertemuan->sks }}</td>
                     <td class="text-center">
                         <a href="/siswa/presensi/{{$pertemuan->mapel->id}}/{{$pertemuan->id}}" class="btn btn-sm btn-outline-primary">Pilih</a>
                     </td>

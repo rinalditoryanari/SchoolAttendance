@@ -16,9 +16,20 @@ class PresensiSiswaController extends Controller
     //menampilkan seluruh mata pelajaran untuk kelas
     public function showMapel()
     {
+        $mapels = Auth::guard('siswa')->user()->kelas->mapels;
+        for ($i = 0; $i < count($mapels); $i++) {
+            $pertemuans = $mapels[$i]->pertemuans;
+            $sks_count = 0;
+            foreach ($pertemuans as $pertemuan) {
+                if ($pertemuan->keterangan == "masuk") {
+                    $sks_count += $pertemuan->sks;
+                }
+            }
+            $mapels[$i]->sks_count =  $sks_count;
+        }
         return view('home.contents.siswa.presensi.index', [
             'title' => 'Pilih Mapel',
-            'mapels' => Auth::guard('siswa')->user()->kelas->mapels,
+            'mapels' => $mapels,
         ]);
     }
 
