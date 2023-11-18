@@ -21,16 +21,21 @@ class PresensiGuruController extends Controller
         for ($i = 0; $i < count($mapels); $i++) {
             $pertemuans = $mapels[$i]->pertemuans;
             $presensi_count = 0;
+            $sks_count = 0;
+
             foreach ($pertemuans as $pertemuan) {
                 if ($pertemuan->keterangan == "masuk") {
                     $presensi = $pertemuan->presensi->where('level', 'guru')->first();
                     if ($presensi && $presensi->absensi_id == 2) {
                         $presensi_count++;
                     };
+                    $sks_count += $pertemuan->sks;
                 }
             }
             $mapels[$i]->presensi_count =  $presensi_count;
+            $mapels[$i]->sks_count =  $sks_count;
         }
+
         return view('home.contents.guru.presensi.index', [
             'title' => 'Pilih Mapel',
             'mapels' => $mapels,

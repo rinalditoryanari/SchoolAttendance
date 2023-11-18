@@ -17,6 +17,7 @@
                     <th class="text-center">Mapel</th>
                     <th class="text-center">Guru</th>
                     <th class="text-center">Ket.</th>
+                    <th class="text-center">SKS</th>
                     <th class="text-center datatable-nosort">Lanjutkan</th>
                 </tr>
             </thead>
@@ -24,11 +25,12 @@
                 @foreach ($pertemuans as $pertemuan)
                 <tr>
                     <td class="table-plus text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $pertemuan->mapel->kelas->nama }}</td>
+                    <td class="text-center">{{ $pertemuan->mapel->kelas->nama }}</td>
                     <td>{{ \Carbon\Carbon::parse($pertemuan->tanggal . ' ' . $pertemuan->waktu)->format('l, j F Y H:i') }}</td>
                     <td>{{ $pertemuan->mapel->kode }} - {{ $pertemuan->mapel->nama }}</td>
                     <td>{{ $pertemuan->mapel->user->firstName }} {{ $pertemuan->mapel->user->lastName }}</td>
-                    <td>{{ $pertemuan->keterangan }}</td>
+                    <td class="text-center">{{ $pertemuan->keterangan }}</td>
+                    <td class="text-center">{{ $pertemuan->sks }}</td>
                     <td class="text-center">
                         <a href="/guru/presensi/{{$pertemuan->mapel->id}}/{{$pertemuan->id}}" class="btn btn-sm btn-outline-primary">Pilih</a>
                     </td>
