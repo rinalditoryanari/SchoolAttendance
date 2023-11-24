@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Dosen extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -20,22 +20,18 @@ class User extends Authenticatable
      */
     protected $guarded = ['id'];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function mapels()
+    {
+        return $this->hasMany(Mapel::class, "guru_id", 'id');
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function presensis()
+    {
+        return $this->hasMany(Presensi::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -10,9 +10,27 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Mahasiswa extends Authenticatable
 {
+    use HasFactory;
     use Notifiable;
 
     protected $table = 'mahasiswas';
+
+    protected $guarded = ['id'];
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
+
+    public function presensis()
+    {
+        return $this->hasMany(Presensi::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     protected $fillable = ['email',  'password'];
 

@@ -14,10 +14,21 @@ class CreateMahasiswasTable extends Migration
     public function up()
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();            
+            $table->id();
+            $table->foreignId('user_id');
+            $table->string('nis')->unique();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('firstName')->nullable();;
+            $table->string('lastName')->nullable();;
+            $table->string('namaAyah')->nullable();;
+            $table->string('namaIbu')->nullable();;
+            $table->string('tmpLahir')->nullable();
+            $table->date('tglLahir')->nullable();
+            $table->enum('jnsKelamin', ['Laki-laki', 'Perempuan'])->nullable();
+            $table->string('alamat')->nullable();
+            $table->foreignId('kelas_id')->nullable();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }
