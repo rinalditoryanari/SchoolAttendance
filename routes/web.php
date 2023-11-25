@@ -11,7 +11,6 @@ use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MahasiswaLoginController;
@@ -114,19 +113,19 @@ Route::prefix('admin')->group(function () {
         Route::prefix('dosen')->group(function () {
             Route::get('/', [DosenController::class, 'showAllDosen'])->name('admin.dosen.showall');
 
-            Route::get('/create', [DosenController::class, 'create'])->name('admin.dosen.add');
-            Route::post('/', [UserController::class, 'store']);
+            Route::get('/create', [DosenController::class, 'showAddDosen'])->name('admin.dosen.showadd');
+            Route::post('/create', [DosenController::class, 'addDosen'])->name('admin.dosen.add');
 
-            Route::get('/{user}', [UserController::class, 'show']);
+            Route::get('/{dosen}', [DosenController::class, 'detailDosen'])->name('admin.dosen.detail');
 
-            Route::get('/{user}/edit', [UserController::class, 'edit']);
-            Route::put('/{user}', [UserController::class, 'update']);
+            Route::get('/{dosen}/edit', [DosenController::class, 'showEditDosen'])->name('admin.dosen.showedit');
+            Route::put('/{dosen}', [DosenController::class, 'update'])->name('admin.dosen.edit');
 
-            Route::delete('/{user}', [UserController::class, 'destroy']);
+            Route::delete('/{dosen}', [DosenController::class, 'delete'])->name('admin.dosen.delete');
 
             Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
-            Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap']);
-            Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap']);
+            Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap'])->name('admin.dosen.rekap.excel');
+            Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap'])->name('admin.dosen.rekap.pdf');
         });
 
         Route::prefix('/kelas')->group(function () {
