@@ -87,6 +87,7 @@ class DosenController extends Controller
         ]);
 
         $dosen->user->password = bcrypt($validatedData['password']);
+        $dosen->user->email = $validatedData['email'];
         $dosen->user->update();
 
         unset($validatedData['password']);
