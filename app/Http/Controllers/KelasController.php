@@ -12,9 +12,9 @@ class KelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function showAllKelas()
     {
-        return view('home.contents.kelas.index', [
+        return view('contents.admin.kelas.all-kelas', [
             'title' => 'Data Kelas',
             'kelas' => Kelas::all()
         ]);
@@ -25,9 +25,9 @@ class KelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showAddKelas()
     {
-        return view('home.contents.kelas.create', [
+        return view('contents.admin.kelas.add-kelas', [
             'title' => 'Tambah Data Kelas',
         ]);
     }
@@ -38,7 +38,7 @@ class KelasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function addKelas(Request $request)
     {
         $validatedData = $request->validate([
             'kode' => 'required|max:2|unique:kelas',
@@ -47,18 +47,7 @@ class KelasController extends Controller
 
         Kelas::create($validatedData);
 
-        return redirect('/admin/kelas')->with('success', 'Kelas baru telah ditambahkan!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Kelas  $kelas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Kelas $kelas)
-    {
-        //
+        return redirect()->route('admin.kelas.showall')->with('success', 'Kelas baru telah ditambahkan!');
     }
 
     /**
@@ -67,11 +56,11 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Kelas $kela)
+    public function showEditKelas(Kelas $kelas)
     {
-        return view('home.contents.kelas.edit', [
+        return view('contents.admin.kelas.edit-kelas', [
             'title' => 'Edit Data Kelas',
-            'kelas' => $kela,
+            'kelas' => $kelas,
         ]);
     }
 
@@ -82,16 +71,16 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kelas $kela)
+    public function update(Request $request, Kelas $kelas)
     {
         $validatedData = $request->validate([
             'kode' => 'required|max:2',
             'nama' => 'required|max:255',
         ]);
 
-        Kelas::where('id', $kela->id)->update($validatedData);
+        Kelas::where('id', $kelas->id)->update($validatedData);
 
-        return redirect('/admin/kelas')->with('success', 'Data kelas telah diupdate!');
+        return redirect()->route('admin.kelas.showall')->with('success', 'Data kelas telah diupdate!');
     }
 
     /**
@@ -100,9 +89,9 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kelas $kela)
+    public function delete(Kelas $kelas)
     {
-        Kelas::destroy($kela->id);
-        return redirect('/admin/kelas')->with('success', 'Data kelas telah dihapus!');
+        Kelas::destroy($kelas->id);
+        return redirect()->route('admin.kelas.showall')->with('success', 'Data kelas telah dihapus!');
     }
 }

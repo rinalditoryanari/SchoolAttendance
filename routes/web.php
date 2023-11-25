@@ -129,12 +129,12 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::prefix('/kelas')->group(function () {
-            Route::get('/', [KelasController::class, 'index']);
-            Route::post('/', [KelasController::class, 'store']);
-            Route::get('/create', [KelasController::class, 'create']);
-            Route::get('/{kela}/edit', [KelasController::class, 'edit']);
-            Route::put('/{kela}', [KelasController::class, 'update']);
-            Route::delete('/{kela}', [KelasController::class, 'destroy']);
+            Route::get('/', [KelasController::class, 'showAllKelas'])->name('admin.kelas.showall');
+            Route::post('/', [KelasController::class, 'addKelas'])->name('admin.kelas.add');
+            Route::get('/create', [KelasController::class, 'showAddKelas'])->name('admin.kelas.showadd');
+            Route::get('/{kelas}/edit', [KelasController::class, 'showEditKelas'])->name('admin.kelas.showedit');
+            Route::put('/{kelas}', [KelasController::class, 'update'])->name('admin.kelas.edit');
+            Route::delete('/{kelas}', [KelasController::class, 'delete'])->name('admin.kelas.delete');
         });
 
         Route::prefix('/siswa')->group(function () {
