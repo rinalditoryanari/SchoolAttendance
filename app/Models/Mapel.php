@@ -11,9 +11,9 @@ class Mapel extends Model
 
     protected $guarded = ['id'];
 
-    public function user()
+    public function dosen()
     {
-        return $this->belongsTo(User::class, 'guru_id', 'id');
+        return $this->belongsTo(Dosen::class, 'dosen_id', 'id');
     }
 
     public function kelas()

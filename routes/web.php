@@ -102,12 +102,12 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::prefix('/mapel')->group(function () {
-            Route::get('/', [MapelController::class, 'index']);
-            Route::post('/', [MapelController::class, 'store']);
-            Route::get('/create', [MapelController::class, 'create']);
-            Route::get('/{mapel}/edit', [MapelController::class, 'edit']);
-            Route::put('/{mapel}', [MapelController::class, 'update']);
-            Route::delete('/{mapel}', [MapelController::class, 'destroy']);
+            Route::get('/', [MapelController::class, 'showAllMapel'])->name('admin.mapel.showall');
+            Route::post('/', [MapelController::class, 'addMapel'])->name('admin.mapel.add');
+            Route::get('/create', [MapelController::class, 'showAddMapel'])->name('admin.mapel.showadd');
+            Route::get('/{mapel}/edit', [MapelController::class, 'showEditMapel'])->name('admin.mapel.showedit');
+            Route::put('/{mapel}', [MapelController::class, 'update'])->name('admin.mapel.edit');
+            Route::delete('/{mapel}', [MapelController::class, 'destroy'])->name('admin.mapel.delete');
         });
 
         //NGATUR ABSEN GURU

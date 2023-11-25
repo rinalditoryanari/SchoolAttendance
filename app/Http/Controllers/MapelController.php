@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\User;
@@ -15,12 +16,9 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function showAllMapel()
     {
-        // $mapel = Mapel::find(1);
-        // dd($mapel, $mapel->user);
-        // dd();
-        return view('home.contents.mapel.index', [
+        return view('contents.admin.mapel.all-mapel', [
             'title' => 'Data Mapel',
             'mapels' => Mapel::all()
         ]);
@@ -31,12 +29,12 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showAddMapel()
     {
-        return view('home.contents.mapel.create', [
+        return view('contents.admin.mapel.add-mapel', [
             'title' => 'Tambah Data Mapel',
             'kelas' => Kelas::all(),
-            'gurus' => User::all()
+            'dosens' => Dosen::all()
         ]);
     }
 
@@ -46,29 +44,18 @@ class MapelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function addMapel(Request $request)
     {
         $validatedData = $request->validate([
             'kode' => 'required|max:10|unique:mapels',
             'nama' => 'required|max:255',
             'kelas_id' => 'required',
-            'guru_id' => 'required',
+            'dosen_id' => 'required',
         ]);
 
         Mapel::create($validatedData);
 
-        return redirect('/admin/mapel')->with('success', 'Mapel baru telah ditambahkan!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Mapel  $mapel
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Mapel $mapel)
-    {
-        //
+        return redirect()->route('admin.mapel.showall')->with('success', 'Mapel baru telah ditambahkan!');
     }
 
     /**
@@ -77,12 +64,12 @@ class MapelController extends Controller
      * @param  \App\Models\Mapel  $mapel
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mapel $mapel)
+    public function showEditMapel(Mapel $mapel)
     {
-        return view('home.contents.mapel.edit', [
+        return view('contents.admin.mapel.edit-mapel', [
             'title' => 'Edit Data Mapel',
             'mapel' => $mapel,
-            'gurus' => User::all(),
+            'dosens' => Dosen::all(),
             'kelas' => Kelas::all(),
         ]);
     }
@@ -100,12 +87,12 @@ class MapelController extends Controller
             'kode' => 'required|max:10',
             'nama' => 'required|max:255',
             'kelas_id' => 'required',
-            'guru_id' => 'required',
+            'dosen_id' => 'required',
         ]);
 
         Mapel::where('id', $mapel->id)->update($validatedData);
 
-        return redirect('/admin/mapel')->with('success', 'Data Mapel telah diupdate!');
+        return redirect()->route('admin.mapel.showall')->with('success', 'Data Mapel telah diupdate!');
     }
 
     /**
@@ -117,6 +104,6 @@ class MapelController extends Controller
     public function destroy(Mapel $mapel)
     {
         Mapel::destroy($mapel->id);
-        return redirect('/admin/mapel')->with('success', 'Data mapel telah dihapus!');
+        return redirect()->route('admin.mapel.showall')->with('success', 'Data mapel telah dihapus!');
     }
 }
