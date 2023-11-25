@@ -37,8 +37,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('auth');
 Route::get('/', [LoginController::class, 'redirect'])->middleware('auth');
 
 // Siswa Export and Import Routes
-Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
-Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
+Route::get('export', [MahasiswaController::class, 'export'])->name('export')->middleware('admin');
+Route::post('import', [MahasiswaController::class, 'import'])->name('import')->middleware('admin');
 
 // // Profile Routes
 Route::prefix('/profile')->group(function () {

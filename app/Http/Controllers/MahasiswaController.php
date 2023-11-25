@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MhswExport;
+use App\Imports\MhswImport;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
@@ -111,5 +114,23 @@ class MahasiswaController extends Controller
     {
         Mahasiswa::destroy($mahasiswa->id);
         return redirect()->route('admin.mahasiswa.showall')->with('success', 'Data mahasiswa telah dihapus!');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function export()
+    {
+        return Excel::download(new MhswExport, 'mahasiswa.xlsx');
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function import()
+    {
+        Excel::import(new MhswImport, request()->file('file'));
+
+        return back();
     }
 }
