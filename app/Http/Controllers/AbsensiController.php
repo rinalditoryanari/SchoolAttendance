@@ -12,9 +12,9 @@ class AbsensiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function showAllAbsensi()
     {
-        return view('home.contents.absensi.index', [
+        return view('contents.admin.absensi.all-ket-absensi', [
             'title' => 'Data Keterangan Absensi',
             'absensis' => Absensi::all()
         ]);
@@ -25,9 +25,9 @@ class AbsensiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showAddAbsensi()
     {
-        return view('home.contents.absensi.create', [
+        return view('contents.admin.absensi.add-ket-absensi', [
             'title' => 'Tambah Data Keterangan Presensi',
         ]);
     }
@@ -38,7 +38,7 @@ class AbsensiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function addAbsensi(Request $request)
     {
         $validatedData = $request->validate([
             'kode' => 'required|max:3|unique:absensis',
@@ -47,18 +47,7 @@ class AbsensiController extends Controller
 
         Absensi::create($validatedData);
 
-        return redirect('/admin/keteranganPresensi')->with('success', 'Keterangan presensi baru telah ditambahkan!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Absensi  $absensi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Absensi $absensi)
-    {
-        //
+        return redirect()->route('admin.absensi.showall')->with('success', 'Keterangan presensi baru telah ditambahkan!');
     }
 
     /**
@@ -67,11 +56,11 @@ class AbsensiController extends Controller
      * @param  \App\Models\Absensi  $absensi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Absensi $keteranganPresensi)
+    public function showEditAbsensi(Absensi $absensi)
     {
-        return view('home.contents.absensi.edit', [
+        return view('contents.admin.absensi.edit-ket-absensi', [
             'title' => 'Edit Data Keterangan Presensi',
-            'absensi' => $keteranganPresensi,
+            'absensi' => $absensi,
         ]);
     }
 
@@ -82,16 +71,16 @@ class AbsensiController extends Controller
      * @param  \App\Models\Absensi  $absensi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Absensi $keteranganPresensi)
+    public function update(Request $request, Absensi $absensi)
     {
         $validatedData = $request->validate([
             'kode' => 'required|max:3',
             'keterangan' => 'required|max:255',
         ]);
 
-        Absensi::where('id', $keteranganPresensi->id)->update($validatedData);
+        Absensi::where('id', $absensi->id)->update($validatedData);
 
-        return redirect('/admin/keteranganPresensi')->with('success', 'Data keterangan presensi telah diupdate!');
+        return redirect()->route('admin.absensi.showall')->with('success', 'Data keterangan presensi telah diupdate!');
     }
 
     /**
@@ -100,9 +89,9 @@ class AbsensiController extends Controller
      * @param  \App\Models\Absensi  $absensi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Absensi $keteranganPresensi)
+    public function destroy(Absensi $absensi)
     {
-        Absensi::destroy($keteranganPresensi->id);
-        return redirect('/admin/keteranganPresensi')->with('success', 'Data keterangan presensi telah dihapus!');
+        Absensi::destroy($absensi->id);
+        return redirect()->route('admin.absensi.showall')->with('success', 'Data keterangan presensi telah dihapus!');
     }
 }

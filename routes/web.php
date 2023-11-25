@@ -148,12 +148,12 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::prefix('/keteranganPresensi')->group(function () {
-            Route::get('/', [AbsensiController::class, 'index']);
-            Route::post('/', [AbsensiController::class, 'store']);
-            Route::get('/create', [AbsensiController::class, 'create']);
-            Route::get('/{keteranganPresensi}/edit', [AbsensiController::class, 'edit']);
-            Route::put('/{keteranganPresensi}', [AbsensiController::class, 'update']);
-            Route::delete('/{keteranganPresensi}', [AbsensiController::class, 'destroy']);
+            Route::get('/', [AbsensiController::class, 'showAllAbsensi'])->name('admin.absensi.showall');
+            Route::post('/', [AbsensiController::class, 'addAbsensi'])->name('admin.absensi.add');
+            Route::get('/create', [AbsensiController::class, 'showAddAbsensi'])->name('admin.absensi.showadd');
+            Route::get('/{absensi}/edit', [AbsensiController::class, 'showEditAbsensi'])->name('admin.absensi.showedit');
+            Route::put('/{absensi}', [AbsensiController::class, 'update'])->name('admin.absensi.edit');
+            Route::delete('/{absensi}', [AbsensiController::class, 'destroy'])->name('admin.absensi.delete');
         });
     });
 });
