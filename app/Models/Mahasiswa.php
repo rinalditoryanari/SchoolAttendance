@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-class Mahasiswa extends Authenticatable
+class Mahasiswa extends Model
 {
     use HasFactory;
     use Notifiable;

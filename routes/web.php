@@ -1,25 +1,21 @@
 <?php
 
-use App\Models\Kelas;
-use App\Models\Mapel;
-use App\Models\Presensi;
-use App\Models\Siswa;
-use App\Models\User;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AdminDosenController;
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\GuruAdminController;
 use App\Http\Controllers\KelasController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PresensiAdminController;
-use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Auth\SiswaLoginController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\DosenLoginController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\MahasiswaLoginController;
+use App\Http\Controllers\DosenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,56 +30,27 @@ use Illuminate\Support\Facades\Route;
 */
 // Login Routes
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'authenticate']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/login', [LoginController::class, 'authenticate'])->name('auth');
+Route::post('/logout', [LoginController::class, 'logout'])->name('auth');
 
 // Home Routes
-Route::get('/', function () {
-    if (Auth::guard('siswa')->user()) {
-        return redirect('/siswa/index');
-    } elseif (Auth::user()) {
-        return view('home.contents.welcome', [
-            'title' => 'Dashboard',
-            'siswa' => Siswa::count(),
-            'guru' => User::count(),
-            'mapel' => Mapel::count(),
-            'kelas' => Kelas::count(),
-            'presensis' => Presensi::where('guru_id', 0)->where('absensi_id', '!=', 2)->latest()->get()
-        ]);
-    } else {
-        return redirect('/login');
-    }
-});
+Route::get('/', [LoginController::class, 'redirect'])->middleware('auth');
 
 // Siswa Export and Import Routes
 Route::get('export', [SiswaController::class, 'export'])->name('export')->middleware('auth');
 Route::post('import', [SiswaController::class, 'import'])->name('import')->middleware('auth');
 
-// // Presensi Routes
-// Route::get('/presensi', [PresensiController::class, 'indexinti'])->middleware('auth');
-// Route::post('/presensi', [PresensiController::class, 'store'])->middleware('auth');
-// Route::get('/presensi/{mapel}/create', [PresensiController::class, 'create'])->middleware('auth');
-// Route::get('/mapel/{id}/presensi/{created_at}', [PresensiController::class, 'show'])->middleware('auth');
-
-// // Riwayat Presensi Routes
-// Route::resource('/riwayatPresensi', PresensiController::class)->only('index', 'show')->middleware('auth');
-
 // // Profile Routes
 Route::prefix('/profile')->group(function () {
-    Route::get('/{profile}', [ProfileController::class, 'show']);
+    Route::get('/{profile}', [ProfileController::class, 'show'])->name('profile');
 });
 
 //FOR SISWA USER
-Route::prefix('siswa')->group(function () {
-    Route::get('/login', [SiswaLoginController::class, 'showLoginForm'])->name('siswa.login')->middleware('guest');;
-    Route::post('/', [SiswaLoginController::class, 'login'])->name('siswa.login.post');
-
-    Route::middleware(['siswa'])->group(function () {
-        Route::get('/logout', [SiswaLoginController::class, 'logout'])->name('siswa.logout');
-
+Route::prefix('mahasiswa')->group(function () {
+    Route::middleware(['mahasiswa', 'auth'])->group(function () {
         //Admin Home page after login
-        Route::get('/index', [SiswaLoginController::class, 'index'])->name('siswa.index');
-        Route::get('/presensi', [PresensiSiswaController::class, 'showMapel']);
+        Route::get('/index', [MahasiswaLoginController::class, 'index'])->name('siswa.index');
+        Route::get('/presensi', [PresensiSiswaController::class, 'showMapel'])->name('siswa.presensi');
         Route::get('/presensi/{mapel}', [PresensiSiswaController::class, 'showTgl']);
         Route::get('/presensi/{mapel}/{pertemuan}', [PresensiSiswaController::class, 'showPresensi']);
         Route::post('/presensi/', [PresensiSiswaController::class, 'inputAbsensi']);
@@ -91,8 +58,10 @@ Route::prefix('siswa')->group(function () {
 });
 
 // FOR GURU USER
-Route::prefix('guru')->group(function () {
-    Route::middleware(['auth'])->group(function () {
+Route::prefix('dosen')->group(function () {
+    Route::middleware(['dosen', 'auth'])->group(function () {
+        Route::get('/index', [DosenLoginController::class, 'dashboard']);
+
         Route::get('/presensi', [PresensiGuruController::class, 'showMapel']);
         Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl']);
         Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi']);
@@ -103,7 +72,9 @@ Route::prefix('guru')->group(function () {
 
 //FOR ADMIN USER
 Route::prefix('admin')->group(function () {
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['admin', 'auth'])->group(function () {
+        Route::get('/index', [AdminLoginController::class, 'dashboard']);
+
         //NGATUR PRESENSI
         Route::prefix('presensi')->group(function () {
             Route::get('/', [PresensiAdminController::class, 'showMapel']);
@@ -140,10 +111,10 @@ Route::prefix('admin')->group(function () {
         });
 
         //NGATUR ABSEN GURU
-        Route::prefix('guru')->group(function () {
-            Route::get('/', [UserController::class, 'index']);
+        Route::prefix('dosen')->group(function () {
+            Route::get('/', [DosenController::class, 'showAllDosen'])->name('admin.dosen.showall');
 
-            Route::get('/create', [UserController::class, 'create']);
+            Route::get('/create', [DosenController::class, 'create'])->name('admin.dosen.add');
             Route::post('/', [UserController::class, 'store']);
 
             Route::get('/{user}', [UserController::class, 'show']);

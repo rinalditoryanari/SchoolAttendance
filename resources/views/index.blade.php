@@ -49,18 +49,18 @@
 		</div>
 	</div> --}}
 
-	@include('home.layouts.header')
+	@include('layouts.header')
 
-	@include('home.layouts.right-sidebar')
+	@include('layouts.right-sidebar')
 
-	@include('home.layouts.left-side-bar')
+	@include('layouts.left-side-bar')
 	<div class="mobile-menu-overlay"></div>
 
 	<div class="main-container">
 		<div class="xs-pd-20-10 pd-ltr-20">
 			@yield('content')
 
-			@include('home.layouts.footer')
+			@include('layouts.footer')
 		</div>
 	</div>
 	<!-- js -->
