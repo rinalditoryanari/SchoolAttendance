@@ -63,7 +63,7 @@
                         <li><a class="{{ Request::is('mapel*') ? 'active' : '' }}" href="/admin/mapel">Mapel</a></li>
                         <li><a class="{{ Request::is('dosen*') ? 'active' : '' }}" href="/admin/dosen">Dosen</a></li>
                         <li><a class="{{ Request::is('kelas*') ? 'active' : '' }}" href="/admin/kelas">Kelas</a></li>
-                        <li><a class="{{ Request::is('siswa*') ? 'active' : '' }}" href="/admin/siswa">Siswa</a></li>
+                        <li><a class="{{ Request::is('mahasiswa*') ? 'active' : '' }}" href="/admin/mahasiswa">Mahasiswa</a></li>
                         <li><a class="{{ Request::is('keteranganPresensi*') ? 'active' : '' }}" href="/admin/keteranganPresensi">Keterangan Absensi</a></li>
                     </ul>
                 </li>

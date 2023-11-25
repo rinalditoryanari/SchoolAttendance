@@ -31,8 +31,4 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    protected $fillable = ['email',  'password'];
-
-    protected $hidden = ['password',  'remember_token'];
 }

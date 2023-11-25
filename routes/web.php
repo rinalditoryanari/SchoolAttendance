@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MahasiswaLoginController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -137,14 +138,14 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{kelas}', [KelasController::class, 'delete'])->name('admin.kelas.delete');
         });
 
-        Route::prefix('/siswa')->group(function () {
-            Route::get('/', [SiswaController::class, 'index']);
-            Route::post('/', [SiswaController::class, 'store']);
-            Route::get('/create', [SiswaController::class, 'create']);
-            Route::get('/{siswa}', [SiswaController::class, 'show']);
-            Route::get('/{siswa}/edit', [SiswaController::class, 'edit']);
-            Route::put('/{siswa}', [SiswaController::class, 'update']);
-            Route::delete('/{siswa}', [SiswaController::class, 'destroy']);
+        Route::prefix('/mahasiswa')->group(function () {
+            Route::get('/', [MahasiswaController::class, 'showAllMhsw'])->name('admin.mahasiswa.showall');
+            Route::post('/', [MahasiswaController::class, 'addMhsw'])->name('admin.mahasiswa.add');
+            Route::get('/create', [MahasiswaController::class, 'showAddMhsw'])->name('admin.mahsiswa.showadd');
+            Route::get('/{mahasiswa}', [MahasiswaController::class, 'detailMhsw'])->name('admin.mahasiswa.detail');
+            Route::get('/{mahasiswa}/edit', [MahasiswaController::class, 'showEditMhsw'])->name('admin.mahasiswa.showedit');
+            Route::put('/{mahasiswa}', [MahasiswaController::class, 'update'])->name('admin.mahasiswa.edit');
+            Route::delete('/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('admin.mahasiswa.delete');
         });
 
         Route::prefix('/keteranganPresensi')->group(function () {
