@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\Auth\AdminLoginController;
-use App\Http\Controllers\GuruAdminController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PresensiAdminController;
