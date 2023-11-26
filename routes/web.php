@@ -122,9 +122,9 @@ Route::prefix('admin')->group(function () {
 
             Route::delete('/{dosen}', [DosenController::class, 'delete'])->name('admin.dosen.delete');
 
-            Route::get('/{guru}/rekap/review', [GuruAdminController::class, 'reviewRekap']);
-            Route::get('/{guru}/rekap/excel', [GuruAdminController::class, 'excelRekap'])->name('admin.dosen.rekap.excel');
-            Route::get('/{guru}/rekap/pdf', [GuruAdminController::class, 'pdfRekap'])->name('admin.dosen.rekap.pdf');
+            Route::get('/{dosen}/rekap/review', [DosenController::class, 'reviewRekap']);
+            Route::get('/{dosen}/rekap/excel', [DosenController::class, 'excelRekap'])->name('admin.dosen.rekap.excel');
+            Route::get('/{dosen}/rekap/pdf', [DosenController::class, 'pdfRekap'])->name('admin.dosen.rekap.pdf');
         });
 
         Route::prefix('/kelas')->group(function () {
