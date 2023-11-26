@@ -22,7 +22,7 @@ class Dosen extends Model
 
     public function mapels()
     {
-        return $this->hasMany(Mapel::class, "guru_id", 'id');
+        return $this->hasMany(Mapel::class, "dosen_id", 'id');
     }
 
     public function presensis()

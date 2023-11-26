@@ -60,10 +60,10 @@ Route::prefix('dosen')->group(function () {
     Route::middleware(['dosen', 'auth'])->group(function () {
         Route::get('/index', [DosenLoginController::class, 'dashboard']);
 
-        Route::get('/presensi', [PresensiGuruController::class, 'showMapel']);
-        Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl']);
-        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi']);
-        Route::post('/presensi/', [PresensiGuruController::class, 'inputAbsensi']);
+        Route::get('/presensi', [PresensiGuruController::class, 'showMapel'])->name('dosen.presensi.showmapel');
+        Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl'])->name('dosen.presensi.detail');
+        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi'])->name('dosen.presensi.pertemuan');
+        Route::post('/presensi/', [PresensiGuruController::class, 'inputAbsensi'])->name('dosen.presensi.absensi');
     });
 });
 

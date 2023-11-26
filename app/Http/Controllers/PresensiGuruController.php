@@ -25,7 +25,7 @@ class PresensiGuruController extends Controller
 
             foreach ($pertemuans as $pertemuan) {
                 if ($pertemuan->keterangan == "masuk") {
-                    $presensi = $pertemuan->presensi->where('level', 'guru')->first();
+                    $presensi = $pertemuan->presensi->where('level', 'dosen')->first();
                     if ($presensi && $presensi->absensi_id == 2) {
                         $presensi_count++;
                     };
@@ -83,7 +83,6 @@ class PresensiGuruController extends Controller
             $pertemuan->waktu = now()->format('H:i');
             $pertemuan->save();
 
-
             //ambil materi dari masuk
             $pertemuan = Pertemuan::select('id')
                 ->where('mapel_id', $pertemuan->mapel->id)
@@ -93,7 +92,7 @@ class PresensiGuruController extends Controller
 
             $materi = Presensi::select("materi_id")
                 ->where('pertemuan_id', $pertemuan->id)
-                ->where('level', 'guru')
+                ->where('level', 'dosen')
                 ->first();
 
             $materi_id = $materi->materi->id;
@@ -110,13 +109,13 @@ class PresensiGuruController extends Controller
 
         Presensi::updateOrInsert([
             'pertemuan_id' => request('pertemuan'),
-            'guru_id' => $person['guru'],
-            'level' => 'guru',
+            'dosen_id' => $person['dosen'],
+            'level' => 'dosen',
         ], [
             'materi_id' => $materi_id,
             'waktu_absen' => $now->format('Y-m-d H:i:s'),
             'absensi_id' => $person['kehadiran'],
         ]);
-        return redirect('/guru/presensi/' . request("mapel"));
+        return redirect()->route('dosen.presensi.detail',  ['mapel' => request("mapel")]);
     }
 }
