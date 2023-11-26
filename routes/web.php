@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\AdminDosenController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\GuruAdminController;
 use App\Http\Controllers\KelasController;
@@ -10,7 +9,6 @@ use App\Http\Controllers\PresensiAdminController;
 use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MahasiswaLoginController;
@@ -77,16 +75,16 @@ Route::prefix('admin')->group(function () {
 
         //NGATUR PRESENSI
         Route::prefix('presensi')->group(function () {
-            Route::get('/', [PresensiAdminController::class, 'showMapel']);
+            Route::get('/', [PresensiAdminController::class, 'showMapel'])->name('admin.presensi.showmapel');
 
-            Route::get('/tambah', [PresensiAdminController::class, 'showTambah']);
-            Route::post('/tambah', [PresensiAdminController::class, 'inputTambah']);
+            Route::get('/tambah', [PresensiAdminController::class, 'showTambah'])->name('admin.presensi.showadd');
+            Route::post('/tambah', [PresensiAdminController::class, 'inputTambah'])->name('admin.presensi.add');
 
-            Route::get('/{mapel}', [PresensiAdminController::class, 'showTgl']);
-            Route::get('/{mapel}/edit', [PresensiAdminController::class, 'showEdit']);
-            Route::post('/{mapel}/edit', [PresensiAdminController::class, 'inputEdit']);
+            Route::get('/{mapel}', [PresensiAdminController::class, 'showTgl'])->name('admin.presensi.detail');
+            Route::get('/{mapel}/edit', [PresensiAdminController::class, 'showEdit'])->name('admin.presensi.showedit');
+            Route::post('/{mapel}/edit', [PresensiAdminController::class, 'inputEdit'])->name('admin.presensi.edit');
 
-            Route::get('/{mapel}/hapus', [PresensiAdminController::class, 'deletePresensi']);
+            Route::get('/{mapel}/hapus', [PresensiAdminController::class, 'deletePresensi'])->name('admin.presensi.delete');
 
             Route::get('/{mapel}/rekap/guru', [PresensiAdminController::class, 'showRekapGuru']);
             Route::get('/{mapel}/rekap/siswa', [PresensiAdminController::class, 'showPilihRekapSiswa']);

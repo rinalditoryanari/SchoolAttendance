@@ -40,7 +40,7 @@ class PresensiAdminController extends Controller
             $mapels[$i]->presensi_count =  $presensi_count;
             $mapels[$i]->sks_count =  $sks_count;
         }
-        return view('home.contents.admin.presensi.index', [
+        return view('contents.admin.presensi.all-mapel-presensi', [
             'title' => 'Pilih Jadwal Mapel',
             'mapels' => $mapels,
         ]);
@@ -51,7 +51,7 @@ class PresensiAdminController extends Controller
     {
         $mapel = Mapel::doesntHave('pertemuans')->get();
 
-        return view('home.contents.admin.presensi.create', [
+        return view('contents.admin.presensi.create-mapel-presensi', [
             'title' => 'Tambah Presensi Mapel',
             'mapels' => $mapel,
         ]);
@@ -107,13 +107,13 @@ class PresensiAdminController extends Controller
             ]);
         }
 
-        return redirect('/admin/presensi/');
+        return redirect()->route('admin.presensi.showmapel');
     }
 
     //menampilkan tanggal pertemuan mapel
     public function showTgl(Mapel $mapel)
     {
-        return view('home.contents.admin.presensi.tanggal', [
+        return view('contents.admin.presensi.detail-mapel-presensi', [
             'title' => 'Pilih Tanggal Presensi',
             'mapel' => $mapel,
             'pertemuans' => $mapel->pertemuans,
@@ -140,7 +140,7 @@ class PresensiAdminController extends Controller
 
         $materis = $mapel->materis;
 
-        return view('home.contents.admin.presensi.edit', [
+        return view('contents.admin.presensi.edit-mapel-presensi', [
             'title' => 'Edit Presensi Mapel',
             'mapel' => $mapel,
             'pertemuans' => json_encode($pertemuans),
@@ -243,7 +243,7 @@ class PresensiAdminController extends Controller
         foreach ($existingMateri as $materi) {
             $materi->delete();
         }
-        return redirect('/admin/presensi/');
+        return redirect()->route('admin.presensi.showmapel');
     }
 
 
@@ -260,7 +260,7 @@ class PresensiAdminController extends Controller
             $pertemuan->delete();
         }
 
-        return redirect('/admin/presensi/');
+        return redirect()->route('admin.presensi.showmapel');
     }
 
     public function showRekapGuru(Mapel $mapel)
