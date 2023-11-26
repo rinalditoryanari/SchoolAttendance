@@ -11,9 +11,9 @@ class Kelas extends Model
 
     protected $guarded = ['id'];
 
-    public function siswas()
+    public function mahasiswas()
     {
-        return $this->hasMany(Siswa::class,'kelas_id', 'id');
+        return $this->hasMany(Mahasiswa::class, 'kelas_id', 'id');
     }
 
     public function mapels()

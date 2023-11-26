@@ -7,13 +7,13 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PresensiAdminController;
 use App\Http\Controllers\PresensiGuruController;
-use App\Http\Controllers\PresensiSiswaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MahasiswaLoginController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\PresensiMahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,10 +48,10 @@ Route::prefix('mahasiswa')->group(function () {
     Route::middleware(['mahasiswa', 'auth'])->group(function () {
         //Admin Home page after login
         Route::get('/index', [MahasiswaLoginController::class, 'index'])->name('siswa.index');
-        Route::get('/presensi', [PresensiSiswaController::class, 'showMapel'])->name('siswa.presensi');
-        Route::get('/presensi/{mapel}', [PresensiSiswaController::class, 'showTgl']);
-        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiSiswaController::class, 'showPresensi']);
-        Route::post('/presensi/', [PresensiSiswaController::class, 'inputAbsensi']);
+        Route::get('/presensi', [PresensiMahasiswaController::class, 'showMapel'])->name('mahasiswa.presensi.showmapel');
+        Route::get('/presensi/{mapel}', [PresensiMahasiswaController::class, 'showTgl'])->name('mahasiswa.presensi.detail');
+        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiMahasiswaController::class, 'showPresensi'])->name('mahasiswa.presensi.pertemuan');
+        Route::post('/presensi/', [PresensiMahasiswaController::class, 'inputAbsensi'])->name('mahasiswa.presensi.absensi');
     });
 });
 
