@@ -17,10 +17,10 @@ class AdminLoginController extends Controller
         return view('contents.admin.dashboard.dashboard', [
             'title' => 'Dashboard',
             'siswa' => Mahasiswa::count(),
-            'guru' => Dosen::count(),
+            'dosen' => Dosen::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),
-            'presensis' => Presensi::where('guru_id', 0)->where('absensi_id', '!=', 2)->latest()->get()
+            'presensis' => Presensi::where('dosen_id', 0)->where('absensi_id', '!=', 2)->latest()->get()
         ]);
     }
 }

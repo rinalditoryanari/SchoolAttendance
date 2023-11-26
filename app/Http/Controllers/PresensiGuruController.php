@@ -17,7 +17,7 @@ class PresensiGuruController extends Controller
     //menampilkan seluruh mata pelajaran untuk kelas
     public function showMapel()
     {
-        $mapels = Auth::user()->mapels;
+        $mapels = Auth::user()->dosen->mapels;
         for ($i = 0; $i < count($mapels); $i++) {
             $pertemuans = $mapels[$i]->pertemuans;
             $presensi_count = 0;
@@ -36,7 +36,7 @@ class PresensiGuruController extends Controller
             $mapels[$i]->sks_count =  $sks_count;
         }
 
-        return view('home.contents.guru.presensi.index', [
+        return view('contents.dosen.presensi.all-mapel-presensi', [
             'title' => 'Pilih Mapel',
             'mapels' => $mapels,
         ]);
@@ -45,7 +45,7 @@ class PresensiGuruController extends Controller
     //menampilkan tanggal pertemuan mapel
     public function showTgl(Mapel $mapel)
     {
-        return view('home.contents.guru.presensi.tanggal', [
+        return view('contents.dosen.presensi.detail-mapel-presensi', [
             'title' => 'Pilih Tanggal Presensi',
             'pertemuans' => $mapel->pertemuans,
         ]);
@@ -63,13 +63,13 @@ class PresensiGuruController extends Controller
             $telat = false;
         }
 
-        return view('home.contents.guru.presensi.create', [
+        return view('contents.dosen.presensi.create-mapel-presensi', [
             'title' => 'Presensi',
             'mapel' => $mapel,
             'pertemuan' => $pertemuan,
-            'guru' => Auth::user(),
+            'dosen' => Auth::user()->dosen,
             'telat' => $telat,
-            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'guru')->first(),
+            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'dosen')->first(),
             'absensis' => Absensi::all(),
             'materis' => Materi::select()->where('mapel_id', $mapel->id)->get(),
         ]);

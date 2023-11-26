@@ -19,7 +19,7 @@ class CreatePresensisTable extends Migration
             $table->dateTime('waktu_absen');
             $table->string('level');
             $table->foreignId('siswa_id');
-            $table->foreignId('guru_id');
+            $table->foreignId('dosen_id');
             $table->foreignId('materi_id');
             $table->foreignId('absensi_id');
             $table->timestamps();

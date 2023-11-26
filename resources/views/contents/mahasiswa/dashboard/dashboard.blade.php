@@ -35,8 +35,8 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{ $guru }}</div>
-                    <div class="font-14 text-secondary weight-500">Total Guru</div>
+                    <div class="weight-700 font-24 text-dark">{{ $dosen }}</div>
+                    <div class="font-14 text-secondary weight-500">Total Dosen</div>
                 </div>
                 <div class="widget-icon">
                     <div class="icon"><i class="icon-copy dw dw-user3" aria-hidden="true"></i></div>
@@ -69,7 +69,7 @@
                 <th class="text-center">Keterangan</th>
                 <th class="text-center">Kelas Siswa</th>
                 <th class="text-center">Mapel</th>
-                <th class="text-center">Guru</th>
+                <th class="text-center">Dosen</th>
                 <th class="text-center">Tanggal</th>
             </tr>
         </thead>

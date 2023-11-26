@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\Mapel;
@@ -32,7 +33,7 @@ class MahasiswaLoginController extends Controller
         return view('contents.mahasiswa.dashboard.dashboard', [
             'title' => 'dashboard',
             'siswa' => Mahasiswa::count(),
-            'guru' => User::count(),
+            'dosen' => Dosen::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),
             'presensis' => $presensiss,
