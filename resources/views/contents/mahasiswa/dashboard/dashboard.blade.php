@@ -9,8 +9,8 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{ $siswa }}</div>
-                    <div class="font-14 text-secondary weight-500">Total Siswa</div>
+                    <div class="weight-700 font-24 text-dark">{{ $mahasiswa }}</div>
+                    <div class="font-14 text-secondary weight-500">Total Mahasiswa</div>
                 </div>
                 <div class="widget-icon">
                     <div class="icon" data-color="#00eccf"><i class="icon-copy dw dw-monkey"></i></div>
@@ -65,9 +65,9 @@
         <thead>
             <tr>
                 <th class="table-plus text-center">No.</th>
-                <th class="text-center">Nama Siswa</th>
+                <th class="text-center">Nama Mahasiswa</th>
                 <th class="text-center">Keterangan</th>
-                <th class="text-center">Kelas Siswa</th>
+                <th class="text-center">Kelas Mahasiswa</th>
                 <th class="text-center">Mapel</th>
                 <th class="text-center">Dosen</th>
                 <th class="text-center">Tanggal</th>
@@ -77,7 +77,7 @@
             @foreach ($presensis as $presensi)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $presensi->siswa->firstName }} {{ $presensi->siswa->lastName }}</td>
+                <td>{{ $presensi->mahasiswa->firstName }} {{ $presensi->mahasiswa->lastName }}</td>
                 <td>{{ $presensi->absensi->keterangan }}</td>
                 <td>{{ $presensi->pertemuan->mapel->kelas->nama }}</td>
                 <td>{{ $presensi->pertemuan->mapel->nama }}</td>

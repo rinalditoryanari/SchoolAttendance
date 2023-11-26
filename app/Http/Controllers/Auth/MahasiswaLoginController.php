@@ -32,7 +32,7 @@ class MahasiswaLoginController extends Controller
         }
         return view('contents.mahasiswa.dashboard.dashboard', [
             'title' => 'dashboard',
-            'siswa' => Mahasiswa::count(),
+            'mahasiswa' => Mahasiswa::count(),
             'dosen' => Dosen::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),

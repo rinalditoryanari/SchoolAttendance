@@ -16,7 +16,7 @@ class AdminLoginController extends Controller
     {
         return view('contents.admin.dashboard.dashboard', [
             'title' => 'Dashboard',
-            'siswa' => Mahasiswa::count(),
+            'mahasiswa' => Mahasiswa::count(),
             'dosen' => Dosen::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),

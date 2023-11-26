@@ -16,7 +16,7 @@ class DosenLoginController extends Controller
     {
         return view('contents.dosen.dashboard.dashboard', [
             'title' => 'Dashboard',
-            'siswa' => Mahasiswa::count(),
+            'mahasiswa' => Mahasiswa::count(),
             'dosen' => Dosen::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),
