@@ -81,7 +81,7 @@
                 <td>{{ $presensi->absensi->keterangan }}</td>
                 <td>{{ $presensi->pertemuan->mapel->kelas->nama }}</td>
                 <td>{{ $presensi->pertemuan->mapel->nama }}</td>
-                <td>{{ $presensi->pertemuan->mapel->user->firstName }} {{ $presensi->pertemuan->mapel->user->lastName }} </td>
+                <td>{{ $presensi->pertemuan->mapel->dosen->firstName }} {{ $presensi->pertemuan->mapel->dosen->lastName }} </td>
                 <td>{{ $presensi->pertemuan->tanggal }}</td>
             </tr>
             @endforeach
