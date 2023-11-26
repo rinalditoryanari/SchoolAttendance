@@ -7,8 +7,8 @@
     <div class="card-header d-flex justify-content-between">
         <h4 class="text-blue h4">Tabel Pilih Presensi</h4>
         <div class=" d-flex justify-content-end">
-            <a href="/admin/presensi/{{$mapel->id}}/rekap/guru" class="btn btn-sm btn-outline-info">Rekap Dosen</a>
-            <a href="/admin/presensi/{{$mapel->id}}/rekap/siswa" class="btn btn-sm btn-outline-primary">Rekap Siswa</a>
+            <a href="{{route('admin.presensi.rekap.dosen', ['mapel' => $mapel->id ] )}}" class="btn btn-sm btn-outline-info">Rekap Dosen</a>
+            <a href="{{route('admin.presensi.rekap.mahasiswa', ['mapel' => $mapel->id ] )}}" class="btn btn-sm btn-outline-primary">Rekap Siswa</a>
         </div>
     </div>
     <div class="card-body ">
@@ -36,8 +36,8 @@
                     <td>{{ $pertemuan->keterangan }}</td>
                     <td>{{ $pertemuan->sks }}</td>
                     <td class="text-center">
-                        <a href="/admin/presensi/{{$pertemuan->mapel->id}}/{{$pertemuan->id}}/guru" class="btn btn-sm btn-outline-primary">Guru</a>
-                        <a href="/admin/presensi/{{$pertemuan->mapel->id}}/{{$pertemuan->id}}/siswa" class="btn btn-sm btn-outline-primary">Siswa</a>
+                        <a href="{{route('admin.presensi.pertemuan.dosen', ['mapel' => $pertemuan->mapel->id, 'pertemuan' => $pertemuan->id ] )}}" class="btn btn-sm btn-outline-primary">Dosen</a>
+                        <a href="{{route('admin.presensi.pertemuan.mahasiswa', ['mapel' => $pertemuan->mapel->id, 'pertemuan' => $pertemuan->id ] )}}" class="btn btn-sm btn-outline-primary">Mahasiswa</a>
                     </td>
                 </tr>
                 @endforeach

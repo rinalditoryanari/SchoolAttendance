@@ -7,7 +7,7 @@ use App\Models\Pertemuan;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class RekapSiswaMapel implements FromView
+class RekapMhswMapel implements FromView
 {
     protected $mapel;
 
@@ -18,15 +18,15 @@ class RekapSiswaMapel implements FromView
     public function view(): View
     {
         $pertemuans = Pertemuan::where('mapel_id', $this->mapel->id)->where('keterangan', 'masuk')->get();
-        $siswas = $this->mapel->kelas->siswas;
+        $mahasiswas = $this->mapel->kelas->mahasiswas;
 
         $presnsiSiswa = [];
-        foreach ($siswas as $siswa) {
+        foreach ($mahasiswas as $mahasiswa) {
             $prensis = [];
-            $rekap = []; // Initialize the rekap array for this siswa
+            $rekap = []; // Initialize the rekap array for this mahasiswa
 
             foreach ($pertemuans as $pertemuan) {
-                $presensi = $pertemuan->presensi->where('level', 'siswa')->where('siswa_id', $siswa->id)->first();
+                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
 
                 if ($presensi) {
                     $absensi = $presensi->absensi->kode;
@@ -49,22 +49,22 @@ class RekapSiswaMapel implements FromView
 
             // Append the rekap to the presnsiSiswa array
             $presnsiSiswa[] = [
-                'detail' => $siswa->toArray(),
+                'detail' => $mahasiswa->toArray(),
                 'pertemuans' => $prensis,
                 'rekap' => $rekap, // Include the rekap in the output
             ];
         }
 
-        return view('home.contents.admin.presensi.excel.siswa', [
+        return view('contents.admin.presensi.rekap.excel-rekap', [
             'mapel' => $this->mapel,
             'kelas' => $this->mapel->kelas,
             'jumlah' => [
-                'siswa' => $siswas->count(),
-                'laki' => $siswas->where('jnsKelamin', 'Laki-laki')->count(),
-                'perempuan' => $siswas->where('jnsKelamin', 'Perempuan')->count(),
+                'mahasiswa' => $mahasiswas->count(),
+                'laki' => $mahasiswas->where('jnsKelamin', 'Laki-laki')->count(),
+                'perempuan' => $mahasiswas->where('jnsKelamin', 'Perempuan')->count(),
             ],
             'pertemuans' => $pertemuans,
-            'siswas' => $presnsiSiswa,
+            'mahasiswas' => $presnsiSiswa,
             'absensis' => Absensi::select('kode')->get(),
         ]);
     }

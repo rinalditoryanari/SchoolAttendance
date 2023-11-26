@@ -86,17 +86,17 @@ Route::prefix('admin')->group(function () {
 
             Route::get('/{mapel}/hapus', [PresensiAdminController::class, 'deletePresensi'])->name('admin.presensi.delete');
 
-            Route::get('/{mapel}/rekap/guru', [PresensiAdminController::class, 'showRekapGuru']);
-            Route::get('/{mapel}/rekap/siswa', [PresensiAdminController::class, 'showPilihRekapSiswa']);
-            Route::get('/{mapel}/rekap/siswa/id/{siswa}', [PresensiAdminController::class, 'showRekapSiswa']);
+            Route::get('/{mapel}/rekap/dosen', [PresensiAdminController::class, 'showRekapDosen'])->name('admin.presensi.rekap.dosen');
+            Route::get('/{mapel}/rekap/mahasiswa', [PresensiAdminController::class, 'showPilihRekapMhsw'])->name('admin.presensi.rekap.mahasiswa');
+            Route::get('/{mapel}/rekap/mahasiswa/id/{mahasiswa}', [PresensiAdminController::class, 'showRekapMhsw'])->name('admin.presensi.rekap.mahasiswa.detail');
 
-            Route::get('/{mapel}/rekap/siswa/excel', [PresensiAdminController::class, 'excelRekapSiswa']);
-            Route::get('/{mapel}/rekap/siswa/pdf/', [PresensiAdminController::class, 'pdfRekapSiswa']);
+            Route::get('/{mapel}/rekap/mahasiswa/excel', [PresensiAdminController::class, 'excelRekapMhsw'])->name('admin.presensi.rekap.mahasiswa.excel');
+            Route::get('/{mapel}/rekap/mahasiswa/pdf/', [PresensiAdminController::class, 'pdfRekapMhsw'])->name('admin.presensi.rekap.mahasiswa.pdf');
 
-            Route::get('/{mapel}/rekap/siswa/review', [PresensiAdminController::class, 'reviewRekapSiswa']);
+            Route::get('/{mapel}/rekap/mahasiswa/review', [PresensiAdminController::class, 'reviewRekapMhsw']);
 
-            Route::get('/{mapel}/{pertemuan}/guru', [PresensiAdminController::class, 'showPresensiGuru']);
-            Route::get('/{mapel}/{pertemuan}/siswa', [PresensiAdminController::class, 'showPresensiSiswa']);
+            Route::get('/{mapel}/{pertemuan}/dosen', [PresensiAdminController::class, 'showPresensiDosen'])->name('admin.presensi.pertemuan.dosen');
+            Route::get('/{mapel}/{pertemuan}/mahasiswa', [PresensiAdminController::class, 'showPresensiMhsw'])->name('admin.presensi.pertemuan.mahasiswa');
         });
 
         Route::prefix('/mapel')->group(function () {

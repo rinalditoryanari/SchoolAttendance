@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RekapMhswMapel;
 use App\Exports\RekapSiswaMapel;
 use App\Models\Absensi;
+use App\Models\Mahasiswa;
 use App\Models\Mapel;
 use App\Models\Materi;
 use App\Models\Pertemuan;
@@ -263,14 +265,14 @@ class PresensiAdminController extends Controller
         return redirect()->route('admin.presensi.showmapel');
     }
 
-    public function showRekapGuru(Mapel $mapel)
+    public function showRekapDosen(Mapel $mapel)
     {
         $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->get()->keyBy('id');
 
 
         $prensis = [];
         foreach ($pertemuans as $pertemuan) {
-            $presensi = $pertemuan->presensi->where('level', 'guru')->first();
+            $presensi = $pertemuan->presensi->where('level', 'dosen')->first();
 
             if ($presensi) {
                 $absensi = $presensi->absensi->kode . ' - ' . $presensi->absensi->keterangan;
@@ -285,31 +287,30 @@ class PresensiAdminController extends Controller
             ];
         }
 
-        return view('home.contents.admin.presensi.rekap-absen', [
-            'title' => 'Presensi Rekap Guru',
+        return view('contents.admin.presensi.rekap.rekap-dosen', [
+            'title' => 'Presensi Rekap Dosen',
             'mapel' => $mapel,
-            'user' => $mapel->user,
+            'dosen' => $mapel->dosen,
             'pertemuans' => $prensis,
         ]);
     }
 
-    public function showPilihRekapSiswa(Mapel $mapel)
+    public function showPilihRekapMhsw(Mapel $mapel)
     {
-        return view('home.contents.admin.presensi.pilih-rekap-siswa', [
-            'title' => 'Pilih Rekap Guru',
+        return view('contents.admin.presensi.rekap.all-mhsw', [
+            'title' => 'Pilih Rekap Mahasiswa',
             'mapel' => $mapel,
-            'siswas' => $mapel->kelas->siswas,
+            'mahasiswas' => $mapel->kelas->mahasiswas,
         ]);
     }
 
-    public function showRekapSiswa(Mapel $mapel, Siswa $siswa)
+    public function showRekapMhsw(Mapel $mapel, Mahasiswa $mahasiswa)
     {
         $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->get()->keyBy('id');
 
-
         $prensis = [];
         foreach ($pertemuans as $pertemuan) {
-            $presensi = $pertemuan->presensi->where('level', 'siswa')->where('siswa_id', $siswa->id)->first();
+            $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
 
             if ($presensi) {
                 $absensi = $presensi->absensi->kode . ' - ' . $presensi->absensi->keterangan;
@@ -324,31 +325,31 @@ class PresensiAdminController extends Controller
             ];
         }
 
-        return view('home.contents.admin.presensi.rekap-absen', [
-            'title' => 'Presensi Rekap Siswa',
+        return view('contents.admin.presensi.rekap.detail-mhsw', [
+            'title' => 'Presensi Rekap Mahasiswa',
             'mapel' => $mapel,
-            'user' => $mapel->user,
+            'mahasiswa' => $mahasiswa,
             'pertemuans' => $prensis,
         ]);
     }
 
-    public function excelRekapSiswa(Mapel $mapel)
+    public function excelRekapMhsw(Mapel $mapel)
     {
-        return Excel::download(new RekapSiswaMapel($mapel), 'Rekap Siswa - ' . $mapel->nama . ' - ' . $mapel->kelas->nama . ' - ' . date('Y-m-d') . '.xlsx');
+        return Excel::download(new RekapMhswMapel($mapel), 'Rekap Mahasiswa - ' . $mapel->nama . ' - ' . $mapel->kelas->nama . ' - ' . date('Y-m-d') . '.xlsx');
     }
 
-    public function reviewRekapSiswa(Mapel $mapel)
+    public function reviewRekapMhsw(Mapel $mapel)
     {
         $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->where('keterangan', 'masuk')->get();
-        $siswas = $mapel->kelas->siswas;
+        $mahasiswas = $mapel->kelas->mahasiswas;
 
         $presnsiSiswa = [];
-        foreach ($siswas as $siswa) {
+        foreach ($mahasiswas as $mahasiswa) {
             $prensis = [];
-            $rekap = []; // Initialize the rekap array for this siswa
+            $rekap = []; // Initialize the rekap array for this mahasiswa
 
             foreach ($pertemuans as $pertemuan) {
-                $presensi = $pertemuan->presensi->where('level', 'siswa')->where('siswa_id', $siswa->id)->first();
+                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
 
                 if ($presensi) {
                     $absensi = $presensi->absensi->kode;
@@ -371,38 +372,38 @@ class PresensiAdminController extends Controller
 
             // Append the rekap to the presnsiSiswa array
             $presnsiSiswa[] = [
-                'detail' => $siswa->toArray(),
+                'detail' => $mahasiswa->toArray(),
                 'pertemuans' => $prensis,
                 'rekap' => $rekap, // Include the rekap in the output
             ];
         }
 
-        return view('home.contents.admin.presensi.excel.siswa', [
+        return view('contents.admin.presensi.rekap.excel-rekap', [
             'mapel' => $mapel,
             'kelas' => $mapel->kelas,
             'jumlah' => [
-                'siswa' => $siswas->count(),
-                'laki' => $siswas->where('jnsKelamin', 'Laki-laki')->count(),
-                'perempuan' => $siswas->where('jnsKelamin', 'Perempuan')->count(),
+                'mahasiswa' => $mahasiswas->count(),
+                'laki' => $mahasiswas->where('jnsKelamin', 'Laki-laki')->count(),
+                'perempuan' => $mahasiswas->where('jnsKelamin', 'Perempuan')->count(),
             ],
             'pertemuans' => $pertemuans,
-            'siswas' => $presnsiSiswa,
+            'mahasiswas' => $presnsiSiswa,
             'absensis' => Absensi::select('kode')->get(),
         ]);
     }
 
-    public function pdfRekapSiswa(Mapel $mapel)
+    public function pdfRekapMhsw(Mapel $mapel)
     {
         $pertemuans = Pertemuan::where('mapel_id', $mapel->id)->where('keterangan', 'masuk')->get();
-        $siswas = $mapel->kelas->siswas;
+        $mahasiswas = $mapel->kelas->mahasiswas;
 
         $presnsiSiswa = [];
-        foreach ($siswas as $siswa) {
+        foreach ($mahasiswas as $mahasiswa) {
             $prensis = [];
-            $rekap = []; // Initialize the rekap array for this siswa
+            $rekap = []; // Initialize the rekap array for this mahasiswa
 
             foreach ($pertemuans as $pertemuan) {
-                $presensi = $pertemuan->presensi->where('level', 'siswa')->where('siswa_id', $siswa->id)->first();
+                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
 
                 if ($presensi) {
                     $absensi = $presensi->absensi->kode;
@@ -425,49 +426,47 @@ class PresensiAdminController extends Controller
 
             // Append the rekap to the presnsiSiswa array
             $presnsiSiswa[] = [
-                'detail' => $siswa->toArray(),
+                'detail' => $mahasiswa->toArray(),
                 'pertemuans' => $prensis,
                 'rekap' => $rekap, // Include the rekap in the output
             ];
         }
 
-        $pdf = PDF::loadView('home.contents.admin.presensi.excel.siswa', [
+        $pdf = PDF::loadView('contents.admin.presensi.rekap.excel-rekap', [
             'mapel' => $mapel,
             'kelas' => $mapel->kelas,
             'jumlah' => [
-                'siswa' => $siswas->count(),
-                'laki' => $siswas->where('jnsKelamin', 'Laki-laki')->count(),
-                'perempuan' => $siswas->where('jnsKelamin', 'Perempuan')->count(),
+                'mahasiswa' => $mahasiswas->count(),
+                'laki' => $mahasiswas->where('jnsKelamin', 'Laki-laki')->count(),
+                'perempuan' => $mahasiswas->where('jnsKelamin', 'Perempuan')->count(),
             ],
             'pertemuans' => $pertemuans,
-            'siswas' => $presnsiSiswa,
+            'mahasiswas' => $presnsiSiswa,
             'absensis' => Absensi::select('kode')->get(),
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->download('Rekap Siswa - ' . $mapel->nama . ' - ' . $mapel->kelas->nama . ' - ' . date('Y-m-d') . '.pdf');
+        return $pdf->download('Rekap Mahasiswa - ' . $mapel->nama . ' - ' . $mapel->kelas->nama . ' - ' . date('Y-m-d') . '.pdf');
     }
 
-    public function showPresensiGuru(Mapel $mapel, Pertemuan $pertemuan)
+    public function showPresensiDosen(Mapel $mapel, Pertemuan $pertemuan)
     {
-        return view('home.contents.admin.presensi.guru', [
+        return view('contents.admin.presensi.harian.harian-dosen', [
             'title' => 'Presensi',
             'mapel' => $mapel,
             'pertemuan' => $pertemuan,
-            'guru' => $mapel->user,
-            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'guru')->first(),
-            // 'absensis' => Absensi::all(),
+            'dosen' => $mapel->dosen,
+            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'dosen')->first(),
         ]);
     }
 
-    public function showPresensiSiswa(Mapel $mapel, Pertemuan $pertemuan)
+    public function showPresensiMhsw(Mapel $mapel, Pertemuan $pertemuan)
     {
-        return view('home.contents.admin.presensi.siswa', [
+        return view('contents.admin.presensi.harian.harian-mahasiswa', [
             'title' => 'Presensi',
             'mapel' => $mapel,
             'pertemuan' => $pertemuan,
-            'siswas' => $mapel->kelas->siswas,
-            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'siswa')->get(),
-            // 'absensis' => Absensi::all()
+            'mahasiswas' => $mapel->kelas->mahasiswas,
+            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'mahasiswa')->get(),
         ]);
     }
 }
