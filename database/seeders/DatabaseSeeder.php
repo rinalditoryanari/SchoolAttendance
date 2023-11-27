@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             KelasSeeder::class,
             MapelSeeder::class,
             MahasiswaSeeder::class,
-            // AsdosSeeder::class,
+            AsdosSeeder::class,
             AbsensiSeeder::class,
         ]);
     }
