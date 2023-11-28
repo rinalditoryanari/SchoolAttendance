@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/dosen/presensi" class="dropdown-toggle no-arrow {{ Request::is('/dosen/presensi') ? 'active' : '' }}">
+                    <a href="{{route('dosen.presensi.showmapel')}}" class="dropdown-toggle no-arrow {{ Request::is('/dosen/presensi') ? 'active' : '' }}">
                         <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/mahasiswa/presensi" class="dropdown-toggle no-arrow {{ Request::is('/mahasiswa/presensi') ? 'active' : '' }}">
+                    <a href="{{route('mahasiswa.presensi.showmapel')}}" class="dropdown-toggle no-arrow {{ Request::is('/mahasiswa/presensi') ? 'active' : '' }}">
                         <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/presensi" class="dropdown-toggle no-arrow {{ Request::is('admin/presensi') ? 'active' : '' }}">
+                    <a href="{{route('admin.presensi.showmapel')}}" class="dropdown-toggle no-arrow {{ Request::is('admin/presensi') ? 'active' : '' }}">
                         <span class="micon dw dw-house-1"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
@@ -60,11 +60,12 @@
                         <span class="micon dw dw-file-211"></span><span class="mtext">Data-Data</span>
                     </a>
                     <ul class="submenu">
-                        <li><a class="{{ Request::is('mapel*') ? 'active' : '' }}" href="/admin/mapel">Mapel</a></li>
-                        <li><a class="{{ Request::is('dosen*') ? 'active' : '' }}" href="/admin/dosen">Dosen</a></li>
-                        <li><a class="{{ Request::is('kelas*') ? 'active' : '' }}" href="/admin/kelas">Kelas</a></li>
-                        <li><a class="{{ Request::is('mahasiswa*') ? 'active' : '' }}" href="/admin/mahasiswa">Mahasiswa</a></li>
-                        <li><a class="{{ Request::is('keteranganPresensi*') ? 'active' : '' }}" href="/admin/keteranganPresensi">Keterangan Absensi</a></li>
+                        <li><a class="{{ Request::is('dosen*') ? 'active' : '' }}" href="{{route('admin.asdos.showall')}}">Asisten Dosen</a></li>
+                        <li><a class="{{ Request::is('dosen*') ? 'active' : '' }}" href="{{route('admin.dosen.showall')}}">Dosen</a></li>
+                        <li><a class="{{ Request::is('kelas*') ? 'active' : '' }}" href="{{route('admin.kelas.showall')}}">Kelas</a></li>
+                        <li><a class="{{ Request::is('mahasiswa*') ? 'active' : '' }}" href="{{route('admin.mahasiswa.showall')}}">Mahasiswa</a></li>
+                        <li><a class="{{ Request::is('mapel*') ? 'active' : '' }}" href="{{route('admin.mapel.showall')}}">Mapel</a></li>
+                        <li><a class="{{ Request::is('keteranganPresensi*') ? 'active' : '' }}" href="{{route('admin.absensi.showall')}}">Keterangan Absensi</a></li>
                     </ul>
                 </li>
                 @endif

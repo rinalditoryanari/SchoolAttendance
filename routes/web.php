@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AsdosController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
@@ -152,6 +153,16 @@ Route::prefix('admin')->group(function () {
             Route::get('/{absensi}/edit', [AbsensiController::class, 'showEditAbsensi'])->name('admin.absensi.showedit');
             Route::put('/{absensi}', [AbsensiController::class, 'update'])->name('admin.absensi.edit');
             Route::delete('/{absensi}', [AbsensiController::class, 'destroy'])->name('admin.absensi.delete');
+        });
+
+        Route::prefix('/asdos')->group(function () {
+            Route::get('/', [AsdosController::class, 'showAllAsdos'])->name('admin.asdos.showall');
+            Route::post('/', [AsdosController::class, 'addAsdos'])->name('admin.asdos.add');
+            Route::get('/create', [AsdosController::class, 'showAddAsdos'])->name('admin.asdos.showadd');
+            Route::get('/{asdos}', [AsdosController::class, 'detailAsdos'])->name('admin.asdos.detail');
+            Route::get('/{asdos}/edit', [AsdosController::class, 'showEditAsdos'])->name('admin.asdos.showedit');
+            Route::put('/{asdos}', [AsdosController::class, 'update'])->name('admin.asdos.edit');
+            Route::delete('/{asdos}', [AsdosController::class, 'delete'])->name('admin.asdos.delete');
         });
     });
 });
