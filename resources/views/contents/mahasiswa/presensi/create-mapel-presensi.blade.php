@@ -35,8 +35,8 @@
                         <td class="table-plus text-center">{{ $loop->iteration }}</td>
                         <td>{{ $mahasiswa->firstName }} {{ $mahasiswa->lastName }}</td>
                         <td class="text-center">
-                            <input type="hidden" name="presensi[{{ $mahasiswa->id }}][mahasiswa]" value="{{ $mahasiswa->id }}">
-                            <select class="form-control" name="presensi[{{ $mahasiswa->id }}][kehadiran]" <?php echo ($telat) ? 'disabled' : ''; ?>>
+                            <input type="hidden" name="presensi[{{ $mahasiswa->user->id }}][mahasiswa]" value="{{ $mahasiswa->user->id }}">
+                            <select class="form-control" name="presensi[{{ $mahasiswa->user->id }}][kehadiran]" <?php echo ($telat) ? 'disabled' : ''; ?>>
                                 @if(count($presensi->toArray()) != 0)
                                 <option selected hidden value="{{ $presensi[$loop->index]->absensi->id }}">{{ $presensi[$loop->index]->absensi->kode }} - {{ $presensi[$loop->index]->absensi->keterangan }}</option>
                                 @endif

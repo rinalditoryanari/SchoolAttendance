@@ -21,7 +21,7 @@ class MahasiswaLoginController extends Controller
             $pertemuans = $mapel->pertemuans->where("keterangan", "masuk");
             foreach ($pertemuans as $pertemuan) {
                 if ($pertemuan->presensi->where('absensi_id', '!=', 2)->toArray() != null) {
-                    $presensis[] = $pertemuan->presensi->where('guru_id', 0)->where('absensi_id', '!=', 2);
+                    $presensis[] = $pertemuan->presensi->where('user_id', 0)->where('level', 'dosen')->where('absensi_id', '!=', 2);
                 }
             }
         }

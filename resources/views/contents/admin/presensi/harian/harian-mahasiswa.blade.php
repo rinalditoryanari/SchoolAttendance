@@ -25,8 +25,8 @@
                         <td class="table-plus text-center">{{ $loop->iteration }}</td>
                         <td>{{ $mahasiswa->firstName }} {{ $mahasiswa->lastName }}</td>
                         <td class="text-center">
-                            <input type="hidden" name="presensi[{{ $mahasiswa->id }}][siswa]" value="{{ $mahasiswa->id }}">
-                            <select class="form-control" name="presensi[{{ $mahasiswa->id }}][kehadiran]" disabled>
+                            <input type="hidden" name="presensi[{{ $mahasiswa->user->id }}][siswa]" value="{{ $mahasiswa->user->id }}">
+                            <select class="form-control" name="presensi[{{ $mahasiswa->user->id }}][kehadiran]" disabled>
                                 @if(count($presensi->toArray()) != 0)
                                 <option selected hidden value="">{{ $presensi[$loop->index]->absensi->kode }} - {{ $presensi[$loop->index]->absensi->keterangan }}</option>
                                 @else

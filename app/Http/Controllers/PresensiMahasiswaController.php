@@ -97,7 +97,7 @@ class PresensiMahasiswaController extends Controller
         foreach ($request->presensi as $person) {
             Presensi::updateOrInsert([
                 'pertemuan_id' => request('pertemuan'),
-                'mahasiswa_id' => $person['mahasiswa'],
+                'user_id' => $person['mahasiswa'],
                 'level' => 'mahasiswa',
             ], [
                 'waktu_absen' => $now->format('Y-m-d H:i:s'),

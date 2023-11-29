@@ -310,7 +310,7 @@ class PresensiAdminController extends Controller
 
         $prensis = [];
         foreach ($pertemuans as $pertemuan) {
-            $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
+            $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('user_id', $mahasiswa->user->id)->first();
 
             if ($presensi) {
                 $absensi = $presensi->absensi->kode . ' - ' . $presensi->absensi->keterangan;
@@ -349,7 +349,7 @@ class PresensiAdminController extends Controller
             $rekap = []; // Initialize the rekap array for this mahasiswa
 
             foreach ($pertemuans as $pertemuan) {
-                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
+                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('user_id', $mahasiswa->user->id)->first();
 
                 if ($presensi) {
                     $absensi = $presensi->absensi->kode;
@@ -403,7 +403,7 @@ class PresensiAdminController extends Controller
             $rekap = []; // Initialize the rekap array for this mahasiswa
 
             foreach ($pertemuans as $pertemuan) {
-                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
+                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('user_id', $mahasiswa->user->id)->first();
 
                 if ($presensi) {
                     $absensi = $presensi->absensi->kode;

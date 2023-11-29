@@ -20,7 +20,7 @@ class DosenLoginController extends Controller
             'dosen' => Dosen::count(),
             'mapel' => Mapel::count(),
             'kelas' => Kelas::count(),
-            'presensis' => Presensi::where('dosen_id', 0)->where('absensi_id', '!=', 2)->latest()->get()
+            'presensis' => Presensi::where('user_id', 0)->where('level', 'dosen')->where('absensi_id', '!=', 2)->latest()->get()
         ]);
     }
 }

@@ -51,7 +51,7 @@
                         <td class="table-plus text-center">1</td>
                         <td>{{ $dosen->firstName }} {{ $dosen->lastName }}</td>
                         <td class="text-center">
-                            <input type="hidden" name="presensi[dosen]" value="{{ $dosen->id }}">
+                            <input type="hidden" name="presensi[dosen]" value="{{ $dosen->user->id }}">
                             <select class="form-control" name="presensi[kehadiran]" <?php echo ($telat) ? 'disabled' : ''; ?>>
                                 @if(isset($presensi) != 0)
                                 <option selected hidden value="{{ $presensi->absensi->id }}">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>

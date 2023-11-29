@@ -109,7 +109,7 @@ class PresensiGuruController extends Controller
 
         Presensi::updateOrInsert([
             'pertemuan_id' => request('pertemuan'),
-            'dosen_id' => $person['dosen'],
+            'user_id' => $person['dosen'],
             'level' => 'dosen',
         ], [
             'materi_id' => $materi_id,

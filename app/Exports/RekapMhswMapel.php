@@ -26,7 +26,7 @@ class RekapMhswMapel implements FromView
             $rekap = []; // Initialize the rekap array for this mahasiswa
 
             foreach ($pertemuans as $pertemuan) {
-                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('mahasiswa_id', $mahasiswa->id)->first();
+                $presensi = $pertemuan->presensi->where('level', 'mahasiswa')->where('user_id', $mahasiswa->user->id)->first();
 
                 if ($presensi) {
                     $absensi = $presensi->absensi->kode;
