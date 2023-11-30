@@ -13,7 +13,21 @@
     <div class="menu-block customscroll">
         <div class="sidebar-menu">
             <ul id="accordion-menu">
-                @if(Auth::user()->role == 2)
+                @if(Auth::user()->role == 3)
+                <li>
+                    <div class="sidebar-small-cap">Home</div>
+                </li>
+                <li>
+                    <a href="/asdos/index" class="dropdown-toggle no-arrow {{ Request::is('/') ? 'active' : '' }}">
+                        <span class="micon dw dw-house-1"></span><span class="mtext">Dvashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('asdos.presensi.showmapel')}}" class="dropdown-toggle no-arrow {{ Request::is('/asdos/presensi') ? 'active' : '' }}">
+                        <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
+                    </a>
+                </li>
+                @elseif(Auth::user()->role == 2)
                 <li>
                     <div class="sidebar-small-cap">Home</div>
                 </li>

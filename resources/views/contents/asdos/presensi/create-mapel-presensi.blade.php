@@ -9,7 +9,7 @@
         <p>Mapel: {{ $mapel->nama }} | Kelas: {{ $mapel->kelas->nama }}</p>
     </div>
     <div class="card-body ">
-        <form action="{{route('dosen.presensi.absensi')}}" method="post" id="form1">
+        <form action="{{route('asdos.presensi.absensi')}}" method="post" id="form1">
             @csrf
             @if($pertemuan->keterangan == "masuk")
             <div class="form-group row mb-4 mx-2">
@@ -41,6 +41,7 @@
                     <tr>
                         <th class="table-plus datatable-nosort text-center">No.</th>
                         <th class="text-center">Nama Dosen</th>
+                        <th class="text-center">Nama Asisten Dosen</th>
                         <th class="text-center datatable-nosort">Keterangan Absen</th>
                     </tr>
                 </thead>
@@ -49,14 +50,11 @@
                     <input type="hidden" name="mapel" value="{{ $mapel->id }}">
                     <tr>
                         <td class="table-plus text-center">1</td>
-                        @if($presensi AND $presensi->level === 'asdos')
-                        <td>{{ $presensi->user->asdos->firstName }} {{ $presensi->user->asdos->lastName }} (Asisten Dosen)</td>
-                        @else
-                        <td>{{ $dosen->firstName }} {{ $dosen->lastName }}</td>
-                        @endif
+                        <td>{{ $asdos->dosen->firstName }} {{ $asdos->dosen->lastName }}</td>
+                        <td>{{ $asdos->firstName }} {{ $asdos->lastName }}</td>
                         <td class="text-center">
-                            <input type="hidden" name="presensi[dosen]" value="{{ $dosen->user->id }}">
-                            @if($presensi AND $presensi->level === 'asdos')
+                            <input type="hidden" name="presensi[asdos]" value="{{ $asdos->user->id }}">
+                            @if($presensi AND $presensi->level === 'dosen')
                             <select class="form-control" name="presensi[kehadiran]" disabled>
                                 @if(isset($presensi) != 0)
                                 <option selected hidden value="{{ $presensi->absensi->id }}">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
@@ -79,7 +77,7 @@
             </table>
 
             <div class="d-flex justify-content-end m-3">
-                @if(!$presensi OR $presensi->level !== 'asdos')
+                @if(!$presensi OR $presensi->level !== 'dosen')
                 <button class="btn btn-outline-primary" type="submit" form="form1" value="Submit">Simpan</button>
                 @endif
             </div>

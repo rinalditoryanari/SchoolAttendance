@@ -17,11 +17,6 @@ class Presensi extends Model
         return $this->belongsTo(Kelas::class);
     }
 
-    public function dosen()
-    {
-        return $this->belongsTo(Dosen::class, 'guru_id');
-    }
-
     public function mapel()
     {
         return $this->belongsTo(Mapel::class);
@@ -47,8 +42,8 @@ class Presensi extends Model
         return $this->belongsTo(Pertemuan::class);
     }
 
-    public function mahasiswa()
+    public function user()
     {
-        return $this->belongsTo(Mahasiswa::class);
+        return $this->belongsTo(User::class);
     }
 }

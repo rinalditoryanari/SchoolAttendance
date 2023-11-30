@@ -37,6 +37,9 @@ class LoginController extends Controller
             } else if (auth()->user()->role == 2) {
                 //Dosen
                 return redirect()->intended('/dosen/index');
+            } else if (auth()->user()->role == 3) {
+                //Asisten Dosen
+                return redirect()->intended('/asdos/index');
             }
         }
         return back()->with('loginError', 'Login gagal!');
@@ -62,6 +65,9 @@ class LoginController extends Controller
         } else if (auth()->user()->role == 2) {
             //Dosen
             return redirect()->intended('/dosen/index');
+        } else if (auth()->user()->role == 3) {
+            //Asisten Dosen
+            return redirect()->intended('/asdos/index');
         }
     }
 }

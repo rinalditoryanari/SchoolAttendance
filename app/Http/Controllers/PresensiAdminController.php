@@ -272,7 +272,7 @@ class PresensiAdminController extends Controller
 
         $prensis = [];
         foreach ($pertemuans as $pertemuan) {
-            $presensi = $pertemuan->presensi->where('level', 'dosen')->first();
+            $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos'])->first();
 
             if ($presensi) {
                 $absensi = $presensi->absensi->kode . ' - ' . $presensi->absensi->keterangan;
@@ -455,7 +455,7 @@ class PresensiAdminController extends Controller
             'mapel' => $mapel,
             'pertemuan' => $pertemuan,
             'dosen' => $mapel->dosen,
-            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->where('level', 'dosen')->first(),
+            'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->whereIn('level', ['dosen', 'asdos'])->first(),
         ]);
     }
 

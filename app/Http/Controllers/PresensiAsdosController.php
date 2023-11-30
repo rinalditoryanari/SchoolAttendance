@@ -12,12 +12,12 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 
-class PresensiGuruController extends Controller
+class PresensiAsdosController extends Controller
 {
     //menampilkan seluruh mata pelajaran untuk kelas
     public function showMapel()
     {
-        $mapels = Auth::user()->dosen->mapels;
+        $mapels = Auth::user()->asdos->dosen->mapels;
         for ($i = 0; $i < count($mapels); $i++) {
             $pertemuans = $mapels[$i]->pertemuans;
             $presensi_count = 0;
@@ -25,7 +25,8 @@ class PresensiGuruController extends Controller
 
             foreach ($pertemuans as $pertemuan) {
                 if ($pertemuan->keterangan == "masuk") {
-                    $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos'])->first();
+                    $presensi =
+                        $pertemuan->presensi->whereIn('level', ['dosen', 'asdos'])->first();
                     if ($presensi && $presensi->absensi_id == 2) {
                         $presensi_count++;
                     };
@@ -36,7 +37,7 @@ class PresensiGuruController extends Controller
             $mapels[$i]->sks_count =  $sks_count;
         }
 
-        return view('contents.dosen.presensi.all-mapel-presensi', [
+        return view('contents.asdos.presensi.all-mapel-presensi', [
             'title' => 'Pilih Mapel',
             'mapels' => $mapels,
         ]);
@@ -45,7 +46,7 @@ class PresensiGuruController extends Controller
     //menampilkan tanggal pertemuan mapel
     public function showTgl(Mapel $mapel)
     {
-        return view('contents.dosen.presensi.detail-mapel-presensi', [
+        return view('contents.asdos.presensi.detail-mapel-presensi', [
             'title' => 'Pilih Tanggal Presensi',
             'pertemuans' => $mapel->pertemuans,
         ]);
@@ -63,11 +64,11 @@ class PresensiGuruController extends Controller
             $telat = false;
         }
 
-        return view('contents.dosen.presensi.create-mapel-presensi', [
+        return view('contents.asdos.presensi.create-mapel-presensi', [
             'title' => 'Presensi',
             'mapel' => $mapel,
             'pertemuan' => $pertemuan,
-            'dosen' => Auth::user()->dosen,
+            'asdos' => Auth::user()->asdos,
             'telat' => $telat,
             'presensi' => Presensi::select()->where('pertemuan_id', $pertemuan->id)->whereIn('level', ['dosen', 'asdos'])->first(),
             'absensis' => Absensi::all(),
@@ -92,7 +93,7 @@ class PresensiGuruController extends Controller
 
             $materi = Presensi::select("materi_id")
                 ->where('pertemuan_id', $pertemuan->id)
-                ->where('level', 'dosen')
+                ->where('level', 'asdos')
                 ->first();
 
             $materi_id = $materi->materi->id;
@@ -109,13 +110,13 @@ class PresensiGuruController extends Controller
 
         Presensi::updateOrInsert([
             'pertemuan_id' => request('pertemuan'),
-            'user_id' => $person['dosen'],
-            'level' => 'dosen',
+            'user_id' => $person['asdos'],
+            'level' => 'asdos',
         ], [
             'materi_id' => $materi_id,
             'waktu_absen' => $now->format('Y-m-d H:i:s'),
             'absensi_id' => $person['kehadiran'],
         ]);
-        return redirect()->route('dosen.presensi.detail',  ['mapel' => request("mapel")]);
+        return redirect()->route('asdos.presensi.detail',  ['mapel' => request("mapel")]);
     }
 }

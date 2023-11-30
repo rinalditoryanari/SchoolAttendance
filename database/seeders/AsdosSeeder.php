@@ -129,7 +129,7 @@ class AsdosSeeder extends Seeder
                 'lastName' => $data['lastName'],
                 'password' => $data['password'],
                 "email_verified_at" => now(),
-                "role" => 2,
+                "role" => 3,
             ]);
 
             Asdos::create([
