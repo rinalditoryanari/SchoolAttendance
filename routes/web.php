@@ -7,7 +7,6 @@ use App\Http\Controllers\Auth\AsdosLoginController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PresensiAdminController;
-use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Auth\LoginController;
@@ -15,6 +14,7 @@ use App\Http\Controllers\Auth\MahasiswaLoginController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PresensiAsdosController;
+use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\PresensiMahasiswaController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,19 +57,19 @@ Route::prefix('mahasiswa')->group(function () {
     });
 });
 
-// FOR GURU USER
+// FOR DOSEN USER
 Route::prefix('dosen')->group(function () {
     Route::middleware(['dosen', 'auth'])->group(function () {
         Route::get('/index', [DosenLoginController::class, 'dashboard']);
 
-        Route::get('/presensi', [PresensiGuruController::class, 'showMapel'])->name('dosen.presensi.showmapel');
-        Route::get('/presensi/{mapel}', [PresensiGuruController::class, 'showTgl'])->name('dosen.presensi.detail');
-        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiGuruController::class, 'showPresensi'])->name('dosen.presensi.pertemuan');
-        Route::post('/presensi/', [PresensiGuruController::class, 'inputAbsensi'])->name('dosen.presensi.absensi');
+        Route::get('/presensi', [PresensiDosenController::class, 'showMapel'])->name('dosen.presensi.showmapel');
+        Route::get('/presensi/{mapel}', [PresensiDosenController::class, 'showTgl'])->name('dosen.presensi.detail');
+        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiDosenController::class, 'showPresensi'])->name('dosen.presensi.pertemuan');
+        Route::post('/presensi/', [PresensiDosenController::class, 'inputAbsensi'])->name('dosen.presensi.absensi');
     });
 });
 
-// FOR GURU USER
+// FOR ASISTEN DOSEN USER
 Route::prefix('asdos')->group(function () {
     Route::middleware(['asdos', 'auth'])->group(function () {
         Route::get('/index', [AsdosLoginController::class, 'dashboard']);
@@ -122,7 +122,7 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{mapel}', [MapelController::class, 'destroy'])->name('admin.mapel.delete');
         });
 
-        //NGATUR ABSEN GURU
+        //NGATUR ABSEN DOSEN
         Route::prefix('dosen')->group(function () {
             Route::get('/', [DosenController::class, 'showAllDosen'])->name('admin.dosen.showall');
 

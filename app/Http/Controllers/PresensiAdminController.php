@@ -31,7 +31,7 @@ class PresensiAdminController extends Controller
             $sks_count = 0;
             foreach ($pertemuans as $pertemuan) {
                 if ($pertemuan->keterangan == "masuk") {
-                    $presensi = $pertemuan->presensi->where('level', 'guru')->first();
+                    $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos'])->first();
                     if ($presensi && $presensi->absensi_id == 2) {
                         $presensi_count++;
                     };

@@ -5,7 +5,7 @@
 </div>
 <div class="card-box mb-30">
     <div class="pd-20 d-flex justify-content-between">
-        <h4 class="text-blue h4">Detail guru</h4>
+        <h4 class="text-blue h4">Detail Dosen</h4>
         <div class="dropleft">
             <button type="button" class="btn btn-outline-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-three-dots"></i>
@@ -20,7 +20,7 @@
                     <button class="dropdown-item" onclick="return confirm('Apakah anda yakin akan menghapus buku ini?')">Hapus</button>
                 </form>
             </div>
-            <a class="btn btn-outline-primary" href="/admin/guru"><i class="bi bi-arrow-return-left"></i></a>
+            <a class="btn btn-outline-primary" href="/admin/dosen"><i class="bi bi-arrow-return-left"></i></a>
         </div>
     </div>
     <div class="pb-20">

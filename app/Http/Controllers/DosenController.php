@@ -58,7 +58,7 @@ class DosenController extends Controller
         $dosen->user_id = $user->id;
         $dosen->save();
 
-        return redirect()->route('admin.dosen.showall')->with('success', 'Guru baru telah ditambahkan!');
+        return redirect()->route('admin.dosen.showall')->with('success', 'Dosen baru telah ditambahkan!');
     }
 
     public function detailDosen(Dosen $dosen)
@@ -99,7 +99,7 @@ class DosenController extends Controller
         unset($validatedData['password']);
         $dosen->update($validatedData);
 
-        return redirect()->route('admin.dosen.showall')->with('success', 'Data Guru telah diupdate!');
+        return redirect()->route('admin.dosen.showall')->with('success', 'Data Dosen telah diupdate!');
     }
 
     public function delete(Dosen $dosen)

@@ -5,7 +5,7 @@
 </div>
 <div class="card-box mb-30">
     <div class="pd-20 d-flex justify-content-between">
-        <h4 class="text-blue h4">Detail guru</h4>
+        <h4 class="text-blue h4">Detail Asisten Dosen</h4>
         <div class="dropleft">
             <button type="button" class="btn btn-outline-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-three-dots"></i>

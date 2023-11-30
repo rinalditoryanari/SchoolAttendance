@@ -18,28 +18,26 @@
                 </tr>
             </thead>
             <tbody>
-                <form action="/guru/presensi" method="post" id="form1">
-                    @csrf
-                    <input type="hidden" name="pertemuan" value="{{ $pertemuan->id }}">
-                    <input type="hidden" name="mapel" value="{{ $mapel->id }}">
-                    <tr>
-                        <td class="table-plus text-center">1</td>
-                        @if($presensi AND $presensi->level === 'asdos')
-                        <td>{{ $presensi->user->asdos->firstName }} {{ $presensi->user->asdos->lastName }} (Asisten Dosen)</td>
-                        @else
-                        <td>{{ $dosen->firstName }} {{ $dosen->lastName }}</td>
-                        @endif
-                        <td class="text-center">
-                            <select class="form-control" name="presensi[kehadiran]" disabled>
-                                @if($presensi)
-                                <option selected hidden value="">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
-                                @else
-                                <option selected hidden value="">Tidak Absen</option>
-                                @endif
-                            </select>
-                        </td>
-                    </tr>
-                </form>
+                @csrf
+                <input type="hidden" name="pertemuan" value="{{ $pertemuan->id }}">
+                <input type="hidden" name="mapel" value="{{ $mapel->id }}">
+                <tr>
+                    <td class="table-plus text-center">1</td>
+                    @if($presensi AND $presensi->level === 'asdos')
+                    <td>{{ $presensi->user->asdos->firstName }} {{ $presensi->user->asdos->lastName }} (Asisten Dosen)</td>
+                    @else
+                    <td>{{ $dosen->firstName }} {{ $dosen->lastName }}</td>
+                    @endif
+                    <td class="text-center">
+                        <select class="form-control" name="presensi[kehadiran]" disabled>
+                            @if($presensi)
+                            <option selected hidden value="">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
+                            @else
+                            <option selected hidden value="">Tidak Absen</option>
+                            @endif
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

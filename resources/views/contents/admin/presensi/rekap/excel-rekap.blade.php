@@ -75,7 +75,7 @@
             <thead>
                 <tr>
                     <th colspan="{{(4 + $pertemuans->count() +$absensis->count())}}">
-                        <p style="margin: 0.2em;font-size: 12px;">Rekap Absensi Guru ({{date('Y-m-d')}})</p>
+                        <p style="margin: 0.2em;font-size: 12px;">Rekap Absensi Dosen ({{date('Y-m-d')}})</p>
                     </th>
                 </tr>
                 <tr>
