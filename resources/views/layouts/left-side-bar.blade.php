@@ -13,6 +13,8 @@
     <div class="menu-block customscroll">
         <div class="sidebar-menu">
             <ul id="accordion-menu">
+
+                <!-- ASISTEN DOSEN -->
                 @if(Auth::user()->role == 3)
                 <li>
                     <div class="sidebar-small-cap">Home</div>
@@ -27,6 +29,8 @@
                         <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
+
+                <!-- DOSEN -->
                 @elseif(Auth::user()->role == 2)
                 <li>
                     <div class="sidebar-small-cap">Home</div>
@@ -41,6 +45,13 @@
                         <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('dosen.sks.show')}}" class="dropdown-toggle no-arrow {{ Request::is('/dosen/akumulasi-sks') ? 'active' : '' }}">
+                        <span class="micon dw dw-pen"></span><span class="mtext">Total SKS</span>
+                    </a>
+                </li>
+
+                <!-- MAHASISWA -->
                 @elseif(Auth::user()->role == 1)
                 <li>
                     <div class="sidebar-small-cap">Home</div>
@@ -55,6 +66,8 @@
                         <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
+
+                <!-- ADMIN -->
                 @elseif(Auth::user()->role == 0)
                 <li>
                     <div class="sidebar-small-cap">Home</div>

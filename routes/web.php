@@ -16,6 +16,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PresensiAsdosController;
 use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\PresensiMahasiswaController;
+use App\Http\Controllers\SKSDosenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,10 +51,13 @@ Route::prefix('mahasiswa')->group(function () {
     Route::middleware(['mahasiswa', 'auth'])->group(function () {
         //Admin Home page after login
         Route::get('/index', [MahasiswaLoginController::class, 'index'])->name('siswa.index');
-        Route::get('/presensi', [PresensiMahasiswaController::class, 'showMapel'])->name('mahasiswa.presensi.showmapel');
-        Route::get('/presensi/{mapel}', [PresensiMahasiswaController::class, 'showTgl'])->name('mahasiswa.presensi.detail');
-        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiMahasiswaController::class, 'showPresensi'])->name('mahasiswa.presensi.pertemuan');
-        Route::post('/presensi/', [PresensiMahasiswaController::class, 'inputAbsensi'])->name('mahasiswa.presensi.absensi');
+
+        Route::prefix('/presensi')->group(function () {
+            Route::get('/', [PresensiMahasiswaController::class, 'showMapel'])->name('mahasiswa.presensi.showmapel');
+            Route::get('/{mapel}', [PresensiMahasiswaController::class, 'showTgl'])->name('mahasiswa.presensi.detail');
+            Route::get('/{mapel}/{pertemuan}', [PresensiMahasiswaController::class, 'showPresensi'])->name('mahasiswa.presensi.pertemuan');
+            Route::post('/', [PresensiMahasiswaController::class, 'inputAbsensi'])->name('mahasiswa.presensi.absensi');
+        });
     });
 });
 
@@ -62,10 +66,16 @@ Route::prefix('dosen')->group(function () {
     Route::middleware(['dosen', 'auth'])->group(function () {
         Route::get('/index', [DosenLoginController::class, 'dashboard']);
 
-        Route::get('/presensi', [PresensiDosenController::class, 'showMapel'])->name('dosen.presensi.showmapel');
-        Route::get('/presensi/{mapel}', [PresensiDosenController::class, 'showTgl'])->name('dosen.presensi.detail');
-        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiDosenController::class, 'showPresensi'])->name('dosen.presensi.pertemuan');
-        Route::post('/presensi/', [PresensiDosenController::class, 'inputAbsensi'])->name('dosen.presensi.absensi');
+        Route::prefix('/presensi')->group(function () {
+            Route::get('/', [PresensiDosenController::class, 'showMapel'])->name('dosen.presensi.showmapel');
+            Route::get('/{mapel}', [PresensiDosenController::class, 'showTgl'])->name('dosen.presensi.detail');
+            Route::get('/{mapel}/{pertemuan}', [PresensiDosenController::class, 'showPresensi'])->name('dosen.presensi.pertemuan');
+            Route::post('/', [PresensiDosenController::class, 'inputAbsensi'])->name('dosen.presensi.absensi');
+        });
+
+        Route::prefix('akumulasi-sks')->group(function () {
+            Route::get('/', [SKSDosenController::class, 'showSKS'])->name('dosen.sks.show');
+        });
     });
 });
 
@@ -74,10 +84,12 @@ Route::prefix('asdos')->group(function () {
     Route::middleware(['asdos', 'auth'])->group(function () {
         Route::get('/index', [AsdosLoginController::class, 'dashboard']);
 
-        Route::get('/presensi', [PresensiAsdosController::class, 'showMapel'])->name('asdos.presensi.showmapel');
-        Route::get('/presensi/{mapel}', [PresensiAsdosController::class, 'showTgl'])->name('asdos.presensi.detail');
-        Route::get('/presensi/{mapel}/{pertemuan}', [PresensiAsdosController::class, 'showPresensi'])->name('asdos.presensi.pertemuan');
-        Route::post('/presensi/', [PresensiAsdosController::class, 'inputAbsensi'])->name('asdos.presensi.absensi');
+        Route::prefix('/presensi')->group(function () {
+            Route::get('/', [PresensiAsdosController::class, 'showMapel'])->name('asdos.presensi.showmapel');
+            Route::get('/{mapel}', [PresensiAsdosController::class, 'showTgl'])->name('asdos.presensi.detail');
+            Route::get('/{mapel}/{pertemuan}', [PresensiAsdosController::class, 'showPresensi'])->name('asdos.presensi.pertemuan');
+            Route::post('/', [PresensiAsdosController::class, 'inputAbsensi'])->name('asdos.presensi.absensi');
+        });
     });
 });
 
