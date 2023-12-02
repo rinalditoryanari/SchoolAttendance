@@ -16,6 +16,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PresensiAsdosController;
 use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\PresensiMahasiswaController;
+use App\Http\Controllers\SKSAsdosController;
 use App\Http\Controllers\SKSDosenController;
 use Illuminate\Support\Facades\Route;
 
@@ -89,6 +90,10 @@ Route::prefix('asdos')->group(function () {
             Route::get('/{mapel}', [PresensiAsdosController::class, 'showTgl'])->name('asdos.presensi.detail');
             Route::get('/{mapel}/{pertemuan}', [PresensiAsdosController::class, 'showPresensi'])->name('asdos.presensi.pertemuan');
             Route::post('/', [PresensiAsdosController::class, 'inputAbsensi'])->name('asdos.presensi.absensi');
+        });
+
+        Route::prefix('akumulasi-sks')->group(function () {
+            Route::get('/', [SKSAsdosController::class, 'showSKS'])->name('asdos.sks.show');
         });
     });
 });

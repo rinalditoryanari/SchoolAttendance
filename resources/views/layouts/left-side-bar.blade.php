@@ -29,6 +29,12 @@
                         <span class="micon dw dw-pen"></span><span class="mtext">Presensi</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('asdos.sks.show')}}" class="dropdown-toggle no-arrow {{ Request::is('/asdos/akumulasi-sks') ? 'active' : '' }}">
+                        <span class="micon dw dw-pen"></span><span class="mtext">Total SKS</span>
+                    </a>
+                </li>
+
 
                 <!-- DOSEN -->
                 @elseif(Auth::user()->role == 2)
