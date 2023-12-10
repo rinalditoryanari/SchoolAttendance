@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MahasiswaLoginController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\PenggajianAdminController;
 use App\Http\Controllers\PresensiAsdosController;
 use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\PresensiMahasiswaController;
@@ -129,6 +130,12 @@ Route::prefix('admin')->group(function () {
             Route::get('/{mapel}/{pertemuan}/dosen', [PresensiAdminController::class, 'showPresensiDosen'])->name('admin.presensi.pertemuan.dosen');
             Route::get('/{mapel}/{pertemuan}/mahasiswa', [PresensiAdminController::class, 'showPresensiMhsw'])->name('admin.presensi.pertemuan.mahasiswa');
         });
+
+        Route::prefix('gaji')->group(function () {
+            Route::get('/', [PenggajianAdminController::class, 'showAllPengajar'])->name('admin.gaji.showall');
+            Route::get('/{user}', [PenggajianAdminController::class, 'showListGaji'])->name('admin.gaji.list');
+        });
+
 
         Route::prefix('/mapel')->group(function () {
             Route::get('/', [MapelController::class, 'showAllMapel'])->name('admin.mapel.showall');
