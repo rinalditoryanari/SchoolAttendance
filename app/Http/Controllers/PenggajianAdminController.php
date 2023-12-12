@@ -104,21 +104,23 @@ class PenggajianAdminController extends Controller
                 $gaji->tipe = 'Per SKS';
                 $gaji->sks = $pertemuan->sks;
 
+                //Dosen dan Asdos Tidak Absen
                 if ($presensi->isEmpty()) {
                     $gaji->keterangan = 'Tanpa keterangan';
                 } elseif ($presensi->isNotEmpty()) {
-                    $presensi = $presensi->first();
+                    $absensi = ($presensi->where('level', $status)->isEmpty()) ? 'Tanpa Keterangan' : $presensi->where('level', $status)->isNotEmpty();
+                    $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
 
-                    if ($presensi->level === 'asdos' && $status === 'dosen') {
-                        $gaji->keterangan = $presensi->absensi->keterangan . ' (Asisten Dosen)';
-                        $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
-                    } elseif ($presensi->level === 'dosen' && $status === 'asdos') {
-                        $gaji->keterangan = $presensi->absensi->keterangan . ' (Dosen)';
-                        $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
+                    if ($presensi->where('absensi_id', 2)->first()->level === 'asdos' && $status === 'dosen') {
+                        $gaji->keterangan = $absensi . ' (Diisi oleh Asisten Dosen)';
+
+                        // 
+                    } elseif ($presensi->where('absensi_id', 2)->first()->level === 'dosen' && $status === 'asdos') {
+                        $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
+                        //    
                     } else {
-                        $gaji->keterangan = $presensi->absensi->keterangan;
+                        $gaji->keterangan = $absensi;
                         $gaji->nominal = $pertemuan->sks * $sks;
-                        $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
                         $work++;
                     }
                 } else {
