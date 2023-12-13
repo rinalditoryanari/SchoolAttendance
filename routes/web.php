@@ -45,7 +45,7 @@ Route::post('import', [MahasiswaController::class, 'import'])->name('import')->m
 
 // // Profile Routes
 Route::prefix('/profile')->group(function () {
-    Route::get('/{profile}', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/', [ProfileController::class, 'show'])->name('profile');
 });
 
 //FOR SISWA USER

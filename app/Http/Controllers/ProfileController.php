@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -44,11 +45,12 @@ class ProfileController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $profile)
+    public function show()
     {
-        return view('home.contents.profile.show', [
+        $user = Auth::user();
+        return view('contents.users.profile', [
             'title' => 'Profil',
-            'guru' => $profile
+            'user' => $user
         ]);
     }
 
