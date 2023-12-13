@@ -101,6 +101,11 @@
                         <li><a class="{{ Request::is('keteranganPresensi*') ? 'active' : '' }}" href="{{route('admin.absensi.showall')}}">Keterangan Absensi</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="{{route('admin.gaji.showall')}}" class="dropdown-toggle no-arrow {{ Request::is('admin/penggajian') ? 'active' : '' }}">
+                        <span class="micon dw dw-house-1"></span><span class="mtext">Penggajian</span>
+                    </a>
+                </li>
                 @endif
             </ul>
         </div>
