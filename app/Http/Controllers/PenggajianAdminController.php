@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\Auth;
 
 class PenggajianAdminController extends Controller
 {
@@ -111,13 +112,15 @@ class PenggajianAdminController extends Controller
                 if ($presensi->isEmpty()) {
                     $gaji->keterangan = 'Tanpa keterangan';
                 } elseif ($presensi->isNotEmpty()) {
-                    $absensi = ($presensi->where('level', $status)->isEmpty()) ? 'Tanpa Keterangan' : $presensi->where('level', $status)->isNotEmpty();
+                    $absensi = ($presensi->where('user_id', Auth::user()->id)->isEmpty()) ? 'Tanpa Keterangan' : $presensi->where('user_id', Auth::user()->id)->first()->absensi->keterangan;
                     $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
 
                     if ($presensi->where('absensi_id', 2)->first()->level === 'asdos' && $status === 'dosen') {
                         $gaji->keterangan = $absensi . ' (Diisi oleh Asisten Dosen)';
-
-                        // 
+                        //
+                    } elseif ($presensi->where('absensi_id', 2)->first()->level === $status && $presensi->where('absensi_id', 2)->first()->user->id != Auth::user()->id) {
+                        $gaji->keterangan = $absensi . ' (Diisi oleh Asisten Dosen Lainnya)';
+                        //
                     } elseif ($presensi->where('absensi_id', 2)->first()->level === 'dosen' && $status === 'asdos') {
                         $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
                         //    
