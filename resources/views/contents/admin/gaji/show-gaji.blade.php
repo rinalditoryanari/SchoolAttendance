@@ -26,18 +26,19 @@
                         <div class="col-sm-12 col-md-4 col-lg-3 mb-2">
                             <select name="bulan" id="bulan" class='form-control' required>
                                 <option value="" hidden>Pilih Bulan</option>
-                                <option value="1" {{($input['bulan'] == '1')? 'selected' : '' }}>Januari</option>
-                                <option value="2" {{($input['bulan'] == '2')? 'selected' : '' }}>Februari</option>
-                                <option value="3" {{($input['bulan'] == '3')? 'selected' : '' }}>Maret</option>
-                                <option value="4" {{($input['bulan'] == '4')? 'selected' : '' }}>April</option>
-                                <option value="5" {{($input['bulan'] == '5')? 'selected' : '' }}>Mei</option>
-                                <option value="6" {{($input['bulan'] == '6')? 'selected' : '' }}>Juni</option>
-                                <option value="7" {{($input['bulan'] == '7')? 'selected' : '' }}>Juli</option>
-                                <option value="8" {{($input['bulan'] == '8')? 'selected' : '' }}>Agustus</option>
-                                <option value="9" {{($input['bulan'] == '9')? 'selected' : '' }}>September</option>
-                                <option value="10" {{($input['bulan'] == '10')? 'selected' : '' }}>Oktober</option>
-                                <option value="11" {{($input['bulan'] == '11')? 'selected' : '' }}>November</option>
-                                <option value="12" {{($input['bulan'] == '12')? 'selected' : '' }}>December</option>
+                                <option value="1" {{($input != null && $input['bulan'] == '1')? 'selected' : '' }}>Januari</option>
+                                <option value="2" {{($input != null && $input['bulan'] == '2')? 'selected' : '' }}>Februari</option>
+                                <option value="3" {{($input != null && $input['bulan'] == '3')? 'selected' : '' }}>Maret</option>
+                                <option value="4" {{($input != null && $input['bulan'] == '4')? 'selected' : '' }}>April</option>
+                                <option value="5" {{($input != null && $input['bulan'] == '5')? 'selected' : '' }}>Mei</option>
+                                <option value="6" {{($input != null && $input['bulan'] == '6')? 'selected' : '' }}>Juni</option>
+                                <option value="7" {{($input != null && $input['bulan'] == '7')? 'selected' : '' }}>Juli</option>
+                                <option value="8" {{($input != null && $input['bulan'] == '8')? 'selected' : '' }}>Agustus</option>
+                                <option value="9" {{($input != null && $input['bulan'] == '9')? 'selected' : '' }}>September</option>
+                                <option value="10" {{($input != null && $input['bulan'] == '10')? 'selected' : '' }}>Oktober</option>
+                                <option value="11" {{($input != null && $input['bulan'] == '11')? 'selected' : '' }}>November</option>
+                                <option value="12" {{($input != null && $input['bulan'] == '12')? 'selected' : '' }}>December</option>
+
                             </select>
                         </div>
 
@@ -50,7 +51,7 @@
 
                                 <option value="" hidden>Pilih Tahun</option>
                                 @foreach($tahuns as $tahun)
-                                <option value="{{$tahun}}" {{($input['tahun'] == $tahun)? 'selected' : '' }}>{{$tahun}}</option>
+                                <option value="{{$tahun}}" {{($input != null && $input['tahun'] == $tahun)? 'selected' : '' }}>{{$tahun}}</option>
                                 @endforeach
                             </select>
                         </div>
