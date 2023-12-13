@@ -34,9 +34,11 @@
                     <div class="col-sm-12 col-md-10 col-lg-11">
                         <select class="form-control" id="mapel" name="mapel">
                             <option selected disabled value=""> Pilih Mata Pelajaran - Kelas - Dosen</option>
+                            @if($mapels->isNotEmpty())
                             @foreach ($mapels as $mapel)
                             <option value="{{ $mapel->id }}" text="{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->dosen->firstName }} {{ $mapel->dosen->lastName }}">{{ $mapel->kode }} - {{ $mapel->kelas->nama }} - {{ $mapel->nama }} - {{ $mapel->dosen->firstName }} {{ $mapel->dosen->lastName }}</option>
                             @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
