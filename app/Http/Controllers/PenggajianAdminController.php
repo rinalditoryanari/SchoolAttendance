@@ -46,14 +46,17 @@ class PenggajianAdminController extends Controller
             return $mapel->pertemuans;
         })->where('keterangan', 'masuk')->sortBy('tanggal');
 
-        $tahun_awal = $pertemuans->first()->tanggal;
-        $tahun_awal = Carbon::parse($tahun_awal)->year;
+        if ($pertemuans->isNotEmpty()) {
+            $tahun_awal = $pertemuans->first()->tanggal;
+            $tahun_awal = Carbon::parse($tahun_awal)->year;
 
-        $tahun_akhir = $pertemuans->last()->tanggal;
-        $tahun_akhir = Carbon::parse($tahun_akhir)->year;
+            $tahun_akhir = $pertemuans->last()->tanggal;
+            $tahun_akhir = Carbon::parse($tahun_akhir)->year;
 
-        $tahun = collect(range($tahun_awal, $tahun_akhir))->toArray();
-
+            $tahun = collect(range($tahun_awal, $tahun_akhir))->toArray();
+        } else {
+            $tahun = [];
+        }
 
         if ($request->all()) {
             $validatedData = $request->validate([
