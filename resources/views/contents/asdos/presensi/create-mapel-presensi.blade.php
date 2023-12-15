@@ -78,7 +78,7 @@
 
             <div class="d-flex justify-content-end m-3">
                 @if(!$presensi OR $presensi->level !== 'dosen')
-                <button class="btn btn-outline-primary" type="submit" form="form1" value="Submit">Simpan</button>
+                <button class="btn btn-outline-primary" type="submit" form="form1" value="Submit" <?php echo ($telat) ? 'hidden' : ''; ?>>Simpan</button>
                 @endif
             </div>
         </form>
