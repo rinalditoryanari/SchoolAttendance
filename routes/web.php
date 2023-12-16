@@ -134,6 +134,10 @@ Route::prefix('admin')->group(function () {
         Route::prefix('gaji')->group(function () {
             Route::get('/', [PenggajianAdminController::class, 'showAllPengajar'])->name('admin.gaji.showall');
             Route::get('/{user}', [PenggajianAdminController::class, 'showListGaji'])->name('admin.gaji.list');
+            Route::post('/post/{user}', [PenggajianAdminController::class, 'saveGaji'])->name('admin.gaji.post');
+
+            Route::get('/{user}/{bulan}/{tahun}/pdf', [PenggajianAdminController::class, 'pdfGaji'])->name('admin.gaji.pdf');
+            Route::get('/{user}/{bulan}/{tahun}/excel', [PenggajianAdminController::class, 'excelGaji'])->name('admin.gaji.excel');
         });
 
 

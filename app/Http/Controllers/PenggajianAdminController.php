@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GajiExport;
 use App\Models\Asdos;
 use App\Models\Dosen;
 use App\Models\Penggajian;
 use App\Models\Pertemuan;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PenggajianAdminController extends Controller
 {
@@ -159,6 +162,36 @@ class PenggajianAdminController extends Controller
         }
 
         return [$gaji, $work];
+    }
+
+    public function excelGaji(User $user, $bulan, $tahun)
+    {
+        $request = new Request([
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+        ]);
+        $data = PenggajianAdminController::preListGaji($user, $request);
+        return Excel::download(new GajiExport($data), 'Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun'] . '.xlsx');
+    }
+
+    public function pdfGaji(User $user, $bulan, $tahun)
+    {
+        $request = new Request([
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+        ]);
+        $data = PenggajianAdminController::preListGaji($user, $request);
+
+        $pdf = FacadePdf::loadView('contents.admin.gaji.export-excel', [
+            'title' => 'Penggajian',
+            'tahuns' => $data['tahuns'],
+            'user' => $data['user'],
+            'data' => $data['data'],
+            'tanggal' => $data['tanggal'],
+            'input' => $data['input'],
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->download('Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun']  . '.pdf');
     }
 
 
