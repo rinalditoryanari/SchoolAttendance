@@ -34,30 +34,27 @@ class PenggajianAdminController extends Controller
 
     public function showListGaji(User $user, Request $request)
     {
+        $data = PenggajianAdminController::preListGaji($user, $request);
 
-        if ($user->role === 2) {
-            $pengajar = $user->dosen;
-            $status = 'dosen';
-        } elseif ($user->role === 3) {
-            $pengajar = $user->asdos->dosen;
-            $status = 'asdos';
-        }
+        return view('contents.admin.gaji.show-gaji', [
+            'title' => 'Penggajian',
+            'tahuns' => $data['tahuns'],
+            'user' => $data['user'],
+            'data' => $data['data'],
+            'tanggal' => $data['tanggal'],
+            'input' => $data['input'],
+        ]);
+    }
+
+    public function preListGaji(User $user, Request $request)
+    {
+        $pengajar = ($user->role === 2) ? $pengajar = $user->dosen : (($user->role === 3) ? $user->asdos->dosen : null);
 
         $pertemuans = $pengajar->mapels->flatMap(function ($mapel) {
             return $mapel->pertemuans;
         })->where('keterangan', 'masuk')->sortBy('tanggal');
 
-        if ($pertemuans->isNotEmpty()) {
-            $tahun_awal = $pertemuans->first()->tanggal;
-            $tahun_awal = Carbon::parse($tahun_awal)->year;
-
-            $tahun_akhir = $pertemuans->last()->tanggal;
-            $tahun_akhir = Carbon::parse($tahun_akhir)->year;
-
-            $tahun = collect(range($tahun_awal, $tahun_akhir))->toArray();
-        } else {
-            $tahun = [];
-        }
+        $tahun = $pertemuans->isNotEmpty() ? range(Carbon::parse($pertemuans->first()->tanggal)->year, Carbon::parse($pertemuans->last()->tanggal)->year) : [];
 
         if ($request->all()) {
             $validatedData = $request->validate([
@@ -65,10 +62,11 @@ class PenggajianAdminController extends Controller
                 "tahun" => 'required|numeric',
             ]);
 
-            $date['akhir'] = Carbon::create($validatedData['tahun'], $validatedData['bulan'], 25);
-            $date['awal'] = Carbon::create($validatedData['tahun'], $validatedData['bulan'], 25)->subMonth()->addDay();
-
-            $data = PenggajianAdminController::listGaji($pertemuans, $date, $status);
+            $date = [
+                'akhir' => Carbon::create($validatedData['tahun'], $validatedData['bulan'], 25),
+                'awal' => Carbon::create($validatedData['tahun'], $validatedData['bulan'], 25)->subMonth()->addDay(),
+            ];
+            $data = PenggajianAdminController::listGaji($pertemuans, $date, $user);
         } else {
             $pertemuans = null;
             $validatedData = null;
@@ -76,23 +74,21 @@ class PenggajianAdminController extends Controller
             $date = null;
         }
 
-        return view('contents.admin.gaji.show-gaji', [
-            'title' => 'Penggajian',
+        return [
             'tahuns' => $tahun,
             'user' => $user,
             'data' => $data,
             'tanggal' => $date,
             'input' => $validatedData,
-        ]);
+        ];
     }
 
-    function listGaji($pertemuans, $date, $status)
+    function listGaji($pertemuans, $date, User $user)
     {
         $sks = 50000;
         $transport = 35000;
         $details = [];
         $total = 0;
-
 
         foreach ($pertemuans->whereBetween('tanggal', [$date['awal'], $date['akhir'],])->groupBy('tanggal') as $tgl => $pertemuanGroup) {
             $tanggal = Carbon::parse($tgl)->locale('id')->translatedFormat('l, j F Y');
@@ -100,42 +96,31 @@ class PenggajianAdminController extends Controller
             $work = 0;
 
             foreach ($pertemuanGroup as $pertemuan) {
-                $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos']);
-
                 $gaji = new Penggajian();
                 $gaji->mapelkelas = $pertemuan->mapel->nama . ' - ' . $pertemuan->mapel->kelas->nama;
                 $gaji->tanggal = $tanggal;
                 $gaji->tipe = 'Per SKS';
                 $gaji->sks = $pertemuan->sks;
 
-                //Dosen dan Asdos Tidak Absen
+                $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos']);
+
                 if ($presensi->isEmpty()) {
                     $gaji->keterangan = 'Tanpa keterangan';
                 } elseif ($presensi->isNotEmpty()) {
-                    $absensi = ($presensi->where('user_id', Auth::user()->id)->isEmpty()) ? 'Tanpa Keterangan' : $presensi->where('user_id', Auth::user()->id)->first()->absensi->keterangan;
-                    $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
+                    $absensi = ($presensi->where('user_id', $user->id)->isEmpty()) ? 'Tanpa Keterangan' : $presensi->where('user_id', $user->id)->first()->absensi->keterangan;
 
-                    if ($presensi->where('absensi_id', 2)->first()->level === 'asdos' && $status === 'dosen') {
-                        $gaji->keterangan = $absensi . ' (Diisi oleh Asisten Dosen)';
-                        //
-                    } elseif ($presensi->where('absensi_id', 2)->first()->level === $status && $presensi->where('absensi_id', 2)->first()->user->id != Auth::user()->id) {
-                        $gaji->keterangan = $absensi . ' (Diisi oleh Asisten Dosen Lainnya)';
-                        //
-                    } elseif ($presensi->where('absensi_id', 2)->first()->level === 'dosen' && $status === 'asdos') {
-                        $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
-                        //    
+                    $presensi = $presensi->where('absensi_id', 2);
+                    if ($presensi->isNotEmpty()) {
+                        $gaji->waktu = Carbon::parse($pertemuan->waktu)->isoFormat('HH:mm');
+                        $data = $this->setGajiDetails($gaji, $absensi, $presensi, $pertemuan, $sks, $user, $work);
+
+                        $gaji = $data[0];
+                        $work = $data[1];
                     } else {
                         $gaji->keterangan = $absensi;
-                        $gaji->nominal = $pertemuan->sks * $sks;
-                        $work++;
-                    }
-                } else {
-                    $presensi = $pertemuan->presensi->where('level', $status)->first();
-
-                    if ($presensi) {
-                        $gaji->keterangan = $presensi->absensi->keterangan;
                     }
                 }
+
                 $row[] = $gaji;
                 $total += $gaji->nominal;
             }
@@ -143,7 +128,6 @@ class PenggajianAdminController extends Controller
             $nominal = ($work === 0) ? 0 : $transport;
             $total += $nominal;
 
-            // Add Transportasi entry
             $details[] = new Penggajian([
                 'tanggal' => Carbon::parse($tgl)->locale('id')->translatedFormat('l, j F Y'),
                 'tipe' => 'Transportasi',
@@ -157,5 +141,36 @@ class PenggajianAdminController extends Controller
             'total' =>  $total,
             'details' =>  $details,
         ];
+    }
+
+    private function setGajiDetails($gaji, $absensi, $presensi, $pertemuan, $sks, User $user, &$work)
+    {
+        $status = ($user->role === 2) ? 'dosen' : (($user->role === 3) ? 'asdos' : null);
+
+        $presensi = $presensi->first();
+        if ($presensi->user_id == $user->id) {
+            $gaji->keterangan = $absensi;
+            $gaji->nominal = $pertemuan->sks * $sks;
+            $work++;
+        } elseif ($presensi->level === 'asdos') {
+            $gaji->keterangan = ($status === 'dosen') ? $absensi . ' (Diisi oleh Asisten Dosen)' : $absensi . ' (Diisi oleh Asisten Dosen Lainnya)';
+        } elseif ($presensi->level === 'dosen' && $status === 'asdos') {
+            $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
+        }
+
+        return [$gaji, $work];
+    }
+
+
+    public function saveGaji(Request $request)
+    {
+        $validatedData = $request->validate([
+            'bulan' => 'required|numeric|min:1|max:12',
+            'tahun' => 'required|numeric',
+            'tambahan' => 'required|numeric',
+            'total' => 'required|numeric',
+        ]);
+
+        dd($validatedData);
     }
 }
