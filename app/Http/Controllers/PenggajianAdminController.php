@@ -155,10 +155,13 @@ class PenggajianAdminController extends Controller
             $gaji->keterangan = $absensi;
             $gaji->nominal = $pertemuan->sks * $sks;
             $work++;
-        } elseif ($presensi->level === 'asdos') {
-            $gaji->keterangan = ($status === 'dosen') ? $absensi . ' (Diisi oleh Asisten Dosen)' : $absensi . ' (Diisi oleh Asisten Dosen Lainnya)';
-        } elseif ($presensi->level === 'dosen' && $status === 'asdos') {
-            $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
+            // } elseif ($presensi->level === 'asdos') {
+            //     $gaji->keterangan = ($status === 'dosen') ? $absensi . ' (Diisi oleh Asisten Dosen)' : $absensi . ' (Diisi oleh Asisten Dosen Lainnya)';
+            // } elseif ($presensi->level === 'dosen' && $status === 'asdos') {
+            //     $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
+            // }
+        } else {
+            $gaji->keterangan = $absensi . ' (Diisi oleh ' . $presensi->user->firstName . ' ' . $presensi->user->lastName . ')';
         }
 
         return [$gaji, $work];
