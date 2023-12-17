@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SKSAsdosController extends Controller
 {
@@ -39,13 +40,19 @@ class SKSAsdosController extends Controller
         ])->sortBy('tanggal');;
 
         foreach ($pertemuans as $pertemuan) {
-            $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos'])->first();
-            if ($presensi) {
-                $presensi->nama = $presensi->user->firstName . " " . $presensi->user->lastName;
-            }
-            $pertemuan->presensi = $presensi;
-        }
+            $presensi = $pertemuan->presensi->whereIn('level', ['dosen', 'asdos']);
 
+            $absensi = ($presensi->where('user_id', $user->id)->isEmpty()) ? 'Tanpa Keterangan' : $presensi->where('user_id', $user->id)->first()->absensi->keterangan;
+
+            $nama = ($presensi->isNotEmpty()) ? Auth::user()->firstName . " " . Auth::user()->lastName : "-";
+
+            $presensi = $presensi->where('absensi_id', 2)->whereNotIn('user_id', $user->id)->first();
+
+            $addition = ($presensi != null && $presensi->level == 'dosen') ? ' (Diisi oleh Dosen)' : '';
+            $pertemuan->presensi = $absensi . ' ' . $addition;
+
+            $pertemuan->nama = $nama;
+        }
         return $pertemuans;
     }
 }

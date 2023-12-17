@@ -59,9 +59,9 @@
                     <td class="table-plus text-center">{{ $pertemuan->tanggal }}</td>
                     <td class="table-plus text-center">{{ $pertemuan->waktu }}</td>
                     <td class="table-plus">{{ $pertemuan->mapel->nama }} - {{$pertemuan->mapel->kelas->nama}}</td>
-                    <td class="table-plus">{{ ($pertemuan->presensi)? $pertemuan->presensi->nama : "-" }} {{($pertemuan->presensi AND $pertemuan->presensi->level === "asdos") ? "(Asisten Dosen)" : ""}}</td>
+                    <td class="table-plus">{{$pertemuan->nama}}</td>
                     <td class="table-plus text-center">{{ $pertemuan->sks }}</td>
-                    <td class="table-plus text-center">{{ ($pertemuan->presensi) ? $pertemuan->presensi->absensi->keterangan : "Tanpa Keterangan" }}</td>
+                    <td class="table-plus text-center">{{ $pertemuan->presensi}}</td>
                 </tr>
                 @endforeach
                 @endif
