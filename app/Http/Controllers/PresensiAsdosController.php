@@ -62,7 +62,9 @@ class PresensiAsdosController extends Controller
 
         if (
             //kalo bukan hari ini atau kalo dosennya masuk
-            $pertemuan->tanggal != date('Y-m-d') || ($presensiDosen != null && $presensiDosen->absensi_id === 2)
+            $pertemuan->tanggal != date('Y-m-d') ||
+            ($presensiDosen != null && $presensiDosen->absensi_id === 2) ||
+            ($presensiOtherAsdos != null && $presensiOtherAsdos->absensi_id === 2)
         ) {
             $telat = true;
         } else {
