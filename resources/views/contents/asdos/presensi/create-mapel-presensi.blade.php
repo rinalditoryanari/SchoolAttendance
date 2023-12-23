@@ -20,6 +20,8 @@
                         <option selected hidden value="{{ $presensiDosen->materi->id }}">{{ $presensiDosen->materi->materi }}</option>
                         @elseif($presensiAsdos != null)
                         <option selected hidden value="{{ $presensiAsdos->materi->id }}">{{ $presensiAsdos->materi->materi }}</option>
+                        @elseif($presensiOtherAsdos != null)
+                        <option selected hidden value="{{ $presensiOtherAsdos->materi->id }}">{{ $presensiOtherAsdos->materi->materi }}</option>
                         @else
                         <option selected disabled value=""> Pilih MAteri Pembelajaran</option>
                         @endif
