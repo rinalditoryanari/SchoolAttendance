@@ -57,11 +57,12 @@ class PresensiAsdosController extends Controller
     {
         $presensi = Presensi::select()->where('pertemuan_id', $pertemuan->id)->whereIn('level', ['dosen', 'asdos'])->get();
         $presensiDosen = $presensi->where('level', 'dosen')->first();
-        $presensiAsdos = $presensi->where('level', 'asdos')->first();
+        $presensiOtherAsdos = $presensi->where('level', 'asdos')->whereNotIn('user_id', Auth::user()->id)->first();
+        $presensiAsdos = $presensi->where('level', 'asdos')->where('user_id', Auth::user()->id)->first();
 
         if (
             //kalo bukan hari ini atau kalo dosennya masuk
-            $pertemuan->tanggal != date('Y-m-d') || $presensiDosen->absensi_id === 2
+            $pertemuan->tanggal != date('Y-m-d') || ($presensiDosen != null && $presensiDosen->absensi_id === 2)
         ) {
             $telat = true;
         } else {
@@ -75,6 +76,7 @@ class PresensiAsdosController extends Controller
             'asdos' => Auth::user()->asdos,
             'telat' => $telat,
             'presensiDosen' => $presensiDosen,
+            'presensiOtherAsdos' => $presensiOtherAsdos,
             'presensiAsdos' => $presensiAsdos,
             'absensis' => Absensi::all(),
             'materis' => Materi::select()->where('mapel_id', $mapel->id)->get(),

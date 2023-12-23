@@ -51,21 +51,39 @@
                     <input type="hidden" name="pertemuan" value="{{ $pertemuan->id }}">
                     <input type="hidden" name="mapel" value="{{ $mapel->id }}">
 
-                    @if($presensiDosen != null)
+                    <!-- For Dosen -->
                     <tr>
                         <td class="table-plus text-center"></td>
                         <td>{{ $asdos->dosen->firstName }} {{ $asdos->dosen->lastName }}</td>
                         <td></td>
                         <td>
                             <select class="form-control" name="" disabled>
+                                @if($presensiDosen != null)
                                 <option selected hidden>{{ $presensiDosen->absensi->kode }} - {{ $presensiDosen->absensi->keterangan }}</option>
+                                @else
+                                <option value="">A - Tanpa Keterangan</option>
+                                @endif
+                            </select>
+                        </td>
+                    </tr>
+
+                    @if($presensiOtherAsdos != null )
+                    <!-- For Other Asdos -->
+                    <tr>
+                        <td class="table-plus text-center"></td>
+                        <td>{{ $asdos->dosen->firstName }} {{ $asdos->dosen->lastName }}</td>
+                        <td>{{ $presensiOtherAsdos->user->firstName }} {{ $presensiOtherAsdos->user->lastName }}</td>
+                        <td>
+                            <select class="form-control" name="" disabled>
+                                <option selected hidden>{{ $presensiOtherAsdos->absensi->kode }} - {{ $presensiOtherAsdos->absensi->keterangan }}</option>
                             </select>
                         </td>
                     </tr>
                     @endif
+
+                    <!-- For This Asdos -->
                     <tr>
-                        <td class=" table-plus text-center">1
-                        </td>
+                        <td class=" table-plus text-center">1</td>
                         <td>{{ $asdos->dosen->firstName }} {{ $asdos->dosen->lastName }}</td>
                         <td>{{ $asdos->firstName }} {{ $asdos->lastName }}</td>
                         <td class="text-center">
