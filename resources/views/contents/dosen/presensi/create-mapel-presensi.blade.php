@@ -16,14 +16,16 @@
                 <label class="col-form-label col-12 col-md-2 col-lg-1 ">Materi</label>
                 <div class="col-sm-12 col-md-10 col-lg-11">
                     <select class="form-control" id="materi" name="materi" required <?php echo ($telat) ? 'disabled' : ''; ?>>
-                        @if(isset($presensi) != 0)
-                        <option selected hidden value="{{ $presensi->materi->id }}">{{ $presensi->materi->materi }}</option>
+                        @if($presensiDosen != null)
+                        <option selected hidden value="{{ $presensiDosen->materi->id }}">{{ $presensiDosen->materi->materi }}</option>
+                        @elseif($presensiAsdos != null)
+                        <option selected hidden value="{{ $presensiAsdos->materi->id }}">{{ $presensiAsdos->materi->materi }}</option>
                         @else
                         <option selected disabled value=""> Pilih MAteri Pembelajaran</option>
-                        @endif
                         @foreach ($materis as $materi)
                         <option value="{{ $materi->id }}">{{ $materi->materi }}</option>
                         @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -41,47 +43,52 @@
                     <tr>
                         <th class="table-plus datatable-nosort text-center">No.</th>
                         <th class="text-center">Nama Dosen</th>
+                        <th class="text-center">Nama Asisten Dosen</th>
                         <th class="text-center datatable-nosort">Keterangan Absen</th>
                     </tr>
                 </thead>
                 <tbody>
                     <input type="hidden" name="pertemuan" value="{{ $pertemuan->id }}">
                     <input type="hidden" name="mapel" value="{{ $mapel->id }}">
+
+                    <!-- For Dosen -->
                     <tr>
-                        <td class="table-plus text-center">1</td>
-                        @if($presensi AND $presensi->level === 'asdos')
-                        <td>{{ $presensi->user->asdos->firstName }} {{ $presensi->user->asdos->lastName }} (Asisten Dosen)</td>
-                        @else
+                        <td class="table-plus text-center"></td>
                         <td>{{ $dosen->firstName }} {{ $dosen->lastName }}</td>
-                        @endif
+                        <td></td>
                         <td class="text-center">
                             <input type="hidden" name="presensi[dosen]" value="{{ $dosen->user->id }}">
-                            @if($presensi AND $presensi->level === 'asdos')
-                            <select class="form-control" name="presensi[kehadiran]" disabled>
-                                @if(isset($presensi) != 0)
-                                <option selected hidden value="{{ $presensi->absensi->id }}">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
-                                @endif
-                            </select>
-                            @else
                             <select class="form-control" name="presensi[kehadiran]" <?php echo ($telat) ? 'disabled' : ''; ?>>
-                                @if(isset($presensi) != 0)
-                                <option selected hidden value="{{ $presensi->absensi->id }}">{{ $presensi->absensi->kode }} - {{ $presensi->absensi->keterangan }}</option>
-                                @endif
                                 <!-- <option selected disabled>Pilih Kehadiran</option> -->
                                 @foreach ($absensis as $absensi)
-                                <option value="{{ $absensi->id }}">{{ $absensi->kode }} - {{ $absensi->keterangan }}</option>
+                                @if($presensiAsdos != null && $absensi->id == 2)
+                                @else
+                                <option value="{{ $absensi->id }}" {{($presensiDosen != null && $presensiDosen->absensi_id === $absensi->id)? 'selected':''}}>{{ $absensi->kode }} - {{ $absensi->keterangan }}</option>
+                                @endif
                                 @endforeach
                             </select>
-                            @endif
                         </td>
                     </tr>
+
+                    @if($presensiAsdos != null )
+                    <!-- For Asdos -->
+                    <tr>
+                        <td class="table-plus text-center"></td>
+                        <td>{{ $dosen->firstName }} {{ $dosen->lastName }}</td>
+                        <td>{{ $presensiAsdos->user->firstName }} {{ $presensiAsdos->user->lastName }}</td>
+                        <td>
+                            <select class="form-control" name="" disabled>
+                                <option selected hidden>{{ $presensiAsdos->absensi->kode }} - {{ $presensiAsdos->absensi->keterangan }}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    @endif
+
                 </tbody>
             </table>
 
             <div class="d-flex justify-content-end m-3">
-                @if(!$presensi OR $presensi->level !== 'asdos')
-                <button class="btn btn-outline-primary" type="submit" form="form1" value="Submit">Simpan</button>
-                @endif
+                <button class="btn btn-outline-primary" type="submit" form="form1" value="Submit" <?php echo ($telat) ? 'hidden' : ''; ?>>Simpan</button>
             </div>
         </form>
     </div>
