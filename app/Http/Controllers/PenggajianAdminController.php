@@ -6,13 +6,11 @@ use App\Exports\GajiExport;
 use App\Models\Asdos;
 use App\Models\Dosen;
 use App\Models\Penggajian;
-use App\Models\Pertemuan;
+use App\Models\PenggajianDetail;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon as SupportCarbon;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PenggajianAdminController extends Controller
@@ -99,7 +97,7 @@ class PenggajianAdminController extends Controller
             $work = 0;
 
             foreach ($pertemuanGroup as $pertemuan) {
-                $gaji = new Penggajian();
+                $gaji = new PenggajianDetail();
                 $gaji->mapelkelas = $pertemuan->mapel->nama . ' - ' . $pertemuan->mapel->kelas->nama;
                 $gaji->tanggal = $tanggal;
                 $gaji->tipe = 'Per SKS';
@@ -131,7 +129,7 @@ class PenggajianAdminController extends Controller
             $nominal = ($work === 0) ? 0 : $transport;
             $total += $nominal;
 
-            $details[] = new Penggajian([
+            $details[] = new PenggajianDetail([
                 'tanggal' => Carbon::parse($tgl)->locale('id')->translatedFormat('l, j F Y'),
                 'tipe' => 'Transportasi',
                 'nominal' => $nominal,
@@ -155,11 +153,6 @@ class PenggajianAdminController extends Controller
             $gaji->keterangan = $absensi;
             $gaji->nominal = $pertemuan->sks * $sks;
             $work++;
-            // } elseif ($presensi->level === 'asdos') {
-            //     $gaji->keterangan = ($status === 'dosen') ? $absensi . ' (Diisi oleh Asisten Dosen)' : $absensi . ' (Diisi oleh Asisten Dosen Lainnya)';
-            // } elseif ($presensi->level === 'dosen' && $status === 'asdos') {
-            //     $gaji->keterangan = $absensi . ' (Diisi oleh Dosen)';
-            // }
         } else {
             $gaji->keterangan = $absensi . ' (Diisi oleh ' . $presensi->user->firstName . ' ' . $presensi->user->lastName . ')';
         }
@@ -197,8 +190,7 @@ class PenggajianAdminController extends Controller
         return $pdf->download('Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun']  . '.pdf');
     }
 
-
-    public function saveGaji(Request $request)
+    public function saveGaji(User $user, Request $request)
     {
         $validatedData = $request->validate([
             'bulan' => 'required|numeric|min:1|max:12',
@@ -207,6 +199,30 @@ class PenggajianAdminController extends Controller
             'total' => 'required|numeric',
         ]);
 
-        dd($validatedData);
+        $data = PenggajianAdminController::preListGaji($user, $request);
+        $data = collect($data['data']['details']);
+
+        $tambahan = new PenggajianDetail();
+        $tambahan->tipe = 'tambahan';
+        $tambahan->nominal = $validatedData['tambahan'];
+
+        $data->push($tambahan);
+
+        //save header penggajian
+        $penggajian = new Penggajian();
+        $penggajian->user_id = $user->id;
+        $penggajian->bulan = intval($validatedData['bulan']);
+        $penggajian->tahun = intval($validatedData['tahun']);
+        $penggajian->total = intval($validatedData['total']);
+        $penggajian->save();
+
+        $penggajianDetails = $data->map(function ($detail) use ($penggajian) {
+            $detail->penggajian_id = $penggajian->id;
+            return $detail;
+        });
+
+        $penggajian->penggajian_details()->saveMany($penggajianDetails);
+
+        return redirect()->back();
     }
 }

@@ -9,14 +9,8 @@ class Penggajian extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tanggal', 'waktu', 'mapelkelas', 'sks', 'tipe', 'nominal', 'keterangan'];
-    protected $guarded = ['id'];
-
-    protected $attributes = [
-        'waktu' => '',
-        'mapel' => '',
-        'sks' => '',
-        'keterangan' => '',
-        'nominal' => 0,
-    ];
+    public function penggajian_details()
+    {
+        return $this->hasMany(PenggajianDetail::class);
+    }
 }
