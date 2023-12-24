@@ -114,7 +114,7 @@
                     <td class="text-start"></td>
                     <td class="text-center"></td>
                     <td class="text-left">Tambahan</td>
-                    <td class="text-right"></td>
+                    <td class="text-right">@currency($data['tambahan']['nominal'])</td>
                     <td class="text-left"></td>
                 </tr>
                 <tr>
@@ -124,7 +124,7 @@
                     <td class="text-start"></td>
                     <td class="text-center"></td>
                     <td class="text-left">Total</td>
-                    <td class="text-right">{{$data['total']}}</td>
+                    <td class="text-right">@currency($data['total'])</td>
                     <td class="text-left"></td>
                 </tr>
             </tbody>

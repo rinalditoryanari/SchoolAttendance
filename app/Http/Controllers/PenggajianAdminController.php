@@ -44,6 +44,7 @@ class PenggajianAdminController extends Controller
             'data' => $data['data'],
             'tanggal' => $data['tanggal'],
             'input' => $data['input'],
+            'simpan' => $data['simpan']
         ]);
     }
 
@@ -57,6 +58,7 @@ class PenggajianAdminController extends Controller
 
         $tahun = $pertemuans->isNotEmpty() ? range(Carbon::parse($pertemuans->first()->tanggal)->year, Carbon::parse($pertemuans->last()->tanggal)->year) : [];
 
+        $saved = false;
         if ($request->all()) {
             $validatedData = $request->validate([
                 "bulan" => 'required|numeric',
@@ -67,7 +69,20 @@ class PenggajianAdminController extends Controller
                 'akhir' => Carbon::create($validatedData['tahun'], $validatedData['bulan'], 25),
                 'awal' => Carbon::create($validatedData['tahun'], $validatedData['bulan'], 25)->subMonth()->addDay(),
             ];
-            $data = PenggajianAdminController::listGaji($pertemuans, $date, $user);
+
+            $data = Penggajian::select()
+                ->where('user_id', $user->id)
+                ->where('tahun', intval($validatedData['tahun']))
+                ->where('bulan', intval($validatedData['bulan']))
+                ->first();
+
+            if($data != null){
+                $data = PenggajianAdminController::getPenggajian($data);
+                $saved = true;
+            } else {
+                $data = PenggajianAdminController::listGaji($pertemuans, $date, $user);
+                $data['tambahan'] = null;
+            }
         } else {
             $pertemuans = null;
             $validatedData = null;
@@ -81,6 +96,20 @@ class PenggajianAdminController extends Controller
             'data' => $data,
             'tanggal' => $date,
             'input' => $validatedData,
+            'simpan' => $saved,
+        ];
+    }
+
+    function getPenggajian(Penggajian $penggajian)
+    {
+        $total = $penggajian->total;
+        $details = $penggajian->penggajian_details->whereNotIn('tipe', 'tambahan');
+        $tambahan = $penggajian->penggajian_details->last();
+
+        return [
+            'total' =>  $total,
+            'details' =>  $details,
+            'tambahan' =>  $tambahan,
         ];
     }
 
@@ -167,7 +196,11 @@ class PenggajianAdminController extends Controller
             'tahun' => $tahun,
         ]);
         $data = PenggajianAdminController::preListGaji($user, $request);
-        return Excel::download(new GajiExport($data), 'Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun'] . '.xlsx');
+        if ($data['simpan'] == true){
+            return Excel::download(new GajiExport($data), 'Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun'] . '.xlsx');
+        } else {
+            return redirect()->back()->withErrors('Mohon disimpan terlebih dahulu Data Penggajian');
+        }
     }
 
     public function pdfGaji(User $user, $bulan, $tahun)
@@ -177,17 +210,21 @@ class PenggajianAdminController extends Controller
             'tahun' => $tahun,
         ]);
         $data = PenggajianAdminController::preListGaji($user, $request);
+        if ($data['simpan'] == true){
+            $pdf = FacadePdf::loadView('contents.admin.gaji.export-excel', [
+                'title' => 'Penggajian',
+                'tahuns' => $data['tahuns'],
+                'user' => $data['user'],
+                'data' => $data['data'],
+                'tanggal' => $data['tanggal'],
+                'input' => $data['input'],
+            ])->setPaper('a4', 'landscape');
 
-        $pdf = FacadePdf::loadView('contents.admin.gaji.export-excel', [
-            'title' => 'Penggajian',
-            'tahuns' => $data['tahuns'],
-            'user' => $data['user'],
-            'data' => $data['data'],
-            'tanggal' => $data['tanggal'],
-            'input' => $data['input'],
-        ])->setPaper('a4', 'landscape');
+            return $pdf->download('Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun']  . '.pdf');
+        } else {
+            return redirect()->back()->withErrors('Mohon disimpan terlebih dahulu Data Penggajian');
+        }
 
-        return $pdf->download('Gaji ' . $user->firsName . ' ' . $user->lastName . ' pada periode ' . $data['input']['bulan'] . '-' . $data['input']['tahun']  . '.pdf');
     }
 
     public function saveGaji(User $user, Request $request)
@@ -200,29 +237,32 @@ class PenggajianAdminController extends Controller
         ]);
 
         $data = PenggajianAdminController::preListGaji($user, $request);
-        $data = collect($data['data']['details']);
+        if ($data['simpan'] != true){
+            $data = collect($data['data']['details']);
 
-        $tambahan = new PenggajianDetail();
-        $tambahan->tipe = 'tambahan';
-        $tambahan->nominal = $validatedData['tambahan'];
+            $tambahan = new PenggajianDetail();
+            $tambahan->tipe = 'tambahan';
+            $tambahan->nominal = $validatedData['tambahan'];
 
-        $data->push($tambahan);
+            $data->push($tambahan);
 
-        //save header penggajian
-        $penggajian = new Penggajian();
-        $penggajian->user_id = $user->id;
-        $penggajian->bulan = intval($validatedData['bulan']);
-        $penggajian->tahun = intval($validatedData['tahun']);
-        $penggajian->total = intval($validatedData['total']);
-        $penggajian->save();
+            //save header penggajian
+            $penggajian = new Penggajian();
+            $penggajian->user_id = $user->id;
+            $penggajian->bulan = intval($validatedData['bulan']);
+            $penggajian->tahun = intval($validatedData['tahun']);
+            $penggajian->total = intval($validatedData['total']);
+            $penggajian->save();
 
-        $penggajianDetails = $data->map(function ($detail) use ($penggajian) {
-            $detail->penggajian_id = $penggajian->id;
-            return $detail;
-        });
+            $penggajianDetails = $data->map(function ($detail) use ($penggajian) {
+                $detail->penggajian_id = $penggajian->id;
+                return $detail;
+            });
 
-        $penggajian->penggajian_details()->saveMany($penggajianDetails);
-
-        return redirect()->back();
+            $penggajian->penggajian_details()->saveMany($penggajianDetails);
+            return redirect()->back();
+        } else {
+            return redirect()->back()->withErrors('Mohon disimpan terlebih dahulu Data Penggajian');
+        }
     }
 }

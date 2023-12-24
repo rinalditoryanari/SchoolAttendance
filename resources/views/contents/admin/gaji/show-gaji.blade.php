@@ -117,7 +117,7 @@
                 <label class="col-form-label col-12 col-md-2 col-lg-1">Tambahan</label>
                 <div class="d-flex col-sm-12 col-md-4 col-lg-4 mb-2">
                     <label class="col-form-label mr-3">Rp.</label>
-                    <input class="form-control" type="number" min=0 name="tambahan" id="tambahan" value="0">
+                    <input class="form-control" type="number" min=0 name="tambahan" id="tambahan" value="{{ ($simpan == true) ? $data['tambahan']['nominal'] : 0 }}" {{ ($simpan == true) ? 'readonly' : '' }}>
                 </div>
 
                 <label class="col-form-label col-12 col-md-2 col-lg-1">Total</label>
@@ -130,7 +130,9 @@
                 </div>
 
                 <div class=" d-flex justify-content-end col-12 col-lg-2 mb-2">
-                    <button class="btn btn-primary" type="submit" value="Submit">Simpan</button>
+                    @if($simpan != true)
+                        <button class="btn btn-primary" type="submit" value="Submit">Simpan</button>
+                    @endif
                 </div>
             </div>
         </form>
