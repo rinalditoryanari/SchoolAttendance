@@ -29,7 +29,9 @@
                     <td>{{ \Carbon\Carbon::parse($pertemuan->tanggal . ' ' . $pertemuan->waktu)->format('l, j F Y H:i') }}</td>
                     <td>{{ $pertemuan->mapel->kode }} - {{ $pertemuan->mapel->nama }}</td>
                     <td>{{ $pertemuan->mapel->dosen->firstName }} {{ $pertemuan->mapel->dosen->lastName }}</td>
-                    <td class="text-center">{{ $pertemuan->keterangan }}</td>
+                    <td class="text-center">
+                        <h6><span class=" badge badge-pill {{ ($pertemuan->keterangan == 'masuk') ? 'badge-success' : 'badge-danger' }} text-uppercase" style="font-weight: 600;">{{ $pertemuan->keterangan }}</span></h6>
+                    </td>
                     <td class="text-center">{{ $pertemuan->sks }}</td>
                     <td class="text-center">
                         <a href="{{route('dosen.presensi.pertemuan', ['mapel' => $pertemuan->mapel->id, 'pertemuan' => $pertemuan->id] )}}" class="btn btn-sm btn-outline-primary">Pilih</a>
