@@ -60,7 +60,7 @@
 </div>
 
 <div class="card-box pb-10">
-    <div class="h5 pd-20 mb-0">Siswa Tidak Hadir</div>
+    <div class="h5 pd-20 mb-0">Mahasiswa Tidak Hadir</div>
     <table class="table hover data-table-export nowrap">
         <thead>
             <tr>
