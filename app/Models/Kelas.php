@@ -9,11 +9,12 @@ class Kelas extends Model
 {
     use HasFactory;
 
+    protected $table = 'kelas';
     protected $guarded = ['id'];
 
     public function mahasiswas()
     {
-        return $this->hasMany(Mahasiswa::class, 'kelas_id', 'id');
+        return $this->hasMany(Mahasiswa::class);
     }
 
     public function mapels()
