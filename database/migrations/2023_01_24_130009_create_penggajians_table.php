@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
-class CreatePresensisTable extends Migration
+class CreatePenggajiansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +14,12 @@ class CreatePresensisTable extends Migration
      */
     public function up()
     {
-        Schema::create('presensis', function (Blueprint $table) {
+        Schema::create('penggajians', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pertemuan_id');
-            $table->dateTime('waktu_absen');
-            $table->string('level');
-            $table->foreignId('user_id');
-            $table->foreignId('materi_id');
-            $table->foreignId('absensi_id');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->integer('bulan');
+            $table->year('tahun');
+            $table->bigInteger('total');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreatePresensisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presensis');
+        Schema::dropIfExists('penggajians');
     }
 }

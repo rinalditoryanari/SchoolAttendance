@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\Mapel;
 class CreatePertemuansTable extends Migration
 {
     /**
@@ -15,10 +15,10 @@ class CreatePertemuansTable extends Migration
     {
         Schema::create('pertemuans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mapel_id');
-            $table->date("tanggal")->nullable();
-            $table->time('waktu')->nullable();
-            $table->integer("sks")->nullable();
+            $table->foreignIdFor(Mapel::class)->constrained()->cascadeOnDelete();
+            $table->date("tanggal");
+            $table->time('waktu');
+            $table->integer("sks");
             $table->string('keterangan');
             $table->timestamps();;
         });

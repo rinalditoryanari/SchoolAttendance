@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\Penggajian;
 class CreatePenggajianDetailsTable extends Migration
 {
     /**
@@ -15,7 +15,7 @@ class CreatePenggajianDetailsTable extends Migration
     {
         Schema::create('penggajian_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('penggajian_id');
+            $table->foreignIdFor(Penggajian::class);
             $table->string('tanggal');
             $table->string('waktu');
             $table->string('mapelkelas');

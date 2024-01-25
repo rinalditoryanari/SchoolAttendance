@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Mapel;
 
-class CreatePenggajiansTable extends Migration
+class CreateMaterisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,10 @@ class CreatePenggajiansTable extends Migration
      */
     public function up()
     {
-        Schema::create('penggajians', function (Blueprint $table) {
+        Schema::create('materis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->integer('bulan');
-            $table->year('tahun');
-            $table->bigInteger('total');
+            $table->foreignIdFor(Mapel::class);
+            $table->string('materi');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreatePenggajiansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penggajians');
+        Schema::dropIfExists('materis');
     }
 }

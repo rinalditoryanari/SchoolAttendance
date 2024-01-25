@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Kelas;
+use App\Models\Dosen;
 
 class CreateMapelsTable extends Migration
 {
@@ -17,8 +19,8 @@ class CreateMapelsTable extends Migration
             $table->id();
             $table->char('kode', 10)->unique();
             $table->string('nama');
-            $table->foreignId('kelas_id');
-            $table->foreignId('dosen_id');
+            $table->foreignIdFor(Kelas::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Dosen::class)->constrained()->cascadeOnDelete();
             $table->integer('min_pertemuan')->nullable();
             $table->timestamps();
         });
