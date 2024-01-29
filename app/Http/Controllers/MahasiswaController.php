@@ -32,7 +32,7 @@ class MahasiswaController extends Controller
     public function addMhsw(Request $request)
     {
         $validatedData = $request->validate([
-            'nis' => 'required|unique:mahasiswas|digits:6',
+            'nim' => 'required|unique:mahasiswas|digits:6',
             'firstName' => 'required|max:255',
             'lastName' => 'required|max:255',
             'namaAyah' => 'required|max:255',
@@ -85,7 +85,7 @@ class MahasiswaController extends Controller
     public function update(Request $request, Mahasiswa $mahasiswa)
     {
         $validatedData = $request->validate([
-            'nis' => 'required|max:255|digits:6',
+            'nim' => 'required|max:255|digits:6',
             'firstName' => 'required|max:255',
             'lastName' => 'required|max:255',
             'namaAyah' => 'required|max:255',

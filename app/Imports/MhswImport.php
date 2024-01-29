@@ -15,7 +15,7 @@ class MhswImport implements ToModel
     public function model(array $row)
     {
         return new Mahasiswa([
-            'nis' => $row[1],
+            'nim' => $row[1],
             'nama' => $row[2],
             'tmp_lahir' => $row[3],
             'tgl_lahir' => $row[4],

@@ -45,7 +45,7 @@
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort">No.</th>
-                    <th class="text-center">NIS</th>
+                    <th class="text-center">NIM</th>
                     <th class="text-center">Nama Mahasiswa</th>
                     <th class="text-center">Kelas Mahasiswa</th>
                     <th class="text-center">Aksi</th>
@@ -55,7 +55,7 @@
                 @foreach ($mahasiswas as $mahasiswa)
                 <tr>
                     <td class="table-plus text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $mahasiswa->nis }}</td>
+                    <td>{{ $mahasiswa->nim }}</td>
                     <td>{{ $mahasiswa->firstName }} {{ $mahasiswa->lastName }}</td>
                     <td>{{ $mahasiswa->kelas->nama }}</td>
                     <td class="text-center">
