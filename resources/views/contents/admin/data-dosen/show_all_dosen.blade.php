@@ -16,7 +16,7 @@
         <h4 class="text-blue h4">Table Dosen</h4>
         <div>
             <a data-toggle="modal" data-target="#import" type="button" class="btn btn-success">Import Data Dosen</a>
-            <a class="btn btn-danger" href="{{ route('export') }}">Export Data Dosen</a>
+            <a class="btn btn-danger" href="{{ route('admin.dosen.export') }}">Export Data Dosen</a>
             <a class="btn btn-primary" href="{{ route('admin.dosen.showadd')}}">Tambah Data Dosen</a>
         </div>
         <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

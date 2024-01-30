@@ -152,6 +152,8 @@ Route::prefix('admin')->group(function () {
         //NGATUR ABSEN DOSEN
         Route::prefix('dosen')->group(function () {
             Route::get('/', [DosenController::class, 'showAllDosen'])->name('admin.dosen.showall');
+            Route::get('/export', [DosenController::class, 'export'])->name('admin.dosen.export');
+
 
             Route::get('/create', [DosenController::class, 'showAddDosen'])->name('admin.dosen.showadd');
             Route::post('/create', [DosenController::class, 'addDosen'])->name('admin.dosen.add');
@@ -179,7 +181,7 @@ Route::prefix('admin')->group(function () {
 
         Route::prefix('/mahasiswa')->group(function () {
             Route::get('/', [MahasiswaController::class, 'showAllMhsw'])->name('admin.mahasiswa.showall');
-            Route::get('export', [MahasiswaController::class, 'export'])->name('admin.mahasiswa.export');
+            Route::get('/export', [MahasiswaController::class, 'export'])->name('admin.mahasiswa.export');
             Route::post('/', [MahasiswaController::class, 'addMhsw'])->name('admin.mahasiswa.add');
             Route::get('/create', [MahasiswaController::class, 'showAddMhsw'])->name('admin.mahsiswa.showadd');
             Route::get('/{mahasiswa}', [MahasiswaController::class, 'detailMhsw'])->name('admin.mahasiswa.detail');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DosenExport;
 use App\Exports\PresensiDosenExport;
 use App\Models\Absensi;
 use App\Models\Dosen;
@@ -231,5 +232,10 @@ class DosenController extends Controller
         ])->setPaper('a4', 'landscape');
 
         return $pdf->download('Rekap Dosen' . $dosen->firsName . ' ' . $dosen->lastName . ' pada tanggal ' . date('Y-m-d') . '.pdf');
+    }
+
+    public function export()
+    {
+        return Excel::download(new DosenExport(Dosen::all()), 'Data Dosen.xlsx');
     }
 }
