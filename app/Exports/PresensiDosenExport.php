@@ -8,7 +8,7 @@ use App\Models\Presensi;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class DosenExport implements FromView
+class PresensiDosenExport implements FromView
 {
     protected $dosen;
 

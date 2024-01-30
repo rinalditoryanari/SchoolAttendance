@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\DosenExport;
+use App\Exports\PresensiDosenExport;
 use App\Models\Absensi;
 use App\Models\Dosen;
 use App\Models\Pertemuan;
@@ -169,7 +169,7 @@ class DosenController extends Controller
 
     public function excelRekap(Dosen $dosen)
     {
-        return Excel::download(new DosenExport($dosen), 'Rekap Dosen' . $dosen->firsName . ' ' . $dosen->lastName . ' pada tanggal ' . date('Y-m-d') . '.xlsx');
+        return Excel::download(new PresensiDosenExport($dosen), 'Rekap Dosen' . $dosen->firsName . ' ' . $dosen->lastName . ' pada tanggal ' . date('Y-m-d') . '.xlsx');
     }
 
     public function pdfRekap(Dosen $dosen)
