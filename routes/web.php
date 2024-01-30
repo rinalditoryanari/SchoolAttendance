@@ -40,7 +40,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('auth');
 Route::get('/', [LoginController::class, 'redirect'])->middleware('auth');
 
 // Siswa Export and Import Routes
-Route::get('export', [MahasiswaController::class, 'export'])->name('export')->middleware('admin');
 Route::post('import', [MahasiswaController::class, 'import'])->name('import')->middleware('admin');
 
 // // Profile Routes
@@ -180,6 +179,7 @@ Route::prefix('admin')->group(function () {
 
         Route::prefix('/mahasiswa')->group(function () {
             Route::get('/', [MahasiswaController::class, 'showAllMhsw'])->name('admin.mahasiswa.showall');
+            Route::get('export', [MahasiswaController::class, 'export'])->name('admin.mahasiswa.export');
             Route::post('/', [MahasiswaController::class, 'addMhsw'])->name('admin.mahasiswa.add');
             Route::get('/create', [MahasiswaController::class, 'showAddMhsw'])->name('admin.mahsiswa.showadd');
             Route::get('/{mahasiswa}', [MahasiswaController::class, 'detailMhsw'])->name('admin.mahasiswa.detail');

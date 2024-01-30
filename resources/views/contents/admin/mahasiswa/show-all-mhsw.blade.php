@@ -16,7 +16,7 @@
         <h4 class="text-blue h4">Tabel Mahasiswa</h4>
         <div>
             <a data-toggle="modal" data-target="#import" type="button" class="btn btn-success">Import Data Mahasiswa</a>
-            <a class="btn btn-danger" href="{{ route('export') }}">Export Data Mahasiswa</a>
+            <a class="btn btn-danger" href="{{ route('admin.mahasiswa.export') }}">Export Data Mahasiswa</a>
             <a class="btn btn-primary" href="{{route('admin.mahsiswa.showadd')}}">Tambah Data Mahasiswa</a>
         </div>
         <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

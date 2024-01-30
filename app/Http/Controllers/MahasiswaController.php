@@ -121,7 +121,7 @@ class MahasiswaController extends Controller
      */
     public function export()
     {
-        return Excel::download(new MhswExport, 'mahasiswa.xlsx');
+        return Excel::download(new MhswExport(Mahasiswa::all()), 'mahasiswa.xlsx');
     }
 
     /**
