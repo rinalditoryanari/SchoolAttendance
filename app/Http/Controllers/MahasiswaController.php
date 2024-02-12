@@ -160,14 +160,14 @@ class MahasiswaController extends Controller
             ];
         });
 
-        session()->put('imported_data', $rows);
+        session()->put('imported_data_mhsw', $rows);
 
         return redirect()->route('admin.mahasiswa.import.preview');
     }
 
     public function importPreview()
     {
-        $rows = session()->get('imported_data');
+        $rows = session()->get('imported_data_mhsw');
         return view('contents.admin.mahasiswa.import-table-mhsw', [
             'title'      => 'Data Mahasiswa',
             'mahasiswas' => $rows,
