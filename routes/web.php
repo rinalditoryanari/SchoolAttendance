@@ -150,6 +150,11 @@ Route::prefix('admin')->group(function () {
         //NGATUR ABSEN DOSEN
         Route::prefix('dosen')->group(function () {
             Route::get('/', [DosenController::class, 'showAllDosen'])->name('admin.dosen.showall');
+
+            Route::post('/import', [DosenController::class, 'import'])->name('admin.dosen.import');
+            Route::get('/import/preview', [DosenController::class, 'importPreview'])->name('admin.dosen.import.preview');
+            Route::post('/import/confirm', [DosenController::class, 'importValidate'])->name('admin.dosen.import.confirm');
+
             Route::get('/export', [DosenController::class, 'export'])->name('admin.dosen.export');
 
 
