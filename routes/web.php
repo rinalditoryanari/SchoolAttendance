@@ -39,10 +39,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('auth');
 // Home Routes
 Route::get('/', [LoginController::class, 'redirect'])->middleware('auth');
 
-// Siswa Export and Import Routes
-Route::post('import', [MahasiswaController::class, 'import'])->name('import')->middleware('admin');
 
-// // Profile Routes
+// Profile Routes
 Route::prefix('/profile')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('profile');
 });
@@ -181,6 +179,9 @@ Route::prefix('admin')->group(function () {
 
         Route::prefix('/mahasiswa')->group(function () {
             Route::get('/', [MahasiswaController::class, 'showAllMhsw'])->name('admin.mahasiswa.showall');
+            Route::post('/import', [MahasiswaController::class, 'import'])->name('admin.mahasiswa.import');
+            Route::get('/import/preview', [MahasiswaController::class, 'importPreview'])->name('admin.mahasiswa.import.preview');
+            Route::post('/import/confirm', [MahasiswaController::class, 'importValidate'])->name('admin.mahasiswa.import.confirm');
             Route::get('/export', [MahasiswaController::class, 'export'])->name('admin.mahasiswa.export');
             Route::post('/', [MahasiswaController::class, 'addMhsw'])->name('admin.mahasiswa.add');
             Route::get('/create', [MahasiswaController::class, 'showAddMhsw'])->name('admin.mahsiswa.showadd');

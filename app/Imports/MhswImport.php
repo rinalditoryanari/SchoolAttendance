@@ -2,28 +2,35 @@
 
 namespace App\Imports;
 
-use App\Models\Mahasiswa;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class MhswImport implements ToModel
+class MhswImport implements toArray, WithHeadingRow, WithChunkReading, WithBatchInserts
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+
+    use Importable;
+
+    public function array(array $rows)
     {
-        return new Mahasiswa([
-            'nim' => $row[1],
-            'nama' => $row[2],
-            'tmp_lahir' => $row[3],
-            'tgl_lahir' => $row[4],
-            'jns_kelamin' => $row[5],
-            'alamat' => $row[6],
-            'phone' => $row[7],
-            'email' => $row[8],
-            'kelas_id' => $row[9]
-        ]);
+        //IT DOESNT CROSS THISS
+        return $rows;
+    }
+
+    public function headingRow(): int
+    {
+        return 1;
+    }
+
+    public function chunkSize(): int
+    {
+        return 10;
+    }
+
+    public function batchSize(): int
+    {
+        return 10;
     }
 }
